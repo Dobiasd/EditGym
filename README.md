@@ -1,4 +1,4 @@
 EditGym
 =======
 
-Text-editing training, with exercises, highscores and instant-replay
+Text editing training with highscores and instant replay
