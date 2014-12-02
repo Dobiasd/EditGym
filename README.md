@@ -1,7 +1,6 @@
-EditGym
-=======
+#EditGym
 
-Text editing training with highscores and instant replay
+###Text editing training with highscores and instant replay
 
 ---
 
@@ -16,7 +15,7 @@ todo:
 two modi: time and keystrokes
 diff farbig in der Mitte anzeigen
 leerzeichen, tabs und zeilenumbrueche anzeigen
-tutorial, welche tasten unterstützt sind: arrows, shift, strg, pos1, end, c, v, backspace, del, space
+tutorial, welche tasten unterstuetzt sind: arrows, shift, strg, pos1, end, c, v, backspace, del, space
 key-history anzeigen: zb. "[down], [shift + [down, right]], [ctrl + c"]
 
 save highscore and instant-replay, save highscore only, save nothing
