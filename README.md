@@ -23,3 +23,4 @@ instant-replay as animated gif
 compete against replay
 compete live (with chat)
 highscore position regarding last 100 users of this level
+choose light and dark theme
