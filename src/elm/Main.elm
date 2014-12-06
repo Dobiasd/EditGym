@@ -5,9 +5,15 @@ import Set
 import Window
 
 import Editor
+import KeyHistory
 import Skeleton (showPage)
 
-type State = { editor : Editor.State, keysDown : Set.Set Int }
+type State = {
+    editor : Editor.State
+  , keyHistory : KeyHistory.State
+  , keysDown : Set.Set Int
+  }
+
 type Input = { inKeysDown : Set.Set Int }
 
 input : Signal Input
@@ -32,21 +38,25 @@ validKey key =
      | otherwise -> True
 
 initialState : State
-initialState = State Editor.initialState Set.empty
+initialState = State Editor.initialState KeyHistory.initialState Set.empty
 
 state : Signal State
 state = foldp step initialState input
 
 step : Input -> State -> State
-step {inKeysDown} ({editor, keysDown} as state) =
+step {inKeysDown} ({editor, keyHistory, keysDown} as state) =
   let keysDownNew = Set.diff inKeysDown keysDown
   in  { state | editor <- Editor.step editor keysDown keysDownNew
+              , keyHistory <- KeyHistory.step keyHistory keysDown keysDownNew
               , keysDown <- inKeysDown }
 
 main : Signal Element
 main = scene <~ Window.width ~ state
 
 scene : Int -> State -> Element
-scene w {editor} =
-  let content = Editor.display editor
+scene w {editor, keyHistory} =
+  let content = flow down [
+                    KeyHistory.display keyHistory
+                  , Editor.display editor
+                ]
   in  showPage w content
