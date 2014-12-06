@@ -23,7 +23,7 @@ validKey key =
      | key >= 48 && key <= 57 -> True -- top numbers
      | key >= 96 && key <= 105 -> True -- block numbers
      | key == 13 -> True -- enter
-     | key == 33 || key == 34 -> True -- page up, page down
+     -- | key == 33 || key == 34 -> True -- page up, page down
      | key == 35 || key == 36 -> True -- end, pos1
      | key == 106 || key == 107 || key == 109 -> True -- *, +, -
      | key == 188 || key == 190 -> True -- , and .
