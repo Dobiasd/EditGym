@@ -22,6 +22,7 @@ then
 
   cp ./src/index.html ./build/index.html
   uglifyjs ./src/htmlMain.js > ./build/js/htmlMain.js
+  cp ./src/jquery-1.11.1.min.js ./build/js/jquery-1.11.1.min.js
   yui-compressor ./src/style.css > ./build/style.css
 
   rm -r ./build/src
