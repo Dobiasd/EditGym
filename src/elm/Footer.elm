@@ -1,13 +1,13 @@
 module Footer where
 
 import Graphics.Input (Input, input, customButton)
-import Layout (defaultSpacer)
+import Layout (defaultSpacer, gray1)
 
 footer : Int -> Element
 footer w =
   let
-    main = plainText "Home" |> color gray
-    about = plainText "About" |> color gray
+    main = plainText "Home" |> color gray1
+    about = plainText "About" |> color gray1
     mainLink = customButton pageClick.handle MainPage main main main
     aboutLink = customButton pageClick.handle AboutPage about about about
     content = flow down [ defaultSpacer

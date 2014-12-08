@@ -3,17 +3,18 @@ module Header where
 import Graphics.Input (Input, input, customButton)
 import Window
 
-import Layout (defaultSpacer, bgColor, toDefText, toSizedText)
+import Layout (defaultSpacer, toDefText, toSizedText,
+  black1, white1, orange1, blue1, purple1, red1, green1, gray1)
 import Text
 
 iconSize : Int
 iconSize = 32
 
 logoHeight : Int
-logoHeight = 100
+logoHeight = 120
 
 logoWidth : Int
-logoWidth = 480
+logoWidth = 308
 
 clicks : Input ()
 clicks = input ()
@@ -37,25 +38,26 @@ shareIcons =
     toDefText "share: " :: buttons |> intersperse (defaultSpacer) |> flow right
 
 logo : Element
-logo = image logoWidth logoHeight "imgs/editgym_logo.png"
+logo = image logoWidth logoHeight "imgs/logo.png"
 
 topBar : Int -> Element
 topBar w =
   flow down [ defaultSpacer
-            , flow right [ shareIcons, defaultSpacer ]
-              |> container w (heightOf shareIcons) topRight
-            , defaultSpacer ] |> color lightBlue
+            , flow right [ logo
+              , flow right [ shareIcons, defaultSpacer ]
+              |> container (w - logoWidth) logoHeight topRight
+            ]
+            , defaultSpacer ] |> color black1
 
 header : Int -> Element
 header w =
   let
     title = flow right [
       toSizedText 32 "Edit Gym"
-    , toText " .com" |> Text.height 18 >> Text.color darkGray >> leftAligned
+    , toText " .com" |> Text.height 18 >> Text.color gray >> leftAligned
     ]
   in
     flow down [
       topBar w
     , title |> container w (heightOf title) midTop
-    , logo |> container w (heightOf logo) midTop
-    , defaultSpacer ] |> color bgColor
+    , defaultSpacer ] |> color black1
