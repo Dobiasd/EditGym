@@ -24,3 +24,6 @@ compete against replay
 compete live (with chat)
 highscore position regarding last 100 users of this level
 choose light and dark theme
+about: why and how created
+faq: vi(m), emacs: no, list combinations http://www.howtogeek.com/115664/42-text-editing-keyboard-shortcuts-that-work-almost-everywhere/
+todo: link auf meinen artikel auf der startseite
