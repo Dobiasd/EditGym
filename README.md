@@ -27,3 +27,4 @@ choose light and dark theme
 about: why and how created
 faq: vi(m), emacs: no, list combinations http://www.howtogeek.com/115664/42-text-editing-keyboard-shortcuts-that-work-almost-everywhere/
 todo: link auf meinen artikel auf der startseite
+font ["inconsolata", "courier new", "monospace"] http://elm-lang.org/edit/examples/Elements/Typeface.elm
