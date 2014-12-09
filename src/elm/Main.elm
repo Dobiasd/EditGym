@@ -8,16 +8,31 @@ import Editor
 import KeyHistory
 import Skeleton (showPage)
 
+import Start
+import Levels
+import Game
+
+-- Can not reference Start.click.signal.
+-- Thus it is named Start.startlick, so it can be imported directly.
+import Start(startClick)
+import Levels(levelClick)
+import Page
+
 type State = {
-    editor : Editor.State
-  , keyHistory : KeyHistory.State
-  , keysDown : Set.Set Int
+    page : Page.Page
+  , game : Game.State
   }
 
-type Input = { inKeysDown : Set.Set Int }
+type Input = { inKeysDown : Set.Set Int, page : Page.Page }
+
+pageChange : Signal Page.Page
+pageChange = dropIf (\s -> s == Page.NoPage) Page.Start
+  <| merges [startClick.signal, Page.Game <~ levelClick.signal]
 
 input : Signal Input
-input = (Input << Set.fromList << filter validKey) <~ Keyboard.keysDown
+input = Input
+  <~ ((Set.fromList << filter validKey) <~ Keyboard.keysDown)
+  ~ pageChange
 
 validKey : Int -> Bool
 validKey key =
@@ -38,25 +53,25 @@ validKey key =
      | otherwise -> True
 
 initialState : State
-initialState = State Editor.initialState KeyHistory.initialState Set.empty
+initialState =
+  State
+    Page.Start
+    Game.initialState
 
 state : Signal State
 state = foldp step initialState input
 
 step : Input -> State -> State
-step {inKeysDown} ({editor, keyHistory, keysDown} as state) =
-  let keysDownNew = Set.diff inKeysDown keysDown
-  in  { state | editor <- Editor.step editor keysDown keysDownNew
-              , keyHistory <- KeyHistory.step keyHistory keysDown keysDownNew
-              , keysDown <- inKeysDown }
+step input ({game} as state) =
+  { state | game <- Game.step (Game.Input input.inKeysDown) game
+          , page <- input.page }
 
 main : Signal Element
 main = scene <~ Window.width ~ state
 
 scene : Int -> State -> Element
-scene w {editor, keyHistory} =
-  let content = flow down [
-                    KeyHistory.display keyHistory
-                  , Editor.display editor
-                ]
-  in  showPage w content
+scene w {game, page} =
+  case page of
+    Page.Start -> Start.display w
+    Page.Levels -> Levels.display w
+    Page.Game level -> Game.display w game

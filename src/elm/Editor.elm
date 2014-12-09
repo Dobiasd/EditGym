@@ -3,6 +3,8 @@ module Editor where
 import Keyboard
 import Set
 
+import Layout (toDefText)
+
 type State = {document:String}
 
 initialState : State
@@ -16,4 +18,4 @@ step ({document} as state) keysDown keysDownNew =
   in  { state | document <- document' }
 
 display : State -> Element
-display {document} = plainText document
+display {document} = toDefText document

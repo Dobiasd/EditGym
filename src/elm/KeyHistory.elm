@@ -3,6 +3,8 @@ module KeyHistory where
 import Keyboard
 import Set
 
+import Layout (toDefText)
+
 type State = {history:[Int]}
 
 initialState : State
@@ -16,4 +18,4 @@ step ({history} as state) keysDown keysDownNew =
 display : State -> Element
 display {history} =
   let visibleHistory = drop (length history - 5) history
-  in  show visibleHistory |> plainText
+  in  show visibleHistory |> toDefText

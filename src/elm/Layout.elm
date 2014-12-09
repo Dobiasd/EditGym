@@ -27,7 +27,14 @@ green1 : Color
 green1 = rgb 166 226 46
 
 gray1 : Color
-gray1 = rgb 143 144 138
+gray1 = rgb 117 113 94
+
+lightGray1 : Color
+lightGray1 = rgb 143 144 138
+
+darkGray1 : Color
+darkGray1 = rgb 56 56 48
+
 
 
 
