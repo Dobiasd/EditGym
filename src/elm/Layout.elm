@@ -50,6 +50,9 @@ quadDefSpacer = spacer ( 4 * spacerSize) (4 * spacerSize)
 pageWidth : Int
 pageWidth = 450
 
+centerHorizontally : Int -> Element -> Element
+centerHorizontally w element = container w (heightOf element) middle element
+
 toSizedText : Float -> String -> Element
 toSizedText s = toText >> Text.height s >> Text.color white1 >> leftAligned
 

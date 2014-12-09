@@ -4,7 +4,7 @@
 
 ---
 
-A lot of daily tasks require you to edit text. And no matter if you use a word processor like [LibreOffice Writer](https://www.libreoffice.org/discover/writer) or [Word](http://en.wikipedia.org/wiki/Microsoft_Word), an editor like [Notepad(++)](http://notepad-plus-plus.org) or [Sublime](http://www.sublimetext.com), an [IDE](http://en.wikipedia.org/wiki/Integrated_development_environment) like [Eclipse](https://eclipse.org) or [Visual Studio](http://www.visualstudio.com) etc. or just write an email or a post on [facebook](http://www.facebook.com), [reddit](http://www.reddit.com) or [stackoverflow](http://stackoverflow.com) in your browser, the basic default keyboard shortcuts are the same. And knowing them can [save you precious time](http://lifehacker.com/5970089/back-to-the-basics-learn-to-use-keyboard-shortcuts-like-a-ninja).
+A lot of daily tasks require you to edit text. And no matter if you use a word processor like [LibreOffice Writer](https://www.libreoffice.org/discover/writer) or [Word](http://en.wikipedia.org/wiki/Microsoft_Word), an editor like [Notepad(++)](http://notepad-plus-plus.org) or [Sublime](http://www.sublimetext.com), an [IDE](http://en.wikipedia.org/wiki/Integrated_development_environment) like [Eclipse](https://eclipse.org) or [Visual Studio](http://www.visualstudio.com) etc. or just write an email or a post on [facebook](http://www.facebook.com), [reddit](http://www.reddit.com) or [stackoverflow](http://stackoverflow.com) in your browser, the most basic default keyboard shortcuts are the same. And knowing them can [save you precious time](http://lifehacker.com/5970089/back-to-the-basics-learn-to-use-keyboard-shortcuts-like-a-ninja).
 But real efficiency is not reached by [just memorizing all shortcuts](https://www.shortcutfoo.com). It is also important (and fun!) to be able to effortlessly choose the tactics with the smallest amount of shortcuts to reach the desired goal.
 EditGym.com helps you acquire this set of skills.
 
@@ -29,3 +29,6 @@ faq: vi(m), emacs: no, list combinations http://www.howtogeek.com/115664/42-text
 todo: link auf meinen artikel auf der startseite
 font ["inconsolata", "courier new", "monospace"] http://elm-lang.org/edit/examples/Elements/Typeface.elm
 pinterest-logo: fill white
+footer: navigation also to help(shortcuts), levels, highscore
+startPage: button to shortcuts(help)
+back-button in browser does not work if it all is a single page. Does this matter?

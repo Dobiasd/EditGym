@@ -5,19 +5,29 @@ import Layout (defaultSpacer, pageWidth, toDefText, toSizedText,
 import Footer (footer)
 import Header (header)
 
-showPage : Int -> Element -> Element
-showPage w content =
+showPage : Int -> Int -> Element -> Element
+showPage w h content =
   let
+    content' = content |> container w (heightOf content) midTop
     headerElem = header w
     footerElem = footer w
-    h = heightOf headerElem + heightOf content + heightOf footerElem + 6
+    pageH = heightOf headerElem + heightOf content + heightOf footerElem + 6
     divider = flow down [ spacer 1 4 |> color black1
                         , spacer w 3 |> color orange ]
                         |> container w 7 midTop
+    pageContentHeight = sum [
+        heightOf headerElem
+      , heightOf content'
+      , heightOf divider
+      , heightOf footerElem
+      ]
+    h' = max h pageH
+    footerSpacer = spacer 2 <| h' - pageContentHeight
   in
     flow down [
       headerElem
-    , content
+    , content'
+    , footerSpacer
     , divider
     , footerElem
-    ] |> color black1 |> container w h midTop
+    ] |> color black1 |> container w (max h h') midTop

@@ -19,10 +19,10 @@ levelButton s =
     (color darkGray1 (container 300 80 middle (txt 48 green1 s)))
     (color darkGray1 (container 300 80 middle (txt 48 green1 s)))
 
-display : Int -> Element
-display w =
+display : Int -> Int -> Element
+display w h =
   flow down [
     levelButton "01 - foo"
   , levelButton "02 - bar"
   , levelButton "03 - baz"
-  ] |> Skeleton.showPage w
+  ] |> Skeleton.showPage w h

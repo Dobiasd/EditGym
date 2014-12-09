@@ -6,7 +6,6 @@ import Window
 
 import Editor
 import KeyHistory
-import Skeleton (showPage)
 
 import Start
 import Levels
@@ -67,11 +66,11 @@ step input ({game} as state) =
           , page <- input.page }
 
 main : Signal Element
-main = scene <~ Window.width ~ state
+main = scene <~ Window.width ~ Window.height ~ state
 
-scene : Int -> State -> Element
-scene w {game, page} =
+scene : Int -> Int -> State -> Element
+scene w h {game, page} =
   case page of
-    Page.Start -> Start.display w
-    Page.Levels -> Levels.display w
-    Page.Game level -> Game.display w game
+    Page.Start -> Start.display w h
+    Page.Levels -> Levels.display w h
+    Page.Game level -> Game.display w h game

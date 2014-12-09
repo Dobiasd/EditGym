@@ -51,13 +51,6 @@ topBar w =
 
 header : Int -> Element
 header w =
-  let
-    title = flow right [
-      toSizedText 32 "Edit Gym"
-    , toText " .com" |> Text.height 18 >> Text.color gray >> leftAligned
-    ]
-  in
-    flow down [
-      topBar w
-    , title |> container w (heightOf title) midTop
-    , defaultSpacer ] |> color black1
+  flow down [
+    topBar w
+  , defaultSpacer ] |> color black1

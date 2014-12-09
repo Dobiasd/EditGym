@@ -26,10 +26,10 @@ step {inKeysDown} ({editor, keyHistory, keysDown} as state) =
               , keyHistory <- KeyHistory.step keyHistory keysDown keysDownNew
               , keysDown <- inKeysDown }
 
-display : Int -> State -> Element
-display w {editor, keyHistory} =
+display : Int -> Int -> State -> Element
+display w h {editor, keyHistory} =
   let content = flow down [
                     KeyHistory.display keyHistory
                   , Editor.display editor
                 ]
-  in  Skeleton.showPage w content
+  in  Skeleton.showPage w h content
