@@ -28,7 +28,6 @@ about: why and how created
 faq: vi(m), emacs: no, list combinations http://www.howtogeek.com/115664/42-text-editing-keyboard-shortcuts-that-work-almost-everywhere/
 todo: link auf meinen artikel auf der startseite
 font ["inconsolata", "courier new", "monospace"] http://elm-lang.org/edit/examples/Elements/Typeface.elm
-pinterest-logo: fill white
 footer: navigation also to help(shortcuts), levels, highscore
 startPage: button to shortcuts(help)
 back-button in browser does not work if it all is a single page. Does this matter?
