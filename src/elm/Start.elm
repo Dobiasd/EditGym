@@ -1,28 +1,17 @@
 module Start where
 
-import Layout
-import Layout (toColText, toDefText, green1, blue1, darkGray1, black1)
+import Window
 
-import Page
 import Skeleton
-
-import Text
-import Graphics.Input as Input
-
-startClick : Input.Input Page.Page
-startClick = Input.input Page.NoPage
+import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
+  , defaultSpacer)
 
 startButton : Element
-startButton =
-  let txt h c = toText >> Text.height h >> Text.color c >> leftAligned
-      startText c = container 300 80 middle (txt 48 c "Start")
-        |> color darkGray1
-  in  Input.customButton startClick.handle Page.Levels
-        (startText green1)
-        (startText blue1)
-        (startText blue1)
+startButton = niceButton "Start" "?page=levels"
 
--- todo: text color white1
+helpButton : Element
+helpButton = niceButton "Help" "?page=help"
+
 introduction : Int -> Element
 introduction w =
   let content = [markdown|
@@ -32,13 +21,20 @@ But real efficiency is not reached by [just memorizing all shortcuts](https://ww
 EditGym.com helps you acquire this set of skills.
 
 |] |> width 640
-      img = image 800 280 "imgs/startbackground.jpg"
+      img = image 800 280 "imgs/keyboard_bg.jpg"
       row = collage 800 280 [toForm img, toForm content]
-  in  container w 280 middle row |> color Layout.white1
+  in  container w 280 middle row |> color white1
 
-display : Int -> Int -> Element
-display w h =
+main : Signal Element
+main = scene <~ Window.width ~ Window.height
+
+scene : Int -> Int -> Element
+scene w h =
   flow down [
     introduction w
-  , Layout.centerHorizontally w startButton ]
+  , defaultSpacer
+  , centerHorizontally w (flow right [ startButton
+                                     , spacer 40 1
+                                     , helpButton ])
+  ]
   |> Skeleton.showPage w h

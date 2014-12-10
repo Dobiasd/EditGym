@@ -11,6 +11,9 @@ black1 = rgb 39 40 34
 white1 : Color
 white1 = rgb 248 248 242
 
+yellow1 : Color
+yellow1 = rgb 230 219 116
+
 orange1 : Color
 orange1 = rgb 253 151 31
 
@@ -35,8 +38,13 @@ lightGray1 = rgb 143 144 138
 darkGray1 : Color
 darkGray1 = rgb 56 56 48
 
-
-
+-- todo rollover color
+niceButton : String -> String -> Element
+niceButton str url =
+  let txt h c = toText >> Text.height h >> Text.color c >> leftAligned
+      textButton c = container 300 80 middle (txt 48 c str)
+        |> color darkGray1
+  in  link url (textButton green1)
 
 defaultSpacer : Element
 defaultSpacer = spacer spacerSize spacerSize

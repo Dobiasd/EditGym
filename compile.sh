@@ -3,7 +3,13 @@
 #rm -r build
 #rm -r cache
 
-elm -m -o --src-dir=./src/elm src/elm/Main.elm
+elm -m -o --src-dir=./src/elm src/elm/Start.elm
+elm -m -o --src-dir=./src/elm src/elm/Levels.elm
+elm -m -o --src-dir=./src/elm src/elm/Game.elm
+elm -m -o --src-dir=./src/elm src/elm/Highscores.elm
+elm -m -o --src-dir=./src/elm src/elm/Contact.elm
+elm -m -o --src-dir=./src/elm src/elm/Help.elm
+elm -m -o --src-dir=./src/elm src/elm/FAQ.elm
 
 if [ $? -eq 0 ]
 then

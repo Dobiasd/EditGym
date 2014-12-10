@@ -13,7 +13,7 @@ showPage w h content =
     footerElem = footer w
     pageH = heightOf headerElem + heightOf content + heightOf footerElem + 6
     divider = flow down [ spacer 1 4 |> color black1
-                        , spacer w 3 |> color orange ]
+                        , spacer w 3 |> color orange1 ]
                         |> container w 7 midTop
     pageContentHeight = sum [
         heightOf headerElem

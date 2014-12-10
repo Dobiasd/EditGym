@@ -38,7 +38,7 @@ shareIcons =
     toDefText "share: " :: buttons |> intersperse (defaultSpacer) |> flow right
 
 logo : Element
-logo = image logoWidth logoHeight "imgs/logo.png"
+logo = image logoWidth logoHeight "imgs/logo.png" |> link "?page=start"
 
 topBar : Int -> Element
 topBar w =

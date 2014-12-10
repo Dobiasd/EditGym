@@ -14,3 +14,12 @@ body
 {
     min-height: 100%
 }
+
+a:link {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:visited {
+    text-decoration: none;
+}
