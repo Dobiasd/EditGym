@@ -2,6 +2,8 @@ module KeyHistory where
 
 import Keyboard
 import Set
+import Char(fromCode)
+import String(cons)
 
 import Layout (toDefText)
 
@@ -9,6 +11,10 @@ type State = {history:[Int]}
 
 initialState : State
 initialState = State []
+
+-- todo: use String.fromChar
+showKey : Int -> String
+showKey key = key |> fromCode |> (flip cons) ""
 
 step : State -> Set.Set Int -> Set.Set Int -> State
 step ({history} as state) keysDown keysDownNew =
@@ -18,4 +24,4 @@ step ({history} as state) keysDown keysDownNew =
 display : State -> Element
 display {history} =
   let visibleHistory = drop (length history - 5) history
-  in  show visibleHistory |> toDefText
+  in  show (map showKey visibleHistory) |> toDefText
