@@ -15,11 +15,7 @@ body
     min-height: 100%
 }
 
-a:link {
+a:link, a:visited {
     text-decoration: none;
     color: inherit;
-}
-
-a:visited {
-    text-decoration: none;
 }

@@ -1,6 +1,6 @@
 module Header where
 
-import Graphics.Input (Input, input, customButton)
+import Graphics.Input (Input, input)
 import Window
 
 import Layout (defaultSpacer, toDefText, toSizedText,
