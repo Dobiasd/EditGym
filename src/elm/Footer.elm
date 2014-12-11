@@ -2,10 +2,14 @@ module Footer where
 
 import Layout (defaultSpacer, gray1)
 
+txtLink str url =
+    let elem = plainText str |> link url
+    in  container (widthOf elem + 10) (heightOf elem + 6) middle elem
+        |> color gray1
+
 footer : Int -> Element
 footer w =
   let
-    txtLink str url = plainText str |> color gray1 |> link url
     start = txtLink "Home" "?page=start"
     highscore = txtLink "Highscore list" "?page=highscores"
     faq = txtLink "FAQ""?page=faq"
