@@ -8,7 +8,7 @@ import String(cons)
 
 import Layout (toDefText, toColText, white1, lightGray1, darkGray1)
 
-data KeyAction = Up Int | Down Int
+data KeyAction = Up Keyboard.KeyCode | Down Keyboard.KeyCode
 
 showKeyAction : KeyAction -> Element
 showKeyAction action = case action of
@@ -20,7 +20,7 @@ type State = {history:[KeyAction]}
 initialState : State
 initialState = State []
 
-keyStrings : Dict.Dict Int String
+keyStrings : Dict.Dict Keyboard.KeyCode String
 keyStrings =
   let toDefStrPair mod key = (mod key, key |> fromCode |> (flip cons) "")
   in  [
@@ -49,13 +49,14 @@ keyStrings =
   |> Dict.fromList
 
 -- todo: use String.fromChar
-showKey : Int -> String
+showKey : Keyboard.KeyCode -> String
 showKey key = case Dict.get key keyStrings of
   Just result -> result
   Nothing -> ""
   --Nothing -> key |> fromCode |> (flip cons) ""
 
-step : State -> Set.Set Int -> Set.Set Int -> Set.Set Int -> State
+step : State -> Set.Set Keyboard.KeyCode -> Set.Set Keyboard.KeyCode
+             -> Set.Set Keyboard.KeyCode -> State
 step ({history} as state) keysDown keysDownNew keysUpNew =
   let history' = history ++ (Set.toList keysDownNew |> map Down)
                          ++ (Set.toList keysUpNew   |> map Up)

@@ -12,7 +12,7 @@ import KeyHistory
 type State = {
     editor : Editor.State
   , keyHistory : KeyHistory.State
-  , keysDown : Set.Set Int
+  , keysDown : Set.Set Keyboard.KeyCode
   }
 
 port level : Signal String
@@ -20,7 +20,7 @@ port level : Signal String
 initialState : State
 initialState = State Editor.initialState KeyHistory.initialState Set.empty
 
-type Input = { inKeysDown : Set.Set Int }
+type Input = { inKeysDown : Set.Set Keyboard.KeyCode }
 
 input : Signal Input
 input = Input <~ ((Set.fromList << filter validKey) <~ Keyboard.keysDown)
@@ -40,7 +40,7 @@ step {inKeysDown} ({editor, keyHistory, keysDown} as state) =
 main : Signal Element
 main = scene <~ Window.width ~ Window.height ~ state
 
-validKey : Int -> Bool
+validKey : Keyboard.KeyCode -> Bool
 validKey key = KeyHistory.showKey key /= ""
 
 scene : Int -> Int -> State -> Element
