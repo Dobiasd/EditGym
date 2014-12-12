@@ -15,6 +15,7 @@ todo:
 two modi: time and keystrokes
 diff farbig in der Mitte anzeigen
 leerzeichen, tabs und zeilenumbrueche anzeigen
+line numbers
 tutorial, welche tasten unterstuetzt sind: arrows, shift, strg, pos1, end, c, v, backspace, del, space
 key-history anzeigen: zb. "[down], [shift + [down, right]], [ctrl + c"]
 
