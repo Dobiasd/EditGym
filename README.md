@@ -26,3 +26,4 @@ highscore position regarding last 100 users of this level
 todo: link auf meinen artikel auf der startseite
 font ["inconsolata", "courier new", "monospace"] http://elm-lang.org/edit/examples/Elements/Typeface.elm
 highscore-dialog am Ende automatisch über das game einblenden (mit try-again-button), und da auch share rein
+haskell-level: No special characters
