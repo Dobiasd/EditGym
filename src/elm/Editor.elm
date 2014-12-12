@@ -88,8 +88,8 @@ stepCursorPos1 _ = identity
 stepCursorEnd : Bool -> State -> State
 stepCursorEnd _ = identity
 
-stepCursor : Bool -> Keyboard.KeyCode -> State -> State
-stepCursor shift key ({document, cursor} as state) =
+stepCursor : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepCursor ctrl shift key ({document, cursor} as state) =
   (case key of
      35 -> stepCursorEnd
      36 -> stepCursorPos1
@@ -112,11 +112,11 @@ deleteSelection ({document, selection, cursor} as state) =
       part1 = String.slice 0 start document
       part2 = String.slice end (String.length document) document
   in  { state | document <- String.append part1 part2
-              , selection <- setBoth cursor
+              , selection <- setBoth start
               , cursor <- start }
 
-stepBackspace : Keyboard.KeyCode -> State -> State
-stepBackspace key ({selection} as state) =
+stepBackspace : Bool -> Keyboard.KeyCode -> State -> State
+stepBackspace ctrl key ({selection} as state) =
   case key of
     8 -> if isSelected selection
             then deleteSelection state
@@ -128,8 +128,8 @@ stepBackspace key ({selection} as state) =
                        else state
     otherwise -> state
 
-stepDelete : Keyboard.KeyCode -> State -> State
-stepDelete key ({selection} as state) =
+stepDelete : Bool -> Keyboard.KeyCode -> State -> State
+stepDelete ctrl key ({selection} as state) =
   case key of
     46 -> if isSelected selection
             then deleteSelection state
@@ -169,10 +169,10 @@ step ({document, cursor} as state) keysDown keysDownNew =
       shift = Set.member 16 keysDownAll
       ctrl = Set.member 17 keysDownAll
       stepKey = applyWith [
-                  stepBackspace
-                , stepDelete
+                  stepBackspace ctrl
+                , stepDelete ctrl
                 , if ctrl then (flip always) else stepType shift
-                , stepCursor shift
+                , stepCursor ctrl shift
                 ]
       -- todo ctrl selection, steps and copypaste
   in  foldl stepKey state keysDownNew
