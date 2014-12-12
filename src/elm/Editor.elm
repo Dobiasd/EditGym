@@ -216,13 +216,20 @@ displaySelectionLine y (x1, x2) =
       topSpacer = spacer 1 (lineHeight * y)
       leftSpacer = spacer (charWidth * x1) 1
       spacerWidth = (x2 - x1) * charWidth
-
   in  flow right [ leftSpacer
                  , flow down [ topSpacer
-                             , spacer spacerWidth lineHeight |> color darkGray1 ] ]
+                             , spacer spacerWidth lineHeight
+                               |> color darkGray1 ] ]
 
 safeHead : a -> [a] -> a
 safeHead def xs = if List.isEmpty xs then def else head xs
+
+displayTwoLineSelection : (Int, (Int, Int)) -> (Int, Int) -> Element
+displayTwoLineSelection (startY, (startX, line1Length)) (endY, endX) =
+  [
+    displaySelectionLine startY (startX, line1Length)
+  , displaySelectionLine endY (0, endX)
+  ] |> flow outward
 
 displaySelection : Document -> Selection -> Element
 displaySelection document selection =
@@ -230,16 +237,26 @@ displaySelection document selection =
       rows = String.lines document
       (startX, startY) = getPos document start
       (endX, endY) = getPos document end
-      firstMarkedLine = rows |> drop (startY - 1) |> safeHead ""
-      fullyMarkedLines = rows |> drop startY |> take (endY - startY)
-      lastMarkedLine = rows |> drop endY |> take 1 |> safeHead ""
-      markedLines = [firstMarkedLine] ++ fullyMarkedLines ++ [lastMarkedLine]
-      firstRange = (startX, String.length firstMarkedLine)
-      fullRanges = map (\l -> (0, String.length l)) fullyMarkedLines
-      lastRange = (0, endX)
-      ranges = [firstRange] ++ fullRanges ++ [lastRange]
-      ys = [startY, endY]
-  in  zipWith displaySelectionLine ys ranges |> flow outward
+      lineCnt = 1 + endY - startY
+      line1Length = rows |> List.drop startY |> safeHead "" |> String.length
+  in  if | lineCnt == 1 -> displaySelectionLine startY (startX, endX)
+         | lineCnt == 2 -> displayTwoLineSelection
+                            (startY, (startX, line1Length))
+                            (endY, endX)
+         | lineCnt >= 3 ->
+              let middleYs = [ startY + 1 .. endY - 1 ]
+                  middleLines = rows |> drop (startY + 1)
+                                     |> take (lineCnt - 2)
+                  middleLineLenghts = map String.length middleLines
+                  middleLineRanges = map (\x -> (0, x)) middleLineLenghts
+              in  zipWith displaySelectionLine middleYs middleLineRanges
+                    ++ [displayTwoLineSelection
+                              (startY, (startX, line1Length))
+                              (endY, endX)]
+                    |> flow outward
+         | otherwise -> empty
+
+
 
 displayText : Document -> Element
 displayText =

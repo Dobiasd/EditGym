@@ -58,6 +58,6 @@ step ({history} as state) keysDown keysDownNew keysUpNew =
 
 display : State -> Element
 display {history} =
-  let visibleHistory = drop (length history - 30) history
-      sep = spacer 2 5 |> color darkGray1
+  let visibleHistory = drop (length history - 5) history
+      sep = spacer 2 8 |> color darkGray1
   in  map showKeyAction visibleHistory |> intersperse sep |> flow right
