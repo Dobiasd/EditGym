@@ -115,8 +115,13 @@ deleteSelection ({document, selection, cursor} as state) =
               , selection <- setBoth start
               , cursor <- start }
 
+setCursorAndSelection : Cursor -> State -> State
+setCursorAndSelection pos state =
+  { state | cursor <- pos
+          , selection <- setBoth pos }
+
 stepBackspace : Bool -> Keyboard.KeyCode -> State -> State
-stepBackspace ctrl key ({selection} as state) =
+stepBackspace ctrl key ({selection, cursor} as state) =
   case key of
     8 -> if isSelected selection
             then deleteSelection state
@@ -124,7 +129,7 @@ stepBackspace ctrl key ({selection} as state) =
                  in  if String.length part1 > 0
                        then { state | document <- String.append
                                         (String.slice 0 -1 part1) part2
-                                    , cursor <- state.cursor - 1 }
+                            } |> setCursorAndSelection (cursor - 1)
                        else state
     otherwise -> state
 
@@ -174,18 +179,47 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 , if ctrl then (flip always) else stepType shift
                 , stepCursor ctrl shift
                 ]
-      -- todo ctrl selection, steps and copypaste
+      -- todo ctrl selection, delete/bs, steps and copypaste
   in  foldl stepKey state keysDownNew
 
+-- todo: remove
+--saveLast : a -> [a] -> a
+--saveLast def xs = if List.isEmpty xs then def else last xs
+
+getPos : Document -> Cursor -> (Int, Int)
+getPos document position =
+  let before = String.slice 0 position document
+      above = List.take (List.length rows - 1) rows |> String.join "\n"
+      lastRowX = position - String.length above
+      rows = before |> String.lines
+      y = List.length rows - 1
+      x = if y == 0 then lastRowX else lastRowX - 1 -- todo: why? O_o
+  in  (x, y)
+
+displayCursor : State -> Element
+displayCursor {document, cursor} =
+  let (x, y) = getPos document cursor
+      topSpacer = spacer 1 (23 * y)
+      leftSpacer = spacer (12 * x) 1
+  in  flow right [ leftSpacer
+                 , flow down [ topSpacer
+                             , spacer 1 20 |> color white1 ] ]
+
+displaySelection {document, selection} =
+  selection |> show |> toDefText
+
+displayText : Document -> Element
+displayText =
+     Text.toText
+  >> Text.typeface ["inconsolata", "courier new", "monospace"]
+  >> Text.height 20
+  >> Text.color white1
+  >> Text.leftAligned
+
 display : State -> Element
-display {document, cursor, selection} =
-  flow down [
-    document
-      |> Text.toText
-      |> Text.typeface ["inconsolata", "courier new", "monospace"]
-      |> Text.height 20
-      |> Text.color white1
-      |> Text.leftAligned
-  , cursor |> show |> toDefText
-  , selection |> show |> toDefText
-  ]
+display ({document, cursor, selection} as state) =
+  flow outward [
+                 displayText document
+               , displayCursor state
+               , displaySelection state
+               ]
