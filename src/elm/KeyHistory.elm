@@ -34,12 +34,8 @@ keyStrings =
   , (13, "enter")
   , (35, "end")
   , (36, "pos1")
-  , (106, "*")
-  , (107, "+")
-  , (109, "-")
   , (188, ",")
-  , (190, "-")
-  , (173, "-")
+  , (190, ".")
   , (46, "del")
   , (8, "bs")
   ]
@@ -48,18 +44,16 @@ keyStrings =
   ++ (map (toDefStrPair (\x -> x - 32)) [97..122]) -- a to z
   |> Dict.fromList
 
--- todo: use String.fromChar
 showKey : Keyboard.KeyCode -> String
 showKey key = case Dict.get key keyStrings of
   Just result -> result
   Nothing -> ""
-  --Nothing -> key |> fromCode |> (flip cons) ""
 
-step : State -> Set.Set Keyboard.KeyCode -> Set.Set Keyboard.KeyCode
-             -> Set.Set Keyboard.KeyCode -> State
+step : State -> Set.Set Keyboard.KeyCode -> [Keyboard.KeyCode]
+             -> [Keyboard.KeyCode] -> State
 step ({history} as state) keysDown keysDownNew keysUpNew =
-  let history' = history ++ (Set.toList keysDownNew |> map Down)
-                         ++ (Set.toList keysUpNew   |> map Up)
+  let history' = history ++ (keysDownNew |> map Down)
+                         ++ (keysUpNew   |> map Up)
   in  { state | history <- history' }
 
 display : State -> Element

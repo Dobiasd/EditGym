@@ -38,7 +38,8 @@ lightGray1 = rgb 143 144 138
 darkGray1 : Color
 darkGray1 = rgb 56 56 48
 
--- todo rollover color
+-- todo rollover color, waiting for Evan:
+-- https://groups.google.com/forum/#!topic/elm-discuss/IdbMAlFHAAE
 niceButton : String -> String -> Element
 niceButton str url =
   let txt h c = toText >> Text.height h >> Text.color c >> leftAligned

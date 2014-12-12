@@ -30,8 +30,8 @@ state = foldp step initialState input
 
 step : Input -> State -> State
 step {inKeysDown} ({editor, keyHistory, keysDown} as state) =
-  let keysDownNew = Set.diff inKeysDown keysDown
-      keysUpNew = Set.diff keysDown inKeysDown
+  let keysDownNew = Set.diff inKeysDown keysDown |> Set.toList
+      keysUpNew = Set.diff keysDown inKeysDown |> Set.toList
   in  { state | editor <- Editor.step editor keysDown keysDownNew
               , keyHistory <- KeyHistory.step keyHistory keysDown
                                               keysDownNew keysUpNew
