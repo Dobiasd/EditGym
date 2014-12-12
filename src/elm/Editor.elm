@@ -13,7 +13,9 @@ import Layout (toDefText, white1)
 
 type Document = String
 type Cursor = Int
-type Selection = Maybe (Int, Int)
+
+-- (from, to), from can be > to, == means no selection
+type Selection = (Int, Int)
 
 type State = {
     document : Document
@@ -47,83 +49,133 @@ showKey : Bool -> Keyboard.KeyCode -> Maybe Char
 showKey shift key = Dict.get (boolToInt shift, key) keyStrings
 
 initialState : State
-initialState = State "" 0 Nothing
+initialState = State "" 0 (0, 0)
 
-stepCursorLeft : Document -> Cursor -> Cursor
-stepCursorLeft _ cursor =
-  if cursor > 0
-    then cursor - 1
-    else cursor
+setSnd : Int -> (Int, Int) -> (Int, Int)
+setSnd x (a, b) = (a, x)
 
-stepCursorRight : Document -> Cursor -> Cursor
-stepCursorRight document cursor =
-  if cursor < (String.length document)
-    then cursor + 1
-    else cursor
+setBoth : Int -> (Int, Int)
+setBoth x = (x, x)
+
+stepSelection : Bool -> State -> State
+stepSelection shift ({cursor, selection} as state) =
+  { state | selection <- if shift then setSnd cursor selection
+                                  else setBoth cursor }
+
+stepCursorLeft : Bool -> State -> State
+stepCursorLeft shift ({cursor, selection} as state) =
+  let cursor' = max 0 (cursor - 1)
+  in { state | cursor <- cursor' } |> stepSelection shift
+
+stepCursorRight : Bool -> State -> State
+stepCursorRight shift ({document, cursor, selection} as state) =
+  let cursor' = min (String.length document) (cursor + 1)
+  in { state | cursor <- cursor' } |> stepSelection shift
 
 -- todo: implement
-stepCursorUp : Document -> Cursor -> Cursor
+stepCursorUp : Bool -> State -> State
 stepCursorUp _ = identity
 
 -- todo: implement
-stepCursorDown : Document -> Cursor -> Cursor
+stepCursorDown : Bool -> State -> State
 stepCursorDown _ = identity
 
 -- todo: implement
-stepCursorPos1 : Document -> Cursor -> Cursor
+stepCursorPos1 : Bool -> State -> State
 stepCursorPos1 _ = identity
 
 -- todo: implement
-stepCursorEnd : Document -> Cursor -> Cursor
+stepCursorEnd : Bool -> State -> State
 stepCursorEnd _ = identity
 
-stepCursor : Document -> Keyboard.KeyCode -> Cursor -> Cursor
-stepCursor document key cursor =
-  case key of
-    35 -> stepCursorEnd document cursor
-    36 -> stepCursorPos1 document cursor
-    37 -> stepCursorLeft document cursor
-    38 -> stepCursorUp document cursor
-    39 -> stepCursorRight document cursor
-    40 -> stepCursorDown document cursor
-    otherwise -> cursor
+stepCursor : Bool -> Keyboard.KeyCode -> State -> State
+stepCursor shift key ({document, cursor} as state) =
+  (case key of
+     35 -> stepCursorEnd
+     36 -> stepCursorPos1
+     37 -> stepCursorLeft
+     39 -> stepCursorRight
+     38 -> stepCursorUp
+     40 -> stepCursorDown
+     otherwise -> (flip always)
+   ) shift state
 
-stepBackspace : Keyboard.KeyCode -> Document -> Document
-stepBackspace key part1 =
-  case key of
-    8 -> if String.length part1 > 0
-           then String.slice 0 -1 part1
-           else part1
-    otherwise -> part1
+isSelected : Selection -> Bool
+isSelected (start, end) = start /= end
 
-stepDelete : Keyboard.KeyCode -> Document -> Document
-stepDelete key part2 =
-  case key of
-    46 -> if String.length part2 > 0
-            then String.slice 1 (String.length part2) part2
-            else part2
-    otherwise -> part2
+sortPair : (Int, Int) -> (Int, Int)
+sortPair (a, b) = if a <= b then (a, b) else (b, a)
 
-stepType : Bool -> Keyboard.KeyCode -> Document -> Document
-stepType shift key part1 =
+deleteSelection : State -> State
+deleteSelection ({document, selection, cursor} as state) =
+  let (start, end) = sortPair selection
+      part1 = String.slice 0 start document
+      part2 = String.slice end (String.length document) document
+  in  { state | document <- String.append part1 part2
+              , selection <- setBoth cursor
+              , cursor <- start }
+
+stepBackspace : Keyboard.KeyCode -> State -> State
+stepBackspace key ({selection} as state) =
+  case key of
+    8 -> if isSelected selection
+            then deleteSelection state
+            else let (part1, part2) = splitAtCursor state
+                 in  if String.length part1 > 0
+                       then { state | document <- String.append
+                                        (String.slice 0 -1 part1) part2
+                                    , cursor <- state.cursor - 1 }
+                       else state
+    otherwise -> state
+
+stepDelete : Keyboard.KeyCode -> State -> State
+stepDelete key ({selection} as state) =
+  case key of
+    46 -> if isSelected selection
+            then deleteSelection state
+            else let (part1, part2) = splitAtCursor state
+                 in  if String.length part2 > 0
+                       then { state | document <- String.append part1 <|
+                                        String.slice 1 (String.length part2)
+                                                       part2 }
+                       else state
+    otherwise -> state
+
+stepType : Bool -> Keyboard.KeyCode -> State -> State
+stepType shift key state =
   case showKey shift key of
-    Just c -> String.append part1 (String.fromList [c])
-    Nothing -> part1
+    Just c -> let state' = deleteSelection state
+                  (part1, part2) = splitAtCursor state'
+                  cursor' = state'.cursor + 1
+              in  { state' | document <- String.concat
+                               [ part1 , (String.fromList [c]) , part2 ]
+                           , cursor <- cursor'
+                           , selection <- setBoth cursor' }
+    Nothing -> state
+
+splitAtCursor : State -> (Document, Document)
+splitAtCursor {document, cursor} =
+  (String.slice 0 cursor document
+  , String.slice cursor (String.length document) document)
+
+applyWith : [a -> b -> b] -> a -> (b -> b)
+applyWith fs x =
+  let halfAppliedFs = map (\f -> f x) fs
+  in  foldl (>>) identity halfAppliedFs
 
 step : State -> Set.Set Keyboard.KeyCode -> [Keyboard.KeyCode] -> State
-step ({document, cursor, selection} as state) keysDown keysDownNew =
-  let part1 = String.slice 0 cursor document
-      part2 = String.slice cursor (String.length document) document
-      keysDownAll = Set.union keysDown (Set.fromList keysDownNew)
+step ({document, cursor} as state) keysDown keysDownNew =
+  let keysDownAll = Set.union keysDown (Set.fromList keysDownNew)
       shift = Set.member 16 keysDownAll
-      part1' = foldl stepBackspace part1 keysDownNew
-               |> flip (foldl (stepType shift)) keysDownNew
-      part2' = foldl stepDelete part2 keysDownNew
-      document' = String.append part1' part2'
-      newChars = List.filterMap (showKey False) keysDownNew
-      cursor' = String.length part1'
-  in { state | document <- document'
-             , cursor <- foldl (stepCursor document) cursor' keysDownNew }
+      ctrl = Set.member 17 keysDownAll
+      stepKey = applyWith [
+                  stepBackspace
+                , stepDelete
+                , if ctrl then (flip always) else stepType shift
+                , stepCursor shift
+                ]
+      -- todo ctrl selection, steps and copypaste
+  in  foldl stepKey state keysDownNew
 
 display : State -> Element
 display {document, cursor, selection} =
