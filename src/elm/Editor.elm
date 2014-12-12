@@ -9,7 +9,7 @@ import List
 import Text
 import Char(fromCode)
 
-import Layout (toDefText, white1)
+import Layout (toDefText, white1, darkGray1)
 
 type Document = String
 type Cursor = Int
@@ -196,17 +196,50 @@ getPos document position =
       x = if y == 0 then lastRowX else lastRowX - 1 -- todo: why? O_o
   in  (x, y)
 
-displayCursor : State -> Element
-displayCursor {document, cursor} =
+-- todo: fix for browser font scaling
+charSize : (Int, Int)
+charSize = (widthOf <| displayText " ", heightOf (displayText "\n"))
+
+displayCursor : Document -> Cursor -> Element
+displayCursor document cursor =
   let (x, y) = getPos document cursor
-      topSpacer = spacer 1 (23 * y)
-      leftSpacer = spacer (12 * x) 1
+      (charWidth, lineHeight) = charSize
+      topSpacer = spacer 1 (lineHeight * y)
+      leftSpacer = spacer (charWidth * x) 1
   in  flow right [ leftSpacer
                  , flow down [ topSpacer
-                             , spacer 1 20 |> color white1 ] ]
+                             , spacer 1 lineHeight |> color white1 ] ]
 
-displaySelection {document, selection} =
-  selection |> show |> toDefText
+displaySelectionLine : Int -> (Int, Int) -> Element
+displaySelectionLine y (x1, x2) =
+  let (charWidth, lineHeight) = charSize
+      topSpacer = spacer 1 (lineHeight * y)
+      leftSpacer = spacer (charWidth * x1) 1
+      spacerWidth = (x2 - x1) * charWidth
+
+  in  flow right [ leftSpacer
+                 , flow down [ topSpacer
+                             , spacer spacerWidth lineHeight |> color darkGray1 ] ]
+
+safeHead : a -> [a] -> a
+safeHead def xs = if List.isEmpty xs then def else head xs
+
+displaySelection : Document -> Selection -> Element
+displaySelection document selection =
+  let (start, end) = sortPair selection
+      rows = String.lines document
+      (startX, startY) = getPos document start
+      (endX, endY) = getPos document end
+      firstMarkedLine = rows |> drop (startY - 1) |> safeHead ""
+      fullyMarkedLines = rows |> drop startY |> take (endY - startY)
+      lastMarkedLine = rows |> drop endY |> take 1 |> safeHead ""
+      markedLines = [firstMarkedLine] ++ fullyMarkedLines ++ [lastMarkedLine]
+      firstRange = (startX, String.length firstMarkedLine)
+      fullRanges = map (\l -> (0, String.length l)) fullyMarkedLines
+      lastRange = (0, endX)
+      ranges = [firstRange] ++ fullRanges ++ [lastRange]
+      ys = [startY, endY]
+  in  zipWith displaySelectionLine ys ranges |> flow outward
 
 displayText : Document -> Element
 displayText =
@@ -219,7 +252,9 @@ displayText =
 display : State -> Element
 display ({document, cursor, selection} as state) =
   flow outward [
-                 displayText document
-               , displayCursor state
-               , displaySelection state
+                 if isSelected selection
+                    then displaySelection document selection
+                    else empty
+               , displayCursor document cursor
+               , displayText document
                ]

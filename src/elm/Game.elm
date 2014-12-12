@@ -46,7 +46,8 @@ validKey key = KeyHistory.showKey key /= ""
 scene : Int -> Int -> State -> Element
 scene w h {editor, keyHistory} =
   let content = flow down [
-                    KeyHistory.display keyHistory
+                    spacer 800 1
+                  , KeyHistory.display keyHistory
                   , Editor.display editor
                 ]
   in  Skeleton.showPage w h content
