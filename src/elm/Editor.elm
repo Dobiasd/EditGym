@@ -193,31 +193,29 @@ setCursorAndSelection pos state =
   { state | cursor <- pos
           , selection <- setBoth pos }
 
-stepBackspace : Bool -> Keyboard.KeyCode -> State -> State
-stepBackspace ctrl key ({selection, cursor} as state) =
-  case key of
-    8 -> if isSelected selection
-            then deleteSelection state
-            else let (part1, part2) = splitAtCursor state
-                 in  if String.length part1 > 0
-                       then { state | document <- String.append
-                                        (String.slice 0 -1 part1) part2
-                            } |> setCursorAndSelection (cursor - 1)
-                       else state
-    otherwise -> state
+stepBackspace : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepBackspace ctrl shift key ({selection, cursor} as state) =
+  let stepF = if isSelected selection then identity
+                 else case (ctrl, shift) of
+                        (True, True) -> stepCursorPos1 False True
+                        (True, False) -> stepCursorLeft True True
+                        (False, _) -> stepCursorLeft False True
+  in
+    case key of
+      8 -> stepF state |> deleteSelection
+      otherwise -> state
 
-stepDelete : Bool -> Keyboard.KeyCode -> State -> State
-stepDelete ctrl key ({selection} as state) =
-  case key of
-    46 -> if isSelected selection
-            then deleteSelection state
-            else let (part1, part2) = splitAtCursor state
-                 in  if String.length part2 > 0
-                       then { state | document <- String.append part1 <|
-                                        String.slice 1 (String.length part2)
-                                                       part2 }
-                       else state
-    otherwise -> state
+stepDelete : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepDelete ctrl shift key ({selection} as state) =
+  let stepF = if isSelected selection then identity
+                 else case (ctrl, shift) of
+                        (True, True) -> stepCursorEnd False True
+                        (True, False) -> stepCursorRight True True
+                        (False, _) -> stepCursorRight False True
+  in
+    case key of
+      46 -> stepF state |> deleteSelection
+      otherwise -> state
 
 stepType : Bool -> Keyboard.KeyCode -> State -> State
 stepType shift key state =
@@ -247,8 +245,8 @@ step ({document, cursor} as state) keysDown keysDownNew =
       shift = Set.member 16 keysDownAll
       ctrl = Set.member 17 keysDownAll
       stepKey = applyWith [
-                  stepBackspace ctrl
-                , stepDelete ctrl
+                  stepBackspace ctrl shift
+                , stepDelete ctrl shift
                 , if ctrl then (flip always) else stepType shift
                 , stepCursor ctrl shift
                 ]
