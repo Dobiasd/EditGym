@@ -22,6 +22,7 @@ type State = {
     document : Document
   , cursor : Cursor
   , selection : Selection
+  , clipboard : String
   }
 
 boolToInt : Bool -> Int
@@ -50,7 +51,7 @@ showKey : Bool -> Keyboard.KeyCode -> Maybe Char
 showKey shift key = Dict.get (boolToInt shift, key) keyStrings
 
 initialState : State
-initialState = State "" 0 (0, 0)
+initialState = State "" 0 (0, 0) ""
 
 setSnd : Int -> (Int, Int) -> (Int, Int)
 setSnd x (a, b) = (a, x)
@@ -236,16 +237,35 @@ stepDelete ctrl shift key ({selection} as state) =
       46 -> stepF state |> deleteSelection
       otherwise -> state
 
+stepCopy : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepCopy ctrl shift key ({document, selection, clipboard} as state) =
+  case key of
+    67 -> if isSelected selection
+            then { state | clipboard <- uncurry String.slice
+                                          (sortPair selection) document }
+            else state
+    otherwise -> state
+
+stepPaste : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepPaste ctrl shift key ({document, selection, clipboard} as state) =
+  case key of
+    86 -> replaceSelection clipboard state
+    otherwise -> state
+
+replaceSelection : String -> State -> State
+replaceSelection str ({document, selection} as state) =
+  let state' = deleteSelection state
+      (part1, part2) = splitAtCursor state'
+  in  { state' | document <- String.concat [ part1 , str , part2 ]
+               , cursor <- (String.length <| (String.concat [ part1 , str ]))
+      }
+      |> stepSelection False
+
+-- todo: use replaceSelection
 stepType : Bool -> Keyboard.KeyCode -> State -> State
 stepType shift key state =
   case showKey shift key of
-    Just c -> let state' = deleteSelection state
-                  (part1, part2) = splitAtCursor state'
-                  cursor' = state'.cursor + 1
-              in  { state' | document <- String.concat
-                               [ part1 , (String.fromList [c]) , part2 ]
-                           , cursor <- cursor'
-                           , selection <- setBoth cursor' }
+    Just c -> replaceSelection (String.fromList [c]) state
     Nothing -> state
 
 splitAtCursor : State -> (Document, Document)
@@ -268,6 +288,8 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 , stepDelete ctrl shift
                 , if ctrl then (flip always) else stepType shift
                 , stepCursor ctrl shift
+                , stepCopy ctrl shift
+                , stepPaste ctrl shift
                 ]
       -- todo copypaste
   in  foldl stepKey state keysDownNew
@@ -353,7 +375,7 @@ displayText =
   >> Text.leftAligned
 
 display : State -> Element
-display ({document, cursor, selection} as state) =
+display ({document, cursor, selection, clipboard} as state) =
   flow outward [
                  if isSelected selection
                     then displaySelection document selection
