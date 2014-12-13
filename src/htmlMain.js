@@ -54,14 +54,20 @@ function Init() {
     elmContent = Elm.embed(Elm.Game, mainDiv,
                             { start : "loading ..."
                             , goal : "loading ..." });
+    startUrl = "levels/" + level + "/start.txt";
     $.ajax({
       dataType: "text",
-      url: "levels/" + level + "/start.txt",
+      url: startUrl,
       success: function(data) {
         data = data.replace(/(\r)/gm,"");
         // todo: why "syntax error" in console?
         // http://stackoverflow.com/questions/6470567/jquery-load-txt-file-and-insert-into-div
         elmContent.ports.start.send(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        msg = "Unable to load " + startUrl + "\n"
+                + textStatus + "\n" + errorThrown;
+        elmContent.ports.start.send(msg);
       }
     });
     DisableBackspaceNavigation();

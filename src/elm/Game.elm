@@ -56,6 +56,7 @@ setStart start ({editor} as state) =
 setGoal : String -> State -> State
 setGoal goal state = { state | goal <- goal }
 
+-- todo: check if start == goal, but not empty (on load errors)
 stepKeys : Set.Set Keyboard.KeyCode -> State -> State
 stepKeys inKeysDown ({editor, keyHistory, keysDown} as state) =
   let keysDownNew = Set.diff inKeysDown keysDown |> Set.toList
