@@ -24,6 +24,9 @@ type State = {
   , clipboard : String
   }
 
+setDocument : String -> State -> State
+setDocument newDoc state = { state | document <- newDoc }
+
 boolToInt : Bool -> Int
 boolToInt b = case b of
   False -> 0

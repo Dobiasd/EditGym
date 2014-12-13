@@ -16,7 +16,8 @@ main = scene <~ Window.width ~ Window.height
 scene : Int -> Int -> Element
 scene w h =
   [
-    levelButton "01 - foo"
-  , levelButton "02 - bar"
-  , levelButton "03 - baz"
+    levelButton "line_swap"
+  , levelButton "word_swap"
+  , levelButton "remove_words"
+  , levelButton "insert"
   ] |> intersperse defaultSpacer |> flow down |> Skeleton.showPage w h

@@ -26,6 +26,8 @@ then
     uglifyjs "$pathname" > "./build/js/$filename"
   done
 
+  cp -R ./src/levels ./build
+
   cp ./src/index.html ./build/index.html
   uglifyjs ./src/htmlMain.js > ./build/js/htmlMain.js
   cp ./src/jquery-1.11.1.min.js ./build/js/jquery-1.11.1.min.js

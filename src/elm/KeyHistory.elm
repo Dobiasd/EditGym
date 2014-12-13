@@ -60,4 +60,8 @@ display : State -> Element
 display {history} =
   let visibleHistory = drop (length history - 5) history
       sep = spacer 2 8 |> color darkGray1
-  in  map showKeyAction visibleHistory |> intersperse sep |> flow right
+  in  flow right [
+        length history |> show |> toDefText
+      , spacer 30 1
+      , map showKeyAction visibleHistory |> intersperse sep |> flow right
+      ]
