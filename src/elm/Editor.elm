@@ -140,13 +140,32 @@ stepCursorRight ctrl shift ({document, cursor, selection} as state) =
       cursor' = min (String.length document) (cursor + dist)
   in { state | cursor <- cursor' } |> stepSelection shift
 
--- todo: implement
 stepCursorUp : Bool -> Bool -> State -> State
-stepCursorUp ctrl shift = identity
+stepCursorUp ctrl shift ({document, cursor, selection} as state) =
+  let x = cursor - (stepCursorPos1 False False state).cursor
+      aboveStartState = state |> stepCursorPos1 False False
+                              |> stepCursorLeft False False
+                              |> stepCursorPos1 False False
+      aboveStart = aboveStartState.cursor
+      aboveEnd = aboveStartState |> stepCursorEnd False False
+                                 |> .cursor
+      cursor' = min (aboveStart + x) aboveEnd
+  in case (ctrl, shift) of
+       (True, _) -> state
+       otherwise -> { state | cursor <- cursor' } |> stepSelection shift
 
--- todo: implement
 stepCursorDown : Bool -> Bool -> State -> State
-stepCursorDown ctrl shift = identity
+stepCursorDown ctrl shift ({document, cursor, selection} as state) =
+  let x = cursor - (stepCursorPos1 False False state).cursor
+      belowStartState = state |> stepCursorEnd False False
+                              |> stepCursorRight False False
+      belowStart = belowStartState.cursor
+      aboveEnd = belowStartState |> stepCursorEnd False False
+                                 |> .cursor
+      cursor' = min (belowStart + x) aboveEnd
+  in case (ctrl, shift) of
+       (True, _) -> state
+       otherwise -> { state | cursor <- cursor' } |> stepSelection shift
 
 stepCursorPos1 : Bool -> Bool -> State -> State
 stepCursorPos1 ctrl shift ({document, cursor, selection} as state) =
