@@ -239,18 +239,24 @@ stepDelete ctrl shift key ({selection} as state) =
 
 stepCopy : Bool -> Bool -> Keyboard.KeyCode -> State -> State
 stepCopy ctrl shift key ({document, selection, clipboard} as state) =
-  case key of
-    67 -> if isSelected selection
-            then { state | clipboard <- uncurry String.slice
-                                          (sortPair selection) document }
-            else state
-    otherwise -> state
+  if ctrl && key == 67
+    then if isSelected selection
+           then { state | clipboard <- uncurry String.slice
+                                        (sortPair selection) document }
+           else state
+    else state
 
 stepPaste : Bool -> Bool -> Keyboard.KeyCode -> State -> State
 stepPaste ctrl shift key ({document, selection, clipboard} as state) =
-  case key of
-    86 -> replaceSelection clipboard state
-    otherwise -> state
+  if ctrl && key == 86
+    then replaceSelection clipboard state
+    else state
+
+stepCut : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepCut ctrl shift key ({document, selection, clipboard} as state) =
+  if ctrl && key == 88
+    then state |> stepCopy True False 67 |> deleteSelection
+    else state
 
 replaceSelection : String -> State -> State
 replaceSelection str ({document, selection} as state) =
@@ -258,8 +264,7 @@ replaceSelection str ({document, selection} as state) =
       (part1, part2) = splitAtCursor state'
   in  { state' | document <- String.concat [ part1 , str , part2 ]
                , cursor <- (String.length <| (String.concat [ part1 , str ]))
-      }
-      |> stepSelection False
+      } |> stepSelection False
 
 -- todo: use replaceSelection
 stepType : Bool -> Keyboard.KeyCode -> State -> State
@@ -290,6 +295,7 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 , stepCursor ctrl shift
                 , stepCopy ctrl shift
                 , stepPaste ctrl shift
+                , stepCut ctrl shift
                 ]
       -- todo copypaste
   in  foldl stepKey state keysDownNew
