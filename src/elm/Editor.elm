@@ -250,7 +250,7 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 , if ctrl then (flip always) else stepType shift
                 , stepCursor ctrl shift
                 ]
-      -- todo ctrl selection, delete/bs, steps and copypaste
+      -- todo copypaste
   in  foldl stepKey state keysDownNew
 
 getPos : Document -> Cursor -> (Int, Int)
@@ -339,6 +339,6 @@ display ({document, cursor, selection} as state) =
                  if isSelected selection
                     then displaySelection document selection
                     else empty
-               , displayCursor document cursor
                , displayText document
+               , displayCursor document cursor
                ]

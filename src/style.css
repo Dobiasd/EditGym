@@ -10,6 +10,14 @@ body
     background-color: #272922; /* 39 40 34 */
 }
 
+/* http://css-tricks.com/overriding-the-default-text-selection-color-with-css/ */
+::selection {
+  background: #ffb7b7; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: #ffb7b7; /* Gecko Browsers */
+}
+
 #main
 {
     min-height: 100%
