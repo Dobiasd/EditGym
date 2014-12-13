@@ -3,6 +3,7 @@ module Editor where
 import Keyboard
 import Set
 import String
+import Debug -- todo raus
 import Dict
 import Maybe
 import List
@@ -62,31 +63,101 @@ stepSelection shift ({cursor, selection} as state) =
   { state | selection <- if shift then setSnd cursor selection
                                   else setBoth cursor }
 
-stepCursorLeft : Bool -> State -> State
-stepCursorLeft shift ({cursor, selection} as state) =
-  let cursor' = max 0 (cursor - 1)
+isWordStart : Char -> Char -> Bool
+isWordStart a b =
+  case (a, b) of
+    (_, ' ') -> False
+    (' ', _) -> True
+    (_, '\n') -> True
+    ('\n', _) -> True
+    (_, _) -> False
+
+wordStarts : Document -> [Cursor]
+wordStarts doc =
+  let markers = zip
+                  (doc |> String.toList)
+                  (doc |> String.dropLeft 1 |> String.toList)
+                |> List.indexedMap (\idx (a, b) -> (idx + 1, isWordStart a b))
+  in  ((0, True)::markers) ++ [(String.length doc, True)]
+      |> filter snd |> map fst
+
+find : (a -> Bool) -> [a] -> Maybe a
+find cond xs =
+  case xs of
+    (x::xs) -> if cond x then Just x else find cond xs
+    [] -> Nothing
+
+lineEnds : Document -> [Cursor]
+lineEnds =
+  String.toList
+  >> List.indexedMap (\idx x -> (idx, x == '\n'))
+  >> filter snd
+  >> map fst
+
+lineStarts : Document -> [Cursor]
+lineStarts doc =
+  lineEnds doc |> map (\idx -> idx + 1)
+
+wordLeftOffset : Document -> Cursor -> Int
+wordLeftOffset document cursor =
+  let startPositions = document |> wordStarts
+  in  case List.reverse startPositions |> find (\x -> x < cursor) of
+        Just pos -> pos - cursor
+        Nothing -> 0
+
+wordRightOffset : Document -> Cursor -> Int
+wordRightOffset document cursor =
+  let startPositions = document |> wordStarts
+  in  case startPositions |> find (\x -> x > cursor) of
+        Just pos -> pos - cursor
+        Nothing -> 0
+
+lineLeftOffset : Document -> Cursor -> Int
+lineLeftOffset document cursor =
+  let positions = 0 :: lineStarts document
+  in  case List.reverse positions |> find (\x -> x <= cursor) of
+        Just pos -> pos - cursor
+        Nothing -> 0
+
+lineRightOffset : Document -> Cursor -> Int
+lineRightOffset document cursor =
+  let positions = lineEnds document ++ [String.length document]
+  in  case positions |> find (\x -> x >= cursor) of
+        Just pos -> pos - cursor
+        Nothing -> String.length document - cursor
+
+stepCursorLeft : Bool -> Bool -> State -> State
+stepCursorLeft ctrl shift ({document, cursor, selection} as state) =
+  let dist = if ctrl then wordLeftOffset document cursor else -1
+      cursor' = max 0 (cursor + dist)
   in { state | cursor <- cursor' } |> stepSelection shift
 
-stepCursorRight : Bool -> State -> State
-stepCursorRight shift ({document, cursor, selection} as state) =
-  let cursor' = min (String.length document) (cursor + 1)
+stepCursorRight : Bool -> Bool -> State -> State
+stepCursorRight ctrl shift ({document, cursor, selection} as state) =
+  let dist = if ctrl then wordRightOffset document cursor else 1
+      cursor' = min (String.length document) (cursor + dist)
   in { state | cursor <- cursor' } |> stepSelection shift
 
 -- todo: implement
-stepCursorUp : Bool -> State -> State
-stepCursorUp _ = identity
+stepCursorUp : Bool -> Bool -> State -> State
+stepCursorUp ctrl shift = identity
 
 -- todo: implement
-stepCursorDown : Bool -> State -> State
-stepCursorDown _ = identity
+stepCursorDown : Bool -> Bool -> State -> State
+stepCursorDown ctrl shift = identity
 
--- todo: implement
-stepCursorPos1 : Bool -> State -> State
-stepCursorPos1 _ = identity
+stepCursorPos1 : Bool -> Bool -> State -> State
+stepCursorPos1 ctrl shift ({document, cursor, selection} as state) =
+  let dist = if ctrl then -cursor else lineLeftOffset document cursor
+      cursor' = max 0 (cursor + dist)
+  in { state | cursor <- cursor' } |> stepSelection shift
 
--- todo: implement
-stepCursorEnd : Bool -> State -> State
-stepCursorEnd _ = identity
+stepCursorEnd : Bool -> Bool -> State -> State
+stepCursorEnd ctrl shift ({document, cursor, selection} as state) =
+  let dist = if ctrl then (String.length document - cursor)
+                     else lineRightOffset document cursor
+      cursor' = min (String.length document) (cursor + dist)
+  in { state | cursor <- cursor' } |> stepSelection shift
 
 stepCursor : Bool -> Bool -> Keyboard.KeyCode -> State -> State
 stepCursor ctrl shift key ({document, cursor} as state) =
@@ -97,8 +168,8 @@ stepCursor ctrl shift key ({document, cursor} as state) =
      39 -> stepCursorRight
      38 -> stepCursorUp
      40 -> stepCursorDown
-     otherwise -> (flip always)
-   ) shift state
+     otherwise -> (\ _ _ state -> state)
+   ) ctrl shift state
 
 isSelected : Selection -> Bool
 isSelected (start, end) = start /= end
@@ -181,10 +252,6 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 ]
       -- todo ctrl selection, delete/bs, steps and copypaste
   in  foldl stepKey state keysDownNew
-
--- todo: remove
---saveLast : a -> [a] -> a
---saveLast def xs = if List.isEmpty xs then def else last xs
 
 getPos : Document -> Cursor -> (Int, Int)
 getPos document position =
