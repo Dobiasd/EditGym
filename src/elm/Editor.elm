@@ -3,7 +3,6 @@ module Editor where
 import Keyboard
 import Set
 import String
-import Debug -- todo raus
 import Dict
 import Maybe
 import List
@@ -266,7 +265,6 @@ replaceSelection str ({document, selection} as state) =
                , cursor <- (String.length <| (String.concat [ part1 , str ]))
       } |> stepSelection False
 
--- todo: use replaceSelection
 stepType : Bool -> Keyboard.KeyCode -> State -> State
 stepType shift key state =
   case showKey shift key of
@@ -297,7 +295,6 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 , stepPaste ctrl shift
                 , stepCut ctrl shift
                 ]
-      -- todo copypaste
   in  foldl stepKey state keysDownNew
 
 getPos : Document -> Cursor -> (Int, Int)
