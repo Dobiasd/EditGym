@@ -67,6 +67,8 @@ isWordStart : Char -> Char -> Bool
 isWordStart a b =
   case (a, b) of
     (_, ' ') -> False
+    (_, ',') -> True
+    (_, '.') -> True
     (' ', _) -> True
     (_, '\n') -> True
     ('\n', _) -> True
