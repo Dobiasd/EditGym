@@ -16,8 +16,7 @@ introduction w =
 todo:
 
 emacs or vi(m)?
-No:
-contact: info (at) editgym.com
+No
 
 about: why and how created
 

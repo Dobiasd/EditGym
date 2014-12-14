@@ -44,7 +44,8 @@ topBar : Int -> Element
 topBar w =
   flow down [ defaultSpacer
             , flow right [ logo
-              , flow right [ shareIcons, defaultSpacer ]
+              -- todo: enable again
+              --, flow right [ shareIcons, defaultSpacer ]
               |> container (w - logoWidth) logoHeight topRight
             ]
             , defaultSpacer ] |> color black1
