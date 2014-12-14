@@ -51,12 +51,13 @@ function Init() {
   else if (page == "game")
   {
     level = getURLParameterDef("level", "");
-    loadingText = "loading ...";
+    loadingTextStart = "loading ...";
+    loadingTextGoal = "... loading";
     elmContent = Elm.embed(Elm.Game, mainDiv,
-                            { start : loadingText
-                            , goal : loadingText });
-    elmContent.ports.start.send(loadingText);
-    elmContent.ports.goal.send(loadingText);
+                            { start : loadingTextStart
+                            , goal : loadingTextGoal });
+    elmContent.ports.start.send(loadingTextStart);
+    elmContent.ports.goal.send(loadingTextGoal);
 
     levelBaseUrl = "levels/" + level + "/";
     startUrl = levelBaseUrl + "start.txt";
