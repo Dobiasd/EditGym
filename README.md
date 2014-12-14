@@ -1,6 +1,6 @@
 #EditGym
 
-###Text editing training with highscores and instant replay
+###Text editing training
 
 ---
 
@@ -12,20 +12,18 @@ EditGym.com helps you acquire this set of skills.
 
 todo:
 
-two modi: time and keystrokes
-diff farbig in der Mitte anzeigen
+time and keystrokes gleichzeitig messen
 leerzeichen, tabs und zeilenumbrueche anzeigen
 line numbers
-tutorial, welche tasten unterstuetzt sind: arrows, shift, strg, pos1, end, c, v, backspace, del, space
-key-history anzeigen: zb. "[down], [shift + [down, right]], [ctrl + c"]
+help: welche tasten unterstuetzt sind: arrows, shift, strg, pos1, end, c, v, backspace, del, space
 
-save highscore and instant-replay, save highscore only, save nothing
-instant-replay as animated gif
-compete against replay
-compete live (with chat)
+save highscor
 highscore position regarding last 100 users of this level
 todo: link auf meinen artikel auf der startseite
-font ["inconsolata", "courier new", "monospace"] http://elm-lang.org/edit/examples/Elements/Typeface.elm
 highscore-dialog am Ende automatisch über das game einblenden (mit try-again-button), und da auch share rein
 haskell-level: No special characters
 faq: difference in editors: ctrl+shift+backspace at beginning of line, libreoffice writer removes the whole line above the cursor, sublime removes only the newline character of the line the cursor, notepad++ does nothing
+
+quatsch:
+instant replay
+compete live (with chat)
