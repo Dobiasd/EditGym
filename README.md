@@ -17,18 +17,18 @@ highscore with date
 highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann timestamp, wenn das equal dann name. Kombination aus allem unique in der DB.
 leerzeichen, tabs und zeilenumbrueche anzeigen
 line numbers
-help: welche tasten unterstuetzt sind: arrows, shift, strg, pos1, end, c, v, backspace, del, space. Beispielcombinations, tutorial
+help: tutorial mit animated gif einfuegen?
 
 save highscore
 highscore position regarding last 100 users of this level
 todo: link auf meinen artikel auf der startseite
 highscore-dialog am Ende automatisch über das game einblenden (mit try-again-button), und da auch share rein
 haskell-level: No special characters
-faq: difference in editors: ctrl+shift+backspace at beginning of line, libreoffice writer (4.2.7.2) removes the whole line above the cursor, sublime (3, build 3065) removes only the newline character of the line the cursor, notepad++ (6.3.3) does nothing.
 cursor and selection with another layered text (utf8)?
 spaces and newlines as gray symbols (utf8)?
 level: "I sucked at editing ... but now i'm awesome." oder so
-
+shift insert usw fuer copy paste
+user can provide own start and end txts via url.
 
 quatsch:
 instant replay
