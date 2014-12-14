@@ -358,7 +358,7 @@ displaySelection document selection =
       transF idx c = let isSelected = idx >= begin && idx < end
                      in  case c of
                            '\n' -> if isSelected
-                                     then ['█', '\n']
+                                     then ['█', '█', '\n']
                                      else ['\n']
                            otherwise -> if isSelected
                                           then ['█']
@@ -381,7 +381,7 @@ displayTextCol col =
 displayNewLines : Document -> Element
 displayNewLines =
   replaceAllButNewlines ' '
-  >> replace "\n" "⏎\n"
+  >> replace "\n" "\\n\n"
   >> padLinesLeft " "
   >> displayTextCol darkGray1
 
