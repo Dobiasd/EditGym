@@ -373,11 +373,14 @@ displaySelection document selection =
 
 
 displayText : Document -> Element
-displayText =
+displayText = displayTextCol white1
+
+displayTextCol : Color -> Document -> Element
+displayTextCol col =
      Text.toText
   >> Text.typeface ["inconsolata", "courier new", "monospace"]
   >> Text.height 20
-  >> Text.color white1
+  >> Text.color col
   >> Text.leftAligned
 
 display : State -> Element

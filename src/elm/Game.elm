@@ -4,7 +4,7 @@ import Window
 import Set
 import Keyboard
 
-import Layout (toDefText, toSizedText)
+import Layout (toDefText, toSizedText, lightGray1)
 import Skeleton
 import Editor
 import KeyHistory
@@ -75,7 +75,7 @@ validKey : Keyboard.KeyCode -> Bool
 validKey key = KeyHistory.showKey key /= ""
 
 displayGoal : String -> Element
-displayGoal goal = Editor.displayText goal
+displayGoal goal = Editor.displayTextCol lightGray1 goal
 
 scene : Int -> Int -> State -> Element
 scene w h ({editor, keyHistory, editor, goal} as state) =
@@ -95,8 +95,16 @@ scenePlay w h {editor, keyHistory, goal} =
       spacer 800 1
     , KeyHistory.display keyHistory
     , flow right [
-         Editor.display editor
+         flow down [
+             "editor" |> toSizedText 48
+           , spacer 1 30
+           , Editor.display editor
+         ]
        , spacer 100 1
-       , displayGoal goal
+       , flow down [
+             "goal" |> toSizedText 48
+           , spacer 1 30
+           , displayGoal goal
+       ]
     ]
   ]
