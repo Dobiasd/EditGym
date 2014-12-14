@@ -62,6 +62,8 @@ function Init() {
     startUrl = levelBaseUrl + "start.txt";
     goalUrl = levelBaseUrl + "goal.txt";
 
+    // Gives "syntax error" in firefox console when running locally.
+    // http://stackoverflow.com/questions/6470567/jquery-load-txt-file-and-insert-into-div
     $.ajax({
       dataType: "text",
       url: goalUrl,
@@ -81,8 +83,6 @@ function Init() {
       url: startUrl,
       success: function(data) {
         data = data.replace(/(\r)/gm,"");
-        // todo: why "syntax error" in console?
-        // http://stackoverflow.com/questions/6470567/jquery-load-txt-file-and-insert-into-div
         elmContent.ports.start.send(data);
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -91,8 +91,6 @@ function Init() {
         elmContent.ports.start.send(msg);
       }
     });
-
-
 
     DisableBackspaceNavigation();
   }
