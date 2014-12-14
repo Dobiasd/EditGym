@@ -241,7 +241,7 @@ stepDelete ctrl shift key ({selection} as state) =
 
 stepCopy : Bool -> Bool -> Keyboard.KeyCode -> State -> State
 stepCopy ctrl shift key ({document, selection, clipboard} as state) =
-  if ctrl && key == 67
+  if (ctrl && key == 67) || (ctrl && key == 45)
     then if isSelected selection
            then { state | clipboard <- uncurry String.slice
                                         (sortPair selection) document }
@@ -250,13 +250,13 @@ stepCopy ctrl shift key ({document, selection, clipboard} as state) =
 
 stepPaste : Bool -> Bool -> Keyboard.KeyCode -> State -> State
 stepPaste ctrl shift key ({document, selection, clipboard} as state) =
-  if ctrl && key == 86
+  if (ctrl && key == 86) || (shift && key == 45)
     then replaceSelection clipboard state
     else state
 
 stepCut : Bool -> Bool -> Keyboard.KeyCode -> State -> State
 stepCut ctrl shift key ({document, selection, clipboard} as state) =
-  if ctrl && key == 88
+  if (ctrl && key == 88) || (shift && key == 46)
     then state |> stepCopy True False 67 |> deleteSelection
     else state
 
