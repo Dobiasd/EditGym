@@ -4,6 +4,7 @@ import Keyboard
 import Set
 import String
 import Dict
+import Regex
 import Maybe
 import List
 import Text
@@ -300,75 +301,53 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 ]
   in  foldl stepKey state keysDownNew
 
-getPos : Document -> Cursor -> (Int, Int)
-getPos document position =
-  let before = String.slice 0 position document
-      above = List.take (List.length rows - 1) rows |> String.join "\n"
-      lastRowX = position - String.length above
-      rows = before |> String.lines
-      y = List.length rows - 1
-      x = if y == 0 then lastRowX else lastRowX - 1 -- todo: why? O_o
-  in  (x, y)
+replace : String -> String -> String -> String
+replace token replacement =
+  Regex.replace Regex.All (Regex.regex token) (\_ -> replacement)
 
--- todo: fix for browser font scaling
-charSize : (Int, Int)
-charSize = (widthOf <| displayText " ", heightOf (displayText "\n"))
+padLinesLeft : String -> String -> String
+padLinesLeft pad str =
+  str |> replace "^" pad
+      |> replace "\n" (String.append "\n" pad)
+
+replaceAllButNewlines : Char -> String -> String
+replaceAllButNewlines replacement str =
+  let transF c = if | c == '\n' -> '\n'
+                    | otherwise -> replacement
+  in  str |> String.toList |> List.map transF |> String.fromList
 
 displayCursor : Document -> Cursor -> Element
 displayCursor document cursor =
-  let (x, y) = getPos document cursor
-      (charWidth, lineHeight) = charSize
-      topSpacer = spacer 1 (lineHeight * y)
-      leftSpacer = spacer (charWidth * x) 1
-  in  flow right [ leftSpacer
-                 , flow down [ topSpacer
-                             , spacer 1 lineHeight |> color white1 ] ]
-
-displaySelectionLine : Int -> (Int, Int) -> Element
-displaySelectionLine y (x1, x2) =
-  let (charWidth, lineHeight) = charSize
-      topSpacer = spacer 1 (lineHeight * y)
-      leftSpacer = spacer (charWidth * x1) 1
-      spacerWidth = (x2 - x1) * charWidth
-  in  flow right [ leftSpacer
-                 , flow down [ topSpacer
-                             , spacer spacerWidth lineHeight
-                               |> color darkGray1 ] ]
-
-safeHead : a -> [a] -> a
-safeHead def xs = if List.isEmpty xs then def else head xs
-
-displayTwoLineSelection : (Int, (Int, Int)) -> (Int, Int) -> Element
-displayTwoLineSelection (startY, (startX, line1Length)) (endY, endX) =
-  [
-    displaySelectionLine startY (startX, line1Length)
-  , displaySelectionLine endY (0, endX)
-  ] |> flow outward
+  let str = document |> replaceAllButNewlines ' '
+                     |> String.toList
+                     |> (\l -> ' '::l)
+                     |> List.indexedMap transF
+                     |> List.concat
+                     |> String.fromList
+      transF idx c = let isCursor = idx == cursor
+                     in case c of
+                          '\n' -> if isCursor
+                                     then ['\n', '▕']
+                                     else ['\n', ' ']
+                          otherwise -> if isCursor
+                                         then ['▕']
+                                         else [c]
+  in  str |> displayTextCol white1
 
 displaySelection : Document -> Selection -> Element
 displaySelection document selection =
-  let (start, end) = sortPair selection
-      rows = String.lines document
-      (startX, startY) = getPos document start
-      (endX, endY) = getPos document end
-      lineCnt = 1 + endY - startY
-      line1Length = rows |> List.drop startY |> safeHead "" |> String.length
-  in  if | lineCnt == 1 -> displaySelectionLine startY (startX, endX)
-         | lineCnt == 2 -> displayTwoLineSelection
-                            (startY, (startX, line1Length))
-                            (endY, endX)
-         | lineCnt >= 3 ->
-              let middleYs = [ startY + 1 .. endY - 1 ]
-                  middleLines = rows |> drop (startY + 1)
-                                     |> take (lineCnt - 2)
-                  middleLineLenghts = map String.length middleLines
-                  middleLineRanges = map (\x -> (0, x)) middleLineLenghts
-              in  zipWith displaySelectionLine middleYs middleLineRanges
-                    ++ [displayTwoLineSelection
-                              (startY, (startX, line1Length))
-                              (endY, endX)]
-                    |> flow outward
-         | otherwise -> empty
+  let (begin, end) = sortPair selection
+      str = document |> replaceAllButNewlines ' '
+                     |> String.toList
+                     |> List.indexedMap transF
+                     |> String.fromList
+      transF idx c = let isSelected = idx >= begin && idx < end
+                     in case c of
+                          '\n' -> '\n'
+                          otherwise -> if isSelected
+                                         then '█'
+                                         else c
+  in  str |> padLinesLeft " " |> displayTextCol darkGray1
 
 displayText : Document -> Element
 displayText = displayTextCol white1
@@ -387,6 +366,6 @@ display ({document, cursor, selection, clipboard} as state) =
                  if isSelected selection
                     then displaySelection document selection
                     else empty
-               , displayText document
+               , padLinesLeft " " document |> displayText
                , displayCursor document cursor
                ]
