@@ -27,6 +27,7 @@ spaces and newlines as gray symbols (utf8)?
 line numbers too
 level: "I sucked at editing ... but now i'm awesome." oder so
 user can provide urls to own start and end txts via parameters
+ads
 
 quatsch:
 instant replay
