@@ -13,23 +13,20 @@ EditGym helps you acquire this set of skills by letting you practice and compete
 todo:
 
 time and keystrokes gleichzeitig messen, dann beim eintragen auswaehlen
-highscore with date
-highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann timestamp, wenn das equal dann name. Kombination aus allem unique in der DB.
+timestamp, wenn das equal dann name. Kombination aus allem unique in der DB.
 leerzeichen, tabs und zeilenumbrueche anzeigen
-line numbers
 help: tutorial mit animated gif einfuegen?
-
 save highscore
 highscore position regarding last 100 users of this level
-todo: link auf meinen artikel auf der startseite
 highscore-dialog am Ende automatisch über das game einblenden (mit try-again-button), und da auch share rein
+highscore with date
+highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann
 haskell-level: No special characters
 cursor and selection with another layered text (utf8)?
 spaces and newlines as gray symbols (utf8)?
+line numbers too
 level: "I sucked at editing ... but now i'm awesome." oder so
-shift insert usw fuer copy paste
-user can provide urls to own start and end txts via parameters.
-examples
+user can provide urls to own start and end txts via parameters
 
 quatsch:
 instant replay
