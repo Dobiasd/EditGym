@@ -370,8 +370,6 @@ displaySelection document selection =
                     |> flow outward
          | otherwise -> empty
 
-
-
 displayText : Document -> Element
 displayText = displayTextCol white1
 

@@ -5,6 +5,14 @@ import Layout (defaultSpacer, pageWidth, toDefText, toSizedText,
 import Footer (footer)
 import Header (header)
 
+showTextPart : Int -> Element -> Element
+showTextPart w content =
+  let content' = content |> width 640
+      h = (heightOf content')
+      img = fittedImage w h "imgs/keyboard_bg.jpg"
+      row = collage w h [toForm img, toForm content']
+  in  container w h middle row |> color white1
+
 showPage : Int -> Int -> Element -> Element
 showPage w h content =
   let

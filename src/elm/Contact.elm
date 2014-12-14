@@ -11,14 +11,11 @@ levelsButton = niceButton "Work out" "?page=levels"
 
 introduction : Int -> Element
 introduction w =
-  let content = [markdown|
+  Skeleton.showTextPart w [markdown|
 
 contact: info (at) editgym.com
 
-|] |> width 640
-      img = image 800 280 "imgs/keyboard_bg.jpg"
-      row = collage 800 280 [toForm img, toForm content]
-  in  container w 280 middle row |> color white1
+|]
 
 main : Signal Element
 main = scene <~ Window.width ~ Window.height
