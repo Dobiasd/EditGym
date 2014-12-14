@@ -14,7 +14,6 @@ todo:
 
 time and keystrokes gleichzeitig messen, dann beim eintragen auswaehlen
 timestamp, wenn das equal dann name. Kombination aus allem unique in der DB.
-leerzeichen, tabs und zeilenumbrueche anzeigen
 help: tutorial mit animated gif einfuegen?
 save highscore
 highscore position regarding last 100 users of this level
@@ -22,7 +21,7 @@ highscore-dialog am Ende automatisch über das game einblenden (mit try-again-bu
 highscore with date
 highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann
 haskell-level: No special characters
-line numbers too
+show line numbers
 level: "I sucked at editing ... but now i'm awesome." oder so
 user can provide urls to own start and end txts via parameters
 ads
