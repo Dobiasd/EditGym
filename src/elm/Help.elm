@@ -15,9 +15,9 @@ introduction w =
 
 # Introduction
 After choosing a [level](?page=levels) your goal is to get the content of the editor window to match the content of the goal window by editing the text.
-The number of key movements (up and down) is counted and there is also a stop watch.
-When you completed a level you will see how good you were compared to other users and create highscrore entries if you wish.
-To achieve a good highscore you will need to be efficient at using the following shortcuts.
+The number of key movements (up *and* down) is counted and there is also a stop watch.
+When you completed a level you will see how good you were compared to other users and to create highscrore entries if you wish.
+To achieve a good score you will need to be efficient at using some simple keyboard shortcuts.
 
 # Shortcuts
 
@@ -32,18 +32,17 @@ To achieve a good highscore you will need to be efficient at using the following
 * end - move cursor to end of line
 * ctrl+pos1 - move cursor to beginning of document
 * ctrl+end - move cursor to end of document
-* ctrl+end - move cursor to end of document
 
 ## Copy and paste
 * ctrl+c or ctrl+insert - copy selected text
 * ctrl+x or shift+delete - cut selected text
-* ctrl+v or shift+insert - paste text in clipboar at cursor / selection
+* ctrl+v or shift+insert - paste text from clipboard to cursor/selection
 
 ## Deleting
 * ctrl+backspace - delete previous word
 * ctrl+delete - delete next word
-* ctrl+shift+backspace - delete line up to cursor
-* ctrl+delete - delete line from cursor on
+* ctrl+shift+backspace - delete current line to cursor
+* ctrl+delete - delete current line from cursor on
 
 ## Selecting
 * shift+any cursor movement - select text
@@ -51,8 +50,8 @@ To achieve a good highscore you will need to be efficient at using the following
 ### Examples
 * shift+right - select character to the right
 * shift+down - move one line down and select all skipped characters
-* shift+ctrl+right - select word to the right
 * shift+end - select current line up to cursor
+* shift+ctrl+right - select word to the right
 * shift+ctrl+end - select everything starting at cursor position
 
 ## Typing
