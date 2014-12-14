@@ -26,6 +26,7 @@ level: "I sucked at editing ... but now i'm awesome." oder so
 user can provide urls to own start and end txts via parameters
 ads
 replace tabs with 4 spaces upon loading
+in game button: "restart (F5)""
 
 quatsch:
 instant replay
