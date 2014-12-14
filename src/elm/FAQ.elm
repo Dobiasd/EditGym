@@ -26,7 +26,27 @@ Normally they should look fine. But since they are generated via UTF-8 character
 
 ## Why does EditGym not behave like my favorite text editor?
 In some cases not all editors behave the same.
-The the following scenario as an example:
+
+Take the following scenario as an example:
+
+```
+word1 word2
+```
+
+Your cursor is at the beginning of word1 (left of the w) and you press
+`ctrl+right`
+* Libreoffice Writer (4.2.7.2) will jump to the beginning of the next word.
+* Notepad++ (6.3.3) will jump to the beginning of the next word.
+* Sublime Text (3, build 3065) will jump to the end of the current word.
+
+But if you know add `shift` (i.e. press `ctrl+shift+right`) you get this:
+* Libreoffice Writer (4.2.7.2) will mark to the beginning of the next word.
+* Notepad++ (6.3.3) will mark to the end of the current word.
+* Sublime Text (3, build 3065) will mark to the end of the current word.
+
+---
+
+Or consider this:
 
 ```
 line1
@@ -37,8 +57,8 @@ line3
 Your cursor is at the beginning of line 3 (left of the l) and you press
 `ctrl+shift+backspace`
 * Libreoffice Writer (4.2.7.2) will remove the whole line above the cursor.
-* Sublime Text (3, build 3065) will remove only the newline character between line 2 and line 3.
 * Notepad++ (6.3.3) will do nothing at all.
+* Sublime Text (3, build 3065) will remove only the newline character between line 2 and line 3.
 So it is not possible to cover everything. [I](?page=contact) opted for the behavior that subjectively seemed to be the most sane and will teach habits applicable to most editors.
 
 ## I have a suggestion for an awesome level. Can you include it?
