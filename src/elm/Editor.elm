@@ -67,25 +67,38 @@ stepSelection shift ({cursor, selection} as state) =
   { state | selection <- if shift then setSnd cursor selection
                                   else setBoth cursor }
 
-isWordStart : Char -> Char -> Bool
-isWordStart a b =
+-- for ctrl+right
+isWordEnd : Char -> Char -> Bool
+isWordEnd a b =
   case (a, b) of
-    (_, ' ') -> False
+    (' ', _) -> False
+    (_, ' ') -> True
     (_, ',') -> True
     (_, '.') -> True
-    (' ', _) -> True
     (_, '\n') -> True
     ('\n', _) -> True
     (_, _) -> False
 
+-- for ctrl+left
+isWordStart : Char -> Char -> Bool
+isWordStart = flip isWordEnd
+
+genCharPairs : String -> [(Char, Char)]
+genCharPairs str = zip
+                  (str |> String.toList)
+                  (str |> String.dropLeft 1 |> String.toList)
+
 wordStarts : Document -> [Cursor]
 wordStarts doc =
-  let markers = zip
-                  (doc |> String.toList)
-                  (doc |> String.dropLeft 1 |> String.toList)
+  let markers = genCharPairs doc
                 |> List.indexedMap (\idx (a, b) -> (idx + 1, isWordStart a b))
-  in  ((0, True)::markers) ++ [(String.length doc, True)]
-      |> filter snd |> map fst
+  in  (0, True)::markers |> filter snd |> map fst
+
+wordEnds : Document -> [Cursor]
+wordEnds doc =
+  let markers = genCharPairs doc
+                |> List.indexedMap (\idx (a, b) -> (idx + 1, isWordEnd a b))
+  in  markers ++ [(String.length doc, True)] |> filter snd |> map fst
 
 find : (a -> Bool) -> [a] -> Maybe a
 find cond xs =
@@ -113,8 +126,8 @@ wordLeftOffset document cursor =
 
 wordRightOffset : Document -> Cursor -> Int
 wordRightOffset document cursor =
-  let startPositions = document |> wordStarts
-  in  case startPositions |> find (\x -> x > cursor) of
+  let endPositions = document |> wordEnds
+  in  case endPositions |> find (\x -> x > cursor) of
         Just pos -> pos - cursor
         Nothing -> 0
 
