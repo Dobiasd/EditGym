@@ -51,10 +51,31 @@ function Init() {
   else if (page == "game")
   {
     level = getURLParameterDef("level", "");
+    loadingText = "loading ...";
     elmContent = Elm.embed(Elm.Game, mainDiv,
-                            { start : "loading ..."
-                            , goal : "loading ..." });
-    startUrl = "levels/" + level + "/start.txt";
+                            { start : loadingText
+                            , goal : loadingText });
+    elmContent.ports.start.send(loadingText);
+    elmContent.ports.goal.send(loadingText);
+
+    levelBaseUrl = "levels/" + level + "/";
+    startUrl = levelBaseUrl + "start.txt";
+    goalUrl = levelBaseUrl + "goal.txt";
+
+    $.ajax({
+      dataType: "text",
+      url: goalUrl,
+      success: function(data) {
+        data = data.replace(/(\r)/gm,"");
+        elmContent.ports.goal.send(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        msg = "Unable to load " + goalUrl + "\n"
+                + textStatus + "\n" + errorThrown;
+        elmContent.ports.goal.send(msg);
+      }
+    });
+
     $.ajax({
       dataType: "text",
       url: startUrl,
@@ -70,6 +91,9 @@ function Init() {
         elmContent.ports.start.send(msg);
       }
     });
+
+
+
     DisableBackspaceNavigation();
   }
   else if (page == "help")
