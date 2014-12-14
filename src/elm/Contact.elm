@@ -13,7 +13,7 @@ introduction : Int -> Element
 introduction w =
   let content = [markdown|
 
-contact: todo
+contact: info (at) editgym.com
 
 |] |> width 640
       img = image 800 280 "imgs/keyboard_bg.jpg"
