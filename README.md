@@ -22,12 +22,11 @@ highscore-dialog am Ende automatisch über das game einblenden (mit try-again-bu
 highscore with date
 highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann
 haskell-level: No special characters
-cursor and selection with another layered text (utf8)?
-spaces and newlines as gray symbols (utf8)?
 line numbers too
 level: "I sucked at editing ... but now i'm awesome." oder so
 user can provide urls to own start and end txts via parameters
 ads
+replace tabs with 4 spaces upon loading
 
 quatsch:
 instant replay

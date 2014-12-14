@@ -12,10 +12,10 @@ body
 
 /* http://css-tricks.com/overriding-the-default-text-selection-color-with-css/ */
 ::selection {
-  background: #ffb7b7; /* WebKit/Blink Browsers */
+  background: #272922; /* WebKit/Blink Browsers */
 }
 ::-moz-selection {
-  background: #ffb7b7; /* Gecko Browsers */
+  background: #272922; /* Gecko Browsers */
 }
 
 #main

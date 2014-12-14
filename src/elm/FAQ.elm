@@ -21,6 +21,9 @@ No, this is not planned at the moment.
 ## Why are some keys disabled for typing?
 Only the keys needed for the [default levels](?page=levels) are activated.
 
+## Why are the cursor and the selection displayed so ugly?
+Normally they should look fine. But since they are generated via UTF-8 characters, your browser has to support a nice monospace font containing symbols for these characters.
+
 ## Why does EditGym not behave like my favorite text editor?
 In some cases not all editors behave the same.
 The the following scenario as an example:

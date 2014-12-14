@@ -96,7 +96,7 @@ validKey : Keyboard.KeyCode -> Bool
 validKey key = KeyHistory.showKey key /= ""
 
 displayGoal : String -> Element
-displayGoal goal = Editor.displayTextCol lightGray1 goal
+displayGoal goal = Editor.displayDocument lightGray1 goal
 
 scene : Int -> Int -> State -> Element
 scene w h ({editor, keyHistory, editor, goal, timeInDs} as state) =

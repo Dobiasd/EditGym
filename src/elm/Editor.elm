@@ -325,13 +325,13 @@ displayCursor document cursor =
                      |> List.concat
                      |> String.fromList
       transF idx c = let isCursor = idx == cursor
-                     in case c of
-                          '\n' -> if isCursor
-                                     then ['\n', '▕']
-                                     else ['\n', ' ']
-                          otherwise -> if isCursor
-                                         then ['▕']
-                                         else [c]
+                     in  case c of
+                           '\n' -> if isCursor
+                                      then ['\n', '▕']
+                                      else ['\n', ' ']
+                           otherwise -> if isCursor
+                                          then ['▕']
+                                          else [c]
   in  str |> displayTextCol white1
 
 displaySelection : Document -> Selection -> Element
@@ -340,17 +340,22 @@ displaySelection document selection =
       str = document |> replaceAllButNewlines ' '
                      |> String.toList
                      |> List.indexedMap transF
+                     |> List.concat
                      |> String.fromList
       transF idx c = let isSelected = idx >= begin && idx < end
-                     in case c of
-                          '\n' -> '\n'
-                          otherwise -> if isSelected
-                                         then '█'
-                                         else c
+                     in  case c of
+                           '\n' -> if isSelected
+                                     then ['█', '\n']
+                                     else ['\n']
+                           otherwise -> if isSelected
+                                          then ['█']
+                                          else [c]
   in  str |> padLinesLeft " " |> displayTextCol darkGray1
 
-displayText : Document -> Element
-displayText = displayTextCol white1
+displaySpaces : Document -> Element
+displaySpaces document =
+  let str = document |> replace " " "•"
+  in  str |> padLinesLeft " " |> displayTextCol darkGray1
 
 displayTextCol : Color -> Document -> Element
 displayTextCol col =
@@ -360,12 +365,32 @@ displayTextCol col =
   >> Text.color col
   >> Text.leftAligned
 
+displayNewLines : Document -> Element
+displayNewLines =
+  replaceAllButNewlines ' '
+  >> replace "\n" "⏎\n"
+  >> padLinesLeft " "
+  >> displayTextCol darkGray1
+
+displayEditText : Color -> Document -> Element
+displayEditText col =
+  padLinesLeft " "
+  >> displayTextCol col
+
+displayDocument : Color -> Document -> Element
+displayDocument col document =
+  flow outward [
+                 displayNewLines document
+               , displaySpaces document
+               , displayEditText col document
+  ]
+
 display : State -> Element
 display ({document, cursor, selection, clipboard} as state) =
   flow outward [
                  if isSelected selection
                     then displaySelection document selection
                     else empty
-               , padLinesLeft " " document |> displayText
                , displayCursor document cursor
+               , displayDocument white1 document
                ]
