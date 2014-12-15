@@ -1,17 +1,20 @@
 module Help where
 
+import Window
+import Signal
+
+import Markdown
+
+import Graphics.Element (Element, flow, down)
 import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
   , defaultSpacer)
 import Skeleton
-
-import Window
 
 levelsButton : Element
 levelsButton = niceButton "Work out" "?page=levels"
 
 introduction : Int -> Element
-introduction w =
-  Skeleton.showTextPart w [markdown|
+introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 
 # Introduction
 After choosing a [level](?page=levels) your goal is to get the content of the editor window to match the content of the goal window by editing the text.
@@ -60,10 +63,10 @@ Of course you also can just type in the required text, but in most cases this is
 
 Now go and [work out your skills](?page=levels). :)
 
-|]
+"""
 
 main : Signal Element
-main = scene <~ Window.width ~ Window.height
+main = Signal.map2 scene Window.width Window.height
 
 scene : Int -> Int -> Element
 scene w h =

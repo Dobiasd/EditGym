@@ -1,17 +1,20 @@
 module FAQ where
 
+import Window
+import Signal
+
+import Markdown
+
+import Graphics.Element (Element, flow, down)
 import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
   , defaultSpacer)
 import Skeleton
-
-import Window
 
 levelsButton : Element
 levelsButton = niceButton "Work out" "?page=levels"
 
 introduction : Int -> Element
-introduction w =
-  Skeleton.showTextPart w [markdown|
+introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 
 # EditGym - FAQ
 
@@ -71,10 +74,10 @@ This page was mostly written in [Elm](http://elm-lang.org), an awesome [pure fun
 ## Can you show me the source code?
 Sure! Here it is: [github/Dobiasd/EditGym](https://github.com/Dobiasd/EditGym)
 
-|]
+"""
 
 main : Signal Element
-main = scene <~ Window.width ~ Window.height
+main = Signal.map2 scene Window.width Window.height
 
 scene : Int -> Int -> Element
 scene w h =

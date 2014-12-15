@@ -4,15 +4,17 @@ import Window
 import Set
 import Keyboard
 import Time
+import Signal
 import List
 import String
+import Graphics.Element (Element, flow, down, right, outward, spacer, empty)
 
 import Layout (toDefText, toSizedText, lightGray1)
 import Skeleton
 import Editor
 import KeyHistory
 
-type State = {
+type alias State = {
     editor : Editor.State
   , keyHistory : KeyHistory.State
   , keysDown : Set.Set Keyboard.KeyCode
@@ -30,31 +32,36 @@ initialState = State Editor.initialState
                      "loading"
                      0
 
-data Input = Decisecond | Start String
+type Input = Decisecond | Start String
                         | Goal String
                         | Keys (Set.Set Keyboard.KeyCode)
 
 startInput : Signal Input
-startInput = Start <~ start
+startInput = Signal.map Start start
 
 goalInput : Signal Input
-goalInput = Goal <~ goal
+goalInput = Signal.map Goal goal
 
 keyInput : Signal Input
-keyInput = Keys <~ ((Set.fromList << filter validKey) <~ Keyboard.keysDown)
+keyInput = Signal.map Keys
+                     (Signal.map (Set.fromList << List.filter validKey)
+                                 Keyboard.keysDown)
 
 
 {-| We want the time to update every 100 milliseconds if possible. -}
-ticker = lift (\t -> t / 1000) <| fps 10
+ticker = Signal.map (\t -> t / 1000) <| Time.fps 10
 
+-- todo: do not discard time gap, use ticker
+-- https://groups.google.com/forum/#!topic/elm-discuss/Yo0KXZPLK9o
 timeInput : Signal Input
-timeInput = (always Decisecond) <~ every (100 * millisecond)
+timeInput = Signal.map (always Decisecond)
+              <| Time.every (100 * Time.millisecond)
 
 input : Signal Input
-input = merges [startInput, goalInput, keyInput, timeInput]
+input = Signal.mergeMany [startInput, goalInput, keyInput, timeInput]
 
 state : Signal State
-state = foldp step initialState input
+state = Signal.foldp step initialState input
 
 step : Input -> State -> State
 step input =
@@ -90,7 +97,7 @@ stepKeys inKeysDown ({editor, keyHistory, keysDown, goal} as state) =
                    , keysDown <- inKeysDown }
 
 main : Signal Element
-main = scene <~ Window.width ~ Window.height ~ state
+main = Signal.map3 scene Window.width Window.height state
 
 validKey : Keyboard.KeyCode -> Bool
 validKey key = KeyHistory.showKey key /= ""
@@ -103,7 +110,8 @@ scene w h ({editor, keyHistory, editor, goal, timeInDs} as state) =
   let finished = editor.document == goal
       result = if finished
                  then flow down [
-                     length keyHistory.history |> show |> toSizedText 180
+                     List.length keyHistory.history |> toString
+                       |> toSizedText 180
                    , spacer 1 10
                    , showTime timeInDs |> toSizedText 180
                    ]
@@ -116,7 +124,7 @@ scene w h ({editor, keyHistory, editor, goal, timeInDs} as state) =
 
 showTime : Int -> String
 showTime timeInDs =
-  let str = toFloat timeInDs / 10 |> show
+  let str = toFloat timeInDs / 10 |> toString
       str' = if (String.right 2 str |> String.left 1) == "."
                then str
                else String.append str ".0"

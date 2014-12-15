@@ -1,6 +1,9 @@
 module Layout where
 
 import Text
+import Color (Color, rgb)
+import Graphics.Element (Element, spacer, container, heightOf, middle)
+import Graphics.Element
 
 spacerSize : Int
 spacerSize = 8
@@ -42,10 +45,11 @@ darkGray1 = rgb 56 56 48
 -- https://groups.google.com/forum/#!topic/elm-discuss/IdbMAlFHAAE
 niceButton : String -> String -> Element
 niceButton str url =
-  let txt h c = toText >> Text.height h >> Text.color c >> leftAligned
+  let txt h c = Text.fromString >> Text.height h >> Text.color c
+                >> Text.leftAligned
       textButton c = container 300 80 middle (txt 48 c str)
-        |> color darkGray1
-  in  link url (textButton green1)
+        |> Graphics.Element.color darkGray1
+  in  Graphics.Element.link url (textButton green1)
 
 defaultSpacer : Element
 defaultSpacer = spacer spacerSize spacerSize
@@ -63,15 +67,16 @@ centerHorizontally : Int -> Element -> Element
 centerHorizontally w element = container w (heightOf element) middle element
 
 toSizedText : Float -> String -> Element
-toSizedText s = toText >> Text.height s >> Text.color white1 >> leftAligned
+toSizedText s = Text.fromString >> Text.height s >> Text.color white1
+                >> Text.leftAligned
 
-toSizedTextMod : (Text -> Text) -> Float -> String -> Element
+toSizedTextMod : (Text.Text -> Text.Text) -> Float -> String -> Element
 toSizedTextMod f s =
-  toText >> f >> Text.height s >> Text.color white1 >> leftAligned
+  Text.fromString >> f >> Text.height s >> Text.color white1 >> Text.leftAligned
 
 toColText : Color -> String -> Element
 toColText c =
-  toText >> Text.height defTextSize >> Text.color c >> leftAligned
+  Text.fromString >> Text.height defTextSize >> Text.color c >> Text.leftAligned
 
 defTextSize : Float
 defTextSize = 20

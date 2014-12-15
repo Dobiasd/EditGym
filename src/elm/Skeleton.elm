@@ -1,5 +1,9 @@
 module Skeleton where
 
+import Graphics.Element (Element, container, topRight, width, heightOf
+  , fittedImage, middle, color, midTop, flow, down, spacer)
+import Graphics.Collage (collage, toForm)
+import List
 import Layout (defaultSpacer, pageWidth, toDefText, toSizedText,
   black1, white1, orange1, blue1, purple1, red1, green1, gray1)
 import Footer (footer)
@@ -23,7 +27,7 @@ showPage w h content =
     divider = flow down [ spacer 1 4 |> color black1
                         , spacer w 3 |> color orange1 ]
                         |> container w 7 midTop
-    pageContentHeight = sum [
+    pageContentHeight = List.sum [
         heightOf headerElem
       , heightOf content'
       , heightOf divider

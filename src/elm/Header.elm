@@ -1,12 +1,14 @@
 module Header where
 
-import Graphics.Input (Input, input)
 import Window
-import UrlEncode(genLink)
+import List
+import List ((::))
+import Graphics.Element (Element, container, topRight, color, image, link, flow, down, right)
+import Text
 
+import UrlEncode (genLink)
 import Layout (defaultSpacer, toDefText, toSizedText,
   black1, white1, orange1, blue1, purple1, red1, green1, gray1)
-import Text
 
 iconSize : Int
 iconSize = 32
@@ -16,9 +18,6 @@ logoHeight = 120
 
 logoWidth : Int
 logoWidth = 308
-
-clicks : Input ()
-clicks = input ()
 
 shareIcons : Element
 shareIcons =
@@ -34,9 +33,11 @@ shareIcons =
       , ( image iconSize iconSize "imgs/tumblr.png", genLink "http://www.tumblr.com/share/link" [("url", "editgym.com")] )
       , ( image iconSize iconSize "imgs/bufferapp.png", genLink "https://bufferapp.com/add" [("url", "http://www.editgym.com"), ("text", "Text editing training")] )
       , ( image iconSize iconSize "imgs/email.png", genLink "mailto: " [("subject", "EditGym"), ("body", "Text editing training at http://www.editgym.com")] ) ]
-      |> map (\ (img, url) -> img |> link url)
+      |> List.map (\ (img, url) -> img |> link url)
   in
-    toDefText "share: " :: buttons |> intersperse (defaultSpacer) |> flow right
+    toDefText "share: " :: buttons
+      |> List.intersperse (defaultSpacer)
+      |> flow right
 
 logo : Element
 logo = image logoWidth logoHeight "imgs/logo.png" |> link "?page=start"

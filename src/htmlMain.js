@@ -69,7 +69,7 @@ function Init() {
       dataType: "text",
       url: goalUrl,
       success: function(data) {
-        data = data.replace(/(\r\n)/gm,"");
+        data = data.replace(/(\r\n)/gm,"\n");
         data = data.replace(/(\r)/gm,"\n");
         elmContent.ports.goal.send(data);
       },

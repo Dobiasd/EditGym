@@ -7,18 +7,22 @@ import Dict
 import Regex
 import Maybe
 import List
+import List ((::))
 import Text
-import Char(fromCode)
+import Char (fromCode)
+import Color (Color)
 
 import Layout (toDefText, white1, darkGray1)
+import Graphics.Element (Element, spacer, container, flow, down, outward
+  , empty)
 
-type Document = String
-type Cursor = Int
+type alias Document = String
+type alias Cursor = Int
 
 -- (from, to), from can be > to, == means no selection
-type Selection = (Int, Int)
+type alias Selection = (Int, Int)
 
-type State = {
+type alias State = {
     document : Document
   , cursor : Cursor
   , selection : Selection
@@ -44,10 +48,10 @@ keyStrings =
   , ((0, 188), ',')
   , ((0, 190), '.')
   ]
-  ++ (map (toDefStrPair 0 identity) [48..57]) -- top numbers
-  ++ (map (toDefStrPair 0 identity) [96..105]) -- block numbers
-  ++ (map (toDefStrPair 0 (\x -> x - 32)) [97..122]) -- a to z
-  ++ (map (toDefStrPair 1 identity) [65..90]) -- A to Z
+  ++ (List.map (toDefStrPair 0 identity) [48..57]) -- top numbers
+  ++ (List.map (toDefStrPair 0 identity) [96..105]) -- block numbers
+  ++ (List.map (toDefStrPair 0 (\x -> x - 32)) [97..122]) -- a to z
+  ++ (List.map (toDefStrPair 1 identity) [65..90]) -- A to Z
   |> Dict.fromList
 
 showKey : Bool -> Keyboard.KeyCode -> Maybe Char
@@ -83,39 +87,39 @@ isWordEnd a b =
 isWordStart : Char -> Char -> Bool
 isWordStart = flip isWordEnd
 
-genCharPairs : String -> [(Char, Char)]
-genCharPairs str = zip
+genCharPairs : String -> List (Char, Char)
+genCharPairs str = List.map2 (,)
                   (str |> String.toList)
                   (str |> String.dropLeft 1 |> String.toList)
 
-wordStarts : Document -> [Cursor]
+wordStarts : Document -> List Cursor
 wordStarts doc =
   let markers = genCharPairs doc
                 |> List.indexedMap (\idx (a, b) -> (idx + 1, isWordStart a b))
-  in  (0, True)::markers |> filter snd |> map fst
+  in  (0, True) :: markers |> List.filter snd |> List.map fst
 
-wordEnds : Document -> [Cursor]
+wordEnds : Document -> List Cursor
 wordEnds doc =
   let markers = genCharPairs doc
                 |> List.indexedMap (\idx (a, b) -> (idx + 1, isWordEnd a b))
-  in  markers ++ [(String.length doc, True)] |> filter snd |> map fst
+  in  markers ++ [(String.length doc, True)] |> List.filter snd |> List.map fst
 
-find : (a -> Bool) -> [a] -> Maybe a
+find : (a -> Bool) -> List a -> Maybe a
 find cond xs =
   case xs of
     (x::xs) -> if cond x then Just x else find cond xs
     [] -> Nothing
 
-lineEnds : Document -> [Cursor]
+lineEnds : Document -> List Cursor
 lineEnds =
   String.toList
   >> List.indexedMap (\idx x -> (idx, x == '\n'))
-  >> filter snd
-  >> map fst
+  >> List.filter snd
+  >> List.map fst
 
-lineStarts : Document -> [Cursor]
+lineStarts : Document -> List Cursor
 lineStarts doc =
-  lineEnds doc |> map (\idx -> idx + 1)
+  lineEnds doc |> List.map (\idx -> idx + 1)
 
 wordLeftOffset : Document -> Cursor -> Int
 wordLeftOffset document cursor =
@@ -293,12 +297,12 @@ splitAtCursor {document, cursor} =
   (String.slice 0 cursor document
   , String.slice cursor (String.length document) document)
 
-applyWith : [a -> b -> b] -> a -> (b -> b)
+applyWith : List (a -> b -> b) -> a -> (b -> b)
 applyWith fs x =
-  let halfAppliedFs = map (\f -> f x) fs
-  in  foldl (>>) identity halfAppliedFs
+  let halfAppliedFs = List.map (\f -> f x) fs
+  in  List.foldl (>>) identity halfAppliedFs
 
-step : State -> Set.Set Keyboard.KeyCode -> [Keyboard.KeyCode] -> State
+step : State -> Set.Set Keyboard.KeyCode -> List Keyboard.KeyCode -> State
 step ({document, cursor} as state) keysDown keysDownNew =
   let keysDownAll = Set.union keysDown (Set.fromList keysDownNew)
       shift = Set.member 16 keysDownAll
@@ -312,7 +316,7 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 , stepPaste ctrl shift
                 , stepCut ctrl shift
                 ]
-  in  foldl stepKey state keysDownNew
+  in  List.foldl stepKey state keysDownNew
 
 replace : String -> String -> String -> String
 replace token replacement =
@@ -372,7 +376,7 @@ displaySpaces document =
 
 displayTextCol : Color -> Document -> Element
 displayTextCol col =
-     Text.toText
+     Text.fromString
   >> Text.typeface ["inconsolata", "courier new", "monospace"]
   >> Text.height 20
   >> Text.color col

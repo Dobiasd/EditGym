@@ -1,6 +1,9 @@
 module Footer where
 
 import Layout (defaultSpacer, gray1, toDefText)
+import Graphics.Element (Element, container, heightOf, widthOf, middle
+    , color, link, flow, down, right, midTop)
+import Color (Color)
 
 txtLink str url =
     let elem = toDefText str

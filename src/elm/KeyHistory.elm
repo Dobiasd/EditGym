@@ -3,19 +3,21 @@ module KeyHistory where
 import Keyboard
 import Set
 import Dict
+import List
 import Char(fromCode)
 import String(cons)
+import Graphics.Element (Element, spacer, color, flow, right)
 
 import Layout (toDefText, toColText, white1, lightGray1, darkGray1)
 
-data KeyAction = Up Keyboard.KeyCode | Down Keyboard.KeyCode
+type KeyAction = Up Keyboard.KeyCode | Down Keyboard.KeyCode
 
 showKeyAction : KeyAction -> Element
 showKeyAction action = case action of
   Up key   -> showKey key |> toColText lightGray1
   Down key -> showKey key |> toColText white1
 
-type State = {history:[KeyAction]}
+type alias State = { history : List KeyAction }
 
 initialState : State
 initialState = State []
@@ -40,9 +42,9 @@ keyStrings =
   , (46, "del")
   , (8, "bs")
   ]
-  ++ (map (toDefStrPair identity) [48..57]) -- top numbers
-  ++ (map (toDefStrPair identity) [96..105]) -- block numbers
-  ++ (map (toDefStrPair (\x -> x - 32)) [97..122]) -- a to z
+  ++ (List.map (toDefStrPair identity) [48..57]) -- top numbers
+  ++ (List.map (toDefStrPair identity) [96..105]) -- block numbers
+  ++ (List.map (toDefStrPair (\x -> x - 32)) [97..122]) -- a to z
   |> Dict.fromList
 
 showKey : Keyboard.KeyCode -> String
@@ -50,19 +52,20 @@ showKey key = case Dict.get key keyStrings of
   Just result -> result
   Nothing -> ""
 
-step : State -> Set.Set Keyboard.KeyCode -> [Keyboard.KeyCode]
-             -> [Keyboard.KeyCode] -> State
+step : State -> Set.Set Keyboard.KeyCode -> List Keyboard.KeyCode
+             -> List Keyboard.KeyCode -> State
 step ({history} as state) keysDown keysDownNew keysUpNew =
-  let history' = history ++ (keysDownNew |> map Down)
-                         ++ (keysUpNew   |> map Up)
+  let history' = history ++ (keysDownNew |> List.map Down)
+                         ++ (keysUpNew   |> List.map Up)
   in  { state | history <- history' }
 
 display : State -> Element
 display {history} =
-  let visibleHistory = drop (length history - 5) history
+  let visibleHistory = List.drop (List.length history - 5) history
       sep = spacer 2 8 |> color darkGray1
   in  flow right [
-        length history |> show |> toDefText
+        List.length history |> toString |> toDefText
       , spacer 30 1
-      , map showKeyAction visibleHistory |> intersperse sep |> flow right
+      , List.map showKeyAction visibleHistory |> List.intersperse sep
+        |> flow right
       ]
