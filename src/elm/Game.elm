@@ -81,7 +81,6 @@ setStart start ({editor} as state) =
 setGoal : String -> State -> State
 setGoal goal state = { state | goal <- goal }
 
--- todo: check if start == goal, but not empty (on load errors)
 stepKeys : Set.Set Keyboard.KeyCode -> Int -> State -> State
 stepKeys inKeysDown time ({editor, keyHistory, keysDown, goal} as state) =
   let finished = editor.document == goal
