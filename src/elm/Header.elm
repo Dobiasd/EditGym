@@ -32,7 +32,7 @@ shareIcons =
       , ( image iconSize iconSize "imgs/stumbleupon.png", "http://www.stumbleupon.com/submit?url=http://www.editgym.com&title=Text%20editing%20training" )
       , ( image iconSize iconSize "imgs/tumblr.png", "http://www.tumblr.com/share/link?url=editgym.com" )
       , ( image iconSize iconSize "imgs/bufferapp.png", "https://bufferapp.com/add?url=http://www.editgym.com&text=Text%20editing%20training" )
-      , ( image iconSize iconSize "imgs/email.png", "mailto:%20?subject=reddit time machine&body=Text%20editing%20training%20at%20http://www.editgym.com" ) ]
+      , ( image iconSize iconSize "imgs/email.png", "mailto:%20?subject=EditGym&body=Text%20editing%20training%20at%20http://www.editgym.com" ) ]
       |> map (\ (img, url) -> img |> link url)
   in
     toDefText "share: " :: buttons |> intersperse (defaultSpacer) |> flow right
