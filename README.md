@@ -27,6 +27,7 @@ user can provide urls to own start and end txts via parameters
 ads
 replace tabs with 4 spaces upon loading
 in game button: "restart (F5)""
+custom levels: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
 
 quatsch:
 instant replay
