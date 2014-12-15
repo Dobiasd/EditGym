@@ -62,7 +62,7 @@ Your cursor is at the beginning of line 3 (left of the l) and you press
 * Libreoffice Writer (4.2.7.2) will remove the whole line above the cursor.
 * Notepad++ (6.3.3) will do nothing at all.
 * Sublime Text (3, build 3065) will remove only the newline character between line 2 and line 3.
-So it is not possible to cover everything. [I](?page=contact) opted for the behavior that subjectively seemed to be the most sane and will teach habits applicable to most editors.
+So it is not possible to cover everything. [I](?page=contact) opted for the behavior that subjectively seemed to be the most sane and woult not teach habits not applicable when switching between editors. So in this particular case I have chosen "do nothing at all".
 
 ## I have a suggestion for an awesome level. Can you include it?
 Yes, perhaps. Just [send me an email](?page=contact) with the start and goal text, and I will see if I think it fits here. ;)
