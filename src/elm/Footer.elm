@@ -1,6 +1,6 @@
 module Footer where
 
-import Layout (defaultSpacer, gray1, toDefText)
+import Layout (defaultSpacer, darkGray1, toDefText)
 import Graphics.Element (Element, container, heightOf, widthOf, middle
     , color, link, flow, down, right, midTop)
 import Color (Color)
@@ -8,7 +8,7 @@ import Color (Color)
 txtLink str url =
     let elem = toDefText str
     in  container (widthOf elem + 10) (heightOf elem + 6) middle elem
-        |> color gray1 |> link url
+        |> color darkGray1 |> link url
 
 footer : Int -> Element
 footer w =
