@@ -19,7 +19,7 @@ type alias State = {
   , keyHistory : KeyHistory.State
   , keysDown : Set.Set Keyboard.KeyCode
   , goal : String
-  , timeInDs : Int
+  , timeInMs : Int
   }
 
 port start : Signal String
@@ -34,7 +34,7 @@ initialState = State Editor.initialState
 
 type Input = Decisecond | Start String
                         | Goal String
-                        | Keys (Set.Set Keyboard.KeyCode)
+                        | Keys Int (Set.Set Keyboard.KeyCode)
 
 startInput : Signal Input
 startInput = Signal.map Start start
@@ -43,15 +43,12 @@ goalInput : Signal Input
 goalInput = Signal.map Goal goal
 
 keyInput : Signal Input
-keyInput = Signal.map Keys
-                     (Signal.map (Set.fromList << List.filter validKey)
-                                 Keyboard.keysDown)
+keyInput =
+  Keyboard.keysDown
+  |> Signal.map (Set.fromList << List.filter validKey)
+  |> Time.timestamp
+  |> Signal.map ((\(t, k) -> (floor t, k)) >> uncurry Keys)
 
-
-{-| We want the time to update every 100 milliseconds if possible. -}
-ticker = Signal.map (\t -> t / 1000) <| Time.fps 10
-
--- todo: do not discard time gap, use ticker
 -- https://groups.google.com/forum/#!topic/elm-discuss/Yo0KXZPLK9o
 timeInput : Signal Input
 timeInput = Signal.map (always Decisecond)
@@ -68,14 +65,14 @@ step input =
   case input of
     Start start -> setStart start
     Goal goal -> setGoal goal
-    Keys keys -> stepKeys keys
+    Keys time keys -> stepKeys keys time
     Decisecond -> stepDecisecond
 
 stepDecisecond : State -> State
-stepDecisecond ({editor, timeInDs, keyHistory, goal} as state) =
+stepDecisecond ({editor, timeInMs, keyHistory, goal} as state) =
   if editor.document == goal || List.isEmpty keyHistory.history
     then state
-    else { state | timeInDs <- timeInDs + 1 }
+    else { state | timeInMs <- timeInMs + 100 }
 
 setStart : String -> State -> State
 setStart start ({editor} as state) =
@@ -85,8 +82,8 @@ setGoal : String -> State -> State
 setGoal goal state = { state | goal <- goal }
 
 -- todo: check if start == goal, but not empty (on load errors)
-stepKeys : Set.Set Keyboard.KeyCode -> State -> State
-stepKeys inKeysDown ({editor, keyHistory, keysDown, goal} as state) =
+stepKeys : Set.Set Keyboard.KeyCode -> Int -> State -> State
+stepKeys inKeysDown time ({editor, keyHistory, keysDown, goal} as state) =
   let finished = editor.document == goal
       keysDownNew = Set.diff inKeysDown keysDown |> Set.toList
       keysUpNew = Set.diff keysDown inKeysDown |> Set.toList
@@ -94,6 +91,7 @@ stepKeys inKeysDown ({editor, keyHistory, keysDown, goal} as state) =
       else { state | editor <- Editor.step editor keysDown keysDownNew
                    , keyHistory <- KeyHistory.step keyHistory keysDown
                                                    keysDownNew keysUpNew
+                                                   time
                    , keysDown <- inKeysDown }
 
 main : Signal Element
@@ -106,14 +104,15 @@ displayGoal : String -> Element
 displayGoal goal = Editor.displayDocument lightGray1 goal
 
 scene : Int -> Int -> State -> Element
-scene w h ({editor, keyHistory, editor, goal, timeInDs} as state) =
+scene w h ({editor, keyHistory, editor, goal, timeInMs} as state) =
   let finished = editor.document == goal
       result = if finished
                  then flow down [
                      List.length keyHistory.history |> toString
                        |> toSizedText 180
                    , spacer 1 10
-                   , showTime timeInDs |> toSizedText 180
+                   , KeyHistory.getTimeSpan keyHistory |> showTimeInMs
+                     |> toSizedText 180
                    ]
                  else empty
       content = flow outward [
@@ -122,41 +121,49 @@ scene w h ({editor, keyHistory, editor, goal, timeInDs} as state) =
                   ]
   in  Skeleton.showPage w h content
 
-showTime : Int -> String
-showTime timeInDs =
-  let str = toFloat timeInDs / 10 |> toString
-      str' = if (String.right 2 str |> String.left 1) == "."
-               then str
-               else String.append str ".0"
-  in  String.append str' "s"
+showTimeInPrec : Int -> Int -> String
+showTimeInPrec decimals timeInMs =
+  let str = timeInMs |> toString |> String.dropRight (3 - decimals)
+  in  String.concat [
+           if timeInMs < 1000 then "0" else ""
+        ,  String.dropRight decimals str
+        , "."
+        , String.right decimals str
+        , "s" ]
 
-displayTime : Int -> Element
-displayTime timeInDs =
-   showTime timeInDs |> toSizedText 48
+showTimeInDs : Int -> String
+showTimeInDs = showTimeInPrec 1
+
+showTimeInMs : Int -> String
+showTimeInMs = showTimeInPrec 3
 
 -- todo: fixed widths
 scenePlay : Int -> Int -> State -> Element
-scenePlay w h {editor, keyHistory, goal, timeInDs} =
-  flow down [
-      spacer 800 1
-    , flow right [
-          KeyHistory.display keyHistory
-        , spacer 200 1
-        , displayTime timeInDs
-      ]
-    , flow right [
-          flow down [
-              spacer 400 1
-            , "editor" |> toSizedText 48
-            , spacer 1 30
-            , Editor.display editor
+scenePlay w h {editor, keyHistory, goal, timeInMs} =
+  let finished = editor.document == goal
+  in  flow down [
+          spacer 800 1
+        , flow right [
+              KeyHistory.display keyHistory
+            , spacer 200 1
+            , (if finished
+                then KeyHistory.getTimeSpan keyHistory |> showTimeInMs
+                else timeInMs |> showTimeInDs)
+              |> toSizedText 48
           ]
-        , spacer 100 1
-        , flow down [
-              spacer 400 1
-            , "goal" |> toSizedText 48
-            , spacer 1 30
-            , displayGoal goal
+        , flow right [
+              flow down [
+                  spacer 400 1
+                , "editor" |> toSizedText 48
+                , spacer 1 30
+                , Editor.display editor
+              ]
+            , spacer 100 1
+            , flow down [
+                  spacer 400 1
+                , "goal" |> toSizedText 48
+                , spacer 1 30
+                , displayGoal goal
+              ]
           ]
       ]
-  ]

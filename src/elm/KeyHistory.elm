@@ -2,6 +2,7 @@ module KeyHistory where
 
 import Keyboard
 import Set
+import Time
 import Dict
 import List
 import Char(fromCode)
@@ -10,12 +11,18 @@ import Graphics.Element (Element, spacer, color, flow, right)
 
 import Layout (toDefText, toColText, white1, lightGray1, darkGray1)
 
-type KeyAction = Up Keyboard.KeyCode | Down Keyboard.KeyCode
+type KeyAction = Up Int Keyboard.KeyCode
+               | Down Int Keyboard.KeyCode
+
+keyActionTime : KeyAction -> Int
+keyActionTime ka = case ka of
+  Up time _ -> time
+  Down time _ -> time
 
 showKeyAction : KeyAction -> Element
 showKeyAction action = case action of
-  Up key   -> showKey key |> toColText lightGray1
-  Down key -> showKey key |> toColText white1
+  Up _ key   -> showKey key |> toColText lightGray1
+  Down _ key -> showKey key |> toColText white1
 
 type alias State = { history : List KeyAction }
 
@@ -53,11 +60,21 @@ showKey key = case Dict.get key keyStrings of
   Nothing -> ""
 
 step : State -> Set.Set Keyboard.KeyCode -> List Keyboard.KeyCode
-             -> List Keyboard.KeyCode -> State
-step ({history} as state) keysDown keysDownNew keysUpNew =
-  let history' = history ++ (keysDownNew |> List.map Down)
-                         ++ (keysUpNew   |> List.map Up)
+             -> List Keyboard.KeyCode -> Int -> State
+step ({history} as state) keysDown keysDownNew keysUpNew time =
+  let history' = history ++ (keysDownNew |> List.map (Down time))
+                         ++ (keysUpNew   |> List.map (Up time))
   in  { state | history <- history' }
+
+last : List a -> a
+last xs = List.drop (List.length xs - 1) xs |> List.head
+
+getTimeSpan : State -> Int
+getTimeSpan {history} =
+  if List.length history < 2
+    then 0
+    else (history |> last |> keyActionTime) -
+         (history |> List.head |> keyActionTime)
 
 display : State -> Element
 display {history} =
