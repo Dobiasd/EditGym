@@ -26,7 +26,6 @@ then
   do
     filename="${pathname##*/}"
     uglifyjs "$pathname" > "$pathname.ugly"
-    sleep 1
     rm "$pathname"
     mv "$pathname.ugly" "$pathname"
   done
