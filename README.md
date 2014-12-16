@@ -19,7 +19,7 @@ highscore-dialog am Ende automatisch über das game einblenden (mit try-again-bu
 highscore with date
 highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann
 ads
-in game button: "restart (F5)""
+in game button: "restart (F5?, better some key combo)"
 custom levels: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
 
 quatsch:
