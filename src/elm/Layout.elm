@@ -2,7 +2,7 @@ module Layout where
 
 import Text
 import Color (Color, rgb)
-import Graphics.Element (Element, spacer, container, heightOf, middle)
+import Graphics.Element (Element, spacer, container, widthOf, heightOf, middle)
 import Graphics.Element
 
 spacerSize : Int
@@ -44,21 +44,34 @@ darkGray1 = rgb 56 56 48
 -- todo rollover color, waiting for Evan:
 -- https://groups.google.com/forum/#!topic/elm-discuss/IdbMAlFHAAE
 niceButton : String -> String -> Element
-niceButton str url =
-  let txt h c = Text.fromString >> Text.height h >> Text.color c
-                >> Text.leftAligned
-      textButton c = container 300 80 middle (txt 48 c str)
-        |> Graphics.Element.color darkGray1
-  in  Graphics.Element.link url (textButton green1)
+niceButton = niceButtonSize 42
+
+niceButtonSize : Float -> String -> String -> Element
+niceButtonSize h str url =
+  let makeText h c = Text.fromString
+                     >> Text.height h
+                     >> Text.color c
+                     >> Text.leftAligned
+      textElem = makeText h green1 str
+      buttonW = 1.2 * (widthOf textElem |> toFloat) |> round
+      buttonH = 1.3 * (heightOf textElem |> toFloat) |> round
+
+      textButton = container buttonW buttonH
+                             middle textElem
+                   |> Graphics.Element.color darkGray1
+  in  Graphics.Element.link url textButton
 
 defaultSpacer : Element
 defaultSpacer = spacer spacerSize spacerSize
 
 doubleDefSpacer : Element
-doubleDefSpacer = spacer ( 2 * spacerSize) (2 * spacerSize)
+doubleDefSpacer = spacer (2 * spacerSize) (2 * spacerSize)
 
 quadDefSpacer : Element
-quadDefSpacer = spacer ( 4 * spacerSize) (4 * spacerSize)
+quadDefSpacer = spacer (4 * spacerSize) (4 * spacerSize)
+
+divider : Color -> Int -> Element
+divider col w = spacer w 1 |> Graphics.Element.color col
 
 pageWidth : Int
 pageWidth = 450

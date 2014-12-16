@@ -1,6 +1,7 @@
 module Footer where
 
-import Layout (defaultSpacer, darkGray1, toDefText)
+import Layout (defaultSpacer, darkGray1, toDefText, divider, purple1
+    , centerHorizontally, doubleDefSpacer)
 import Graphics.Element (Element, container, heightOf, widthOf, middle
     , color, link, flow, down, right, midTop)
 import Color (Color)
@@ -21,19 +22,21 @@ footer w =
     help = txtLink "Help" "?page=help"
     contact = txtLink "Contact" "?page=contact"
     content = flow down [ defaultSpacer
-                       , flow right [ start
-                                    , defaultSpacer, defaultSpacer
-                                    , levels
-                                    , defaultSpacer, defaultSpacer
-                                    , highscore
-                                    , defaultSpacer, defaultSpacer
-                                    , createLevel
-                                    , defaultSpacer, defaultSpacer
-                                    , help
-                                    , defaultSpacer, defaultSpacer
-                                    , faq
-                                    , defaultSpacer, defaultSpacer
-                                    , contact ]
-                       , defaultSpacer ]
+                        , divider purple1 w
+                        , defaultSpacer
+                        , flow right [ start
+                                     , defaultSpacer, defaultSpacer
+                                     , levels
+                                     , defaultSpacer, defaultSpacer
+                                     , highscore
+                                     , defaultSpacer, defaultSpacer
+                                     , createLevel
+                                     , defaultSpacer, defaultSpacer
+                                     , help
+                                     , defaultSpacer, defaultSpacer
+                                     , faq
+                                     , defaultSpacer, defaultSpacer
+                                     , contact ] |> centerHorizontally w
+                        , doubleDefSpacer ]
   in
     content |> container w (heightOf content) midTop

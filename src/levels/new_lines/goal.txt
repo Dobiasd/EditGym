@@ -1,0 +1,3 @@
+Sometimes a text is generally well written
+but the line breaks are totally messed up.
+Luckily this is quite easy to correct.

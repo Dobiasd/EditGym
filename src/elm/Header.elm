@@ -7,8 +7,9 @@ import Graphics.Element (Element, container, topRight, color, image, link, flow,
 import Text
 
 import UrlEncode (genLink)
-import Layout (defaultSpacer, toDefText, toSizedText,
-  black1, white1, orange1, blue1, purple1, red1, green1, gray1)
+import Layout (defaultSpacer, toDefText, toSizedText
+  , black1, white1, orange1, blue1, purple1, red1, green1, gray1
+  , divider, darkGray1)
 
 iconSize : Int
 iconSize = 32
@@ -46,13 +47,15 @@ topBar : Int -> Element
 topBar w =
   flow down [ defaultSpacer
             , flow right [ logo
-            , flow right [ shareIcons, defaultSpacer ]
+              , flow right [ shareIcons, defaultSpacer ]
                 |> container (w - logoWidth) logoHeight topRight
-            ]
-            , defaultSpacer ] |> color black1
+              ]
+            ] |> color black1
 
 header : Int -> Element
 header w =
   flow down [
     topBar w
+  , defaultSpacer
+  , divider darkGray1 w
   , defaultSpacer ] |> color black1
