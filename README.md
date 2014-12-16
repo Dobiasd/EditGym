@@ -25,8 +25,6 @@ custom levels: as url or in online raw text (e.g. codepad). url only up to 2000 
 
 replay in help (gif?)
 
-einleitung kuerzer
-
 pressed keys anzeigen
 
 warmup-tutorial: schreiben dass maus nicht geht, was ist das ziel. taste gedrueckt halten geht nicht
