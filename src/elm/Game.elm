@@ -136,7 +136,7 @@ showTimeInDs = showTimeInPrec 1
 showTimeInMs : Int -> String
 showTimeInMs = showTimeInPrec 3
 
--- todo: fixed widths
+-- todo: fixed widths, center texts
 scenePlay : Int -> Int -> State -> Element
 scenePlay w h {editor, keyHistory, goal, timeInMs} =
   let finished = editor.document == goal
