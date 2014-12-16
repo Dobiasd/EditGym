@@ -14,15 +14,10 @@ todo:
 
 time and keystrokes gleichzeitig messen, dann beim eintragen in die highscore auswaehlen lassen
 timestamp, wenn das equal dann name. Kombination aus allem unique in der DB.
-help: tutorial mit animated gif einfuegen?
-save highscore
 highscore position regarding last 100 users of this level
 highscore-dialog am Ende automatisch über das game einblenden (mit try-again-button), und da auch share rein
 highscore with date
 highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann
-haskell-level: No special characters
-show line numbers?
-user can provide urls to own start and end txts via parameters
 ads
 in game button: "restart (F5)""
 custom levels: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
