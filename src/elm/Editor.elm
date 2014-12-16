@@ -54,6 +54,9 @@ keyStrings =
   ++ (List.map (toDefStrPair 1 identity) [65..90]) -- A to Z
   |> Dict.fromList
 
+tabStr : String
+tabStr = "    "
+
 showKey : Bool -> Keyboard.KeyCode -> Maybe Char
 showKey shift key = Dict.get (boolToInt shift, key) keyStrings
 
@@ -284,6 +287,12 @@ stepCut ctrl shift key ({document, selection, clipboard} as state) =
     then state |> stepCopy True False 67 |> deleteSelection
     else state
 
+stepTab : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepTab ctrl shift key ({document, selection, clipboard} as state) =
+  if (not ctrl && key == 9)
+    then replaceSelection tabStr state
+    else state
+
 stepSelectAll : Bool -> Bool -> Keyboard.KeyCode -> State -> State
 stepSelectAll ctrl shift key ({document, selection} as state) =
   if (ctrl && key == 65)
@@ -328,6 +337,7 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 , stepPaste ctrl shift
                 , stepCut ctrl shift
                 , stepSelectAll ctrl shift
+                , stepTab ctrl shift
                 ]
   in  List.foldl stepKey state keysDownNew
 

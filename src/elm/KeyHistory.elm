@@ -48,6 +48,7 @@ keyStrings =
   , (190, ".")
   , (46, "del")
   , (8, "bs")
+  , (9, "tab")
   ]
   ++ (List.map (toDefStrPair identity) [48..57]) -- top numbers
   ++ (List.map (toDefStrPair identity) [96..105]) -- block numbers

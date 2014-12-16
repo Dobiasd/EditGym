@@ -40,16 +40,30 @@ function DisableBackspaceNavigation() {
 }
 
 // http://stackoverflow.com/questions/13562041/jquery-how-to-stop-propagation-of-ctrl-a
-function DisableCtrlA() {
+function DisableCtrlAAndTab() {
   jQuery(document).keydown(function(e) {
     if (e.ctrlKey) {
-      if (e.keyCode == 65 || e.keyCode == 97) { // 'A' or 'a'
+      if (e.keyCode == 65 || e.keyCode == 97 ) { // 'A' or 'a'
         e.preventDefault();
-        // SELECT ALL MARKERS HERE...
+      }
+    }
+    else
+    {
+      if ( e.keyCode == 9 ) { // or tab
+        e.preventDefault();
       }
     }
   });
 }
+
+
+$(document).keydown(function(objEvent) {
+    if (objEvent.keyCode == 9) {  //tab pressed
+        objEvent.preventDefault(); // stops its action
+    }
+})
+
+
 
 function Init() {
   var page = getURLParameterDef("page", "start");
@@ -107,7 +121,7 @@ function Init() {
     });
 
     DisableBackspaceNavigation();
-    DisableCtrlA();
+    DisableCtrlAAndTab();
   }
   else if (page == "help")
     elmContent = Elm.embed(Elm.Help, mainDiv, {});
