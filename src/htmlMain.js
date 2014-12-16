@@ -63,7 +63,12 @@ $(document).keydown(function(objEvent) {
     }
 })
 
-
+function CleanTextData(data) {
+  data = data.replace(/(\r\n)/gm,"\n");
+  data = data.replace(/(\r)/gm,"\n");
+  data = data.replace(/\t/g,"    ");
+  return data;
+}
 
 function Init() {
   var page = getURLParameterDef("page", "start");
@@ -95,8 +100,7 @@ function Init() {
       dataType: "text",
       url: goalUrl,
       success: function(data) {
-        data = data.replace(/(\r\n)/gm,"\n");
-        data = data.replace(/(\r)/gm,"\n");
+        data = CleanTextData(data);
         elmContent.ports.goal.send(data);
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -110,7 +114,7 @@ function Init() {
       dataType: "text",
       url: startUrl,
       success: function(data) {
-        data = data.replace(/(\r)/gm,"");
+        data = CleanTextData(data);
         elmContent.ports.start.send(data);
       },
       error: function(jqXHR, textStatus, errorThrown) {
