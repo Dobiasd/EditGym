@@ -39,7 +39,7 @@ boolToInt b = case b of
 
 keyStrings : Dict.Dict (Int, Keyboard.KeyCode) Char
 keyStrings =
-  let toDefStrPair shift mod key = ((shift, mod key), key |> fromCode)
+  let toDefStrPair shift key c = ((shift, key), c |> fromCode)
   in  [
     ((0, 13), '\n')
   , ((1, 13), '\n')
@@ -48,10 +48,10 @@ keyStrings =
   , ((0, 188), ',')
   , ((0, 190), '.')
   ]
-  ++ (List.map (toDefStrPair 0 identity) [48..57]) -- top numbers
-  ++ (List.map (toDefStrPair 0 identity) [96..105]) -- block numbers
-  ++ (List.map (toDefStrPair 0 (\x -> x - 32)) [97..122]) -- a to z
-  ++ (List.map (toDefStrPair 1 identity) [65..90]) -- A to Z
+  ++ (List.map2 (toDefStrPair 0) [48..57] [48..57]) -- top numbers
+  ++ (List.map2 (toDefStrPair 0) [96..105] [48..57]) -- block numbers
+  ++ (List.map2 (toDefStrPair 0) [65..90] [97..122]) -- a to z
+  ++ (List.map2 (toDefStrPair 1) [65..90] [65..90]) -- A to Z
   |> Dict.fromList
 
 tabStr : String
