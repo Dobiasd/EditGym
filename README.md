@@ -12,7 +12,7 @@ EditGym helps you acquire this set of skills by letting you practice and compete
 
 todo:
 
-time and keystrokes gleichzeitig messen, dann beim eintragen auswaehlen
+time and keystrokes gleichzeitig messen, dann beim eintragen in die highscore auswaehlen lassen
 timestamp, wenn das equal dann name. Kombination aus allem unique in der DB.
 help: tutorial mit animated gif einfuegen?
 save highscore
@@ -21,11 +21,9 @@ highscore-dialog am Ende automatisch über das game einblenden (mit try-again-bu
 highscore with date
 highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann
 haskell-level: No special characters
-show line numbers
-level: "I sucked at editing ... but now i'm awesome." oder so
+show line numbers?
 user can provide urls to own start and end txts via parameters
 ads
-replace tabs with 4 spaces upon loading
 in game button: "restart (F5)""
 custom levels: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
 
