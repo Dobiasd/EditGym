@@ -3,13 +3,15 @@ module Header where
 import Window
 import List
 import List ((::))
-import Graphics.Element (Element, container, topRight, color, image, link, flow, down, right)
+import Graphics.Element (Element, container, topRight, color, image, link, flow
+  , down, right, widthOf, heightOf, middle, bottomRight, outward)
 import Text
+import Footer(menuItems)
 
 import UrlEncode (genLink)
 import Layout (defaultSpacer, toDefText, toSizedText
   , black1, white1, orange1, blue1, purple1, red1, green1, gray1
-  , divider, darkGray1)
+  , divider, darkGray1, lightGray1, doubleDefSpacer, centerHorizontally)
 
 iconSize : Int
 iconSize = 32
@@ -43,14 +45,33 @@ shareIcons =
 logo : Element
 logo = image logoWidth logoHeight "imgs/logo.png" |> link "?page=start"
 
+menuButton str url =
+    let toTxt = Text.fromString
+                >> Text.height 14
+                >> Text.color lightGray1
+                >> Text.leftAligned
+        elem = toTxt str
+    in  container (widthOf elem + 4) (heightOf elem + 2) middle elem
+        |> color darkGray1 |> link url
+
 topBar : Int -> Element
 topBar w =
-  flow down [ defaultSpacer
-            , flow right [ logo
-              , flow right [ shareIcons, defaultSpacer ]
-                |> container (w - logoWidth) logoHeight topRight
-              ]
-            ] |> color black1
+  let buttons = menuItems |> List.map (uncurry menuButton)
+      buttonRow = buttons
+                  |> List.intersperse doubleDefSpacer
+                  |> (\x -> x ++ [doubleDefSpacer] )
+                  |> flow right
+      menu = centerHorizontally (w - logoWidth) buttonRow
+             |> container w logoHeight bottomRight
+  in flow outward [ flow down [ defaultSpacer
+                              , flow right [ logo
+                              , flow right [ shareIcons, defaultSpacer ]
+                                |> container (w - logoWidth)
+                                             logoHeight
+                                             topRight
+                              ]
+                            ] |> color black1
+                  , menu ]
 
 header : Int -> Element
 header w =

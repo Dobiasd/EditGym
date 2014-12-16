@@ -1,42 +1,42 @@
 module Footer where
 
-import Layout (defaultSpacer, darkGray1, toDefText, divider, purple1
-    , centerHorizontally, doubleDefSpacer)
+import List
 import Graphics.Element (Element, container, heightOf, widthOf, middle
     , color, link, flow, down, right, midTop)
 import Color (Color)
+
+import Layout (defaultSpacer, darkGray1, toDefText, divider, purple1
+    , centerHorizontally, doubleDefSpacer)
 
 txtLink str url =
     let elem = toDefText str
     in  container (widthOf elem + 10) (heightOf elem + 6) middle elem
         |> color darkGray1 |> link url
 
+menuItems : List (String, String)
+menuItems = [
+    ("Home", "?page=start")
+  , ("Highscore list", "?page=highscores")
+  , ("FAQ", "?page=faq")
+  , ("Levels", "?page=levels")
+  , ("Create level", "?page=create_level")
+  , ("Help", "?page=help")
+  , ("Contact", "?page=contact")
+  ]
+
 footer : Int -> Element
 footer w =
   let
-    start = txtLink "Home" "?page=start"
-    highscore = txtLink "Highscore list" "?page=highscores"
-    faq = txtLink "FAQ""?page=faq"
-    levels = txtLink "Levels" "?page=levels"
-    createLevel = txtLink "Create level" "?page=create_level"
-    help = txtLink "Help" "?page=help"
-    contact = txtLink "Contact" "?page=contact"
+    buttons = menuItems |> List.map (uncurry txtLink)
+    buttonRow = buttons
+              |> List.intersperse doubleDefSpacer
+              |> (\x -> x ++ [doubleDefSpacer] )
+              |> flow right
+              |> centerHorizontally w
     content = flow down [ defaultSpacer
-                        , divider purple1 w
-                        , defaultSpacer
-                        , flow right [ start
-                                     , defaultSpacer, defaultSpacer
-                                     , levels
-                                     , defaultSpacer, defaultSpacer
-                                     , highscore
-                                     , defaultSpacer, defaultSpacer
-                                     , createLevel
-                                     , defaultSpacer, defaultSpacer
-                                     , help
-                                     , defaultSpacer, defaultSpacer
-                                     , faq
-                                     , defaultSpacer, defaultSpacer
-                                     , contact ] |> centerHorizontally w
-                        , doubleDefSpacer ]
+                         , divider purple1 w
+                         , defaultSpacer
+                         , buttonRow,
+                         doubleDefSpacer ]
   in
     content |> container w (heightOf content) midTop
