@@ -151,13 +151,19 @@ lineRightOffset document cursor =
 
 stepCursorLeft : Bool -> Bool -> State -> State
 stepCursorLeft ctrl shift ({document, cursor, selection} as state) =
-  let dist = if ctrl then wordLeftOffset document cursor else -1
+  let dist = if ctrl then wordLeftOffset document cursor
+                     else if isSelected selection && not shift
+                             then uncurry min selection - cursor
+                             else -1
       cursor' = max 0 (cursor + dist)
   in { state | cursor <- cursor' } |> stepSelection shift
 
 stepCursorRight : Bool -> Bool -> State -> State
 stepCursorRight ctrl shift ({document, cursor, selection} as state) =
-  let dist = if ctrl then wordRightOffset document cursor else 1
+  let dist = if ctrl then wordRightOffset document cursor
+                     else if isSelected selection && not shift
+                             then uncurry max selection - cursor
+                             else 1
       cursor' = min (String.length document) (cursor + dist)
   in { state | cursor <- cursor' } |> stepSelection shift
 
