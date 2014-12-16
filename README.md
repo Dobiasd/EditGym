@@ -19,9 +19,32 @@ highscore-dialog am Ende automatisch über das game einblenden (mit try-again-bu
 highscore with date
 highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann
 ads
-in game button: "restart (F5?, better some key combo)"
+in game button: "restart (ctrl+r)"
 custom levels: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
+
+replay in help (gif?)
+keys anzeigen
 
 quatsch:
 instant replay
 compete live (with chat)
+
+imwegsteher:
+einleitung kuerzer
+
+warmup-tutorial: schreiben dass maus nicht geht, was ist das ziel. taste gedrueckt halten geht nicht
+
+button to next level (ctrl+n) mit pfeil davor
+button to previous level (ctrl+p) mit pfeil dahinter
+
+"coach says: ...""
+
+strg+z
+
+keyhistory (white/gray up/down) explanation
+
+zeit verstellen verhindern, timestamps aller keymoves monoton steigend
+
+cursor in firefox in xp wrong positioned
+
+no negative values in highscore (keys and time)
