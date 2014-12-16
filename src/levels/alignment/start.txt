@@ -1,9 +1,9 @@
-Tree like structures
-1) need
+Tree-like structures
+1) like
 a) to
 - be
 - indented
 b) correctly
-2) to
+2) in order to
 a) look
-b) nice
+b) nice.
