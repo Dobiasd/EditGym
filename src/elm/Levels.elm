@@ -37,8 +37,8 @@ subjects =
     , [
         "just_type"
       , "delete_chars"
-      , "line_swap"
       , "word_swap"
+      , "line_swap"
       , "remove_words_1"
       ]
     )
@@ -59,8 +59,9 @@ subjects =
     )
   , ( "Stretching"
     , [
-        "i_am_awesome"
+        "alignment"
       , "more_lines"
+      , "i_am_awesome"
       ]
     )
   ]
