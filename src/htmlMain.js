@@ -39,6 +39,18 @@ function DisableBackspaceNavigation() {
   });
 }
 
+// http://stackoverflow.com/questions/13562041/jquery-how-to-stop-propagation-of-ctrl-a
+function DisableCtrlA() {
+  jQuery(document).keydown(function(e) {
+    if (e.ctrlKey) {
+      if (e.keyCode == 65 || e.keyCode == 97) { // 'A' or 'a'
+        e.preventDefault();
+        // SELECT ALL MARKERS HERE...
+      }
+    }
+  });
+}
+
 function Init() {
   var page = getURLParameterDef("page", "start");
 
@@ -95,6 +107,7 @@ function Init() {
     });
 
     DisableBackspaceNavigation();
+    DisableCtrlA();
   }
   else if (page == "help")
     elmContent = Elm.embed(Elm.Help, mainDiv, {});

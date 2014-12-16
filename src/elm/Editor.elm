@@ -278,6 +278,12 @@ stepCut ctrl shift key ({document, selection, clipboard} as state) =
     then state |> stepCopy True False 67 |> deleteSelection
     else state
 
+stepSelectAll : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepSelectAll ctrl shift key ({document, selection} as state) =
+  if (ctrl && key == 65)
+    then { state | selection <- (0, String.length document) }
+    else state
+
 replaceSelection : String -> State -> State
 replaceSelection str ({document, selection} as state) =
   let state' = deleteSelection state
@@ -315,6 +321,7 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 , stepCopy ctrl shift
                 , stepPaste ctrl shift
                 , stepCut ctrl shift
+                , stepSelectAll ctrl shift
                 ]
   in  List.foldl stepKey state keysDownNew
 
