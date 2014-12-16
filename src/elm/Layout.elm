@@ -77,7 +77,7 @@ pageWidth : Int
 pageWidth = 450
 
 centerHorizontally : Int -> Element -> Element
-centerHorizontally w element = container w (heightOf element) middle element
+centerHorizontally w element = container (w-2) (heightOf element) middle element
 
 toSizedText : Float -> String -> Element
 toSizedText s = Text.fromString >> Text.height s >> Text.color white1
