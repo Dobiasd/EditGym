@@ -19,11 +19,11 @@ helpButton = niceButton "Help" "?page=help"
 introduction : Int -> Element
 introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 
-A lot of daily tasks require you to edit text. And no matter if you use a word processor like [LibreOffice Writer](https://www.libreoffice.org/discover/writer) or [Word](http://en.wikipedia.org/wiki/Microsoft_Word), an editor like [Notepad(++)](http://notepad-plus-plus.org), an [IDE](http://en.wikipedia.org/wiki/Integrated_development_environment) like [Eclipse](https://eclipse.org) etc. or just write an email or a post on [facebook](http://www.facebook.com) or [reddit](http://www.reddit.com) in your browser, the most basic default keyboard shortcuts are the same. And knowing them can [save you precious time](http://lifehacker.com/5970089/back-to-the-basics-learn-to-use-keyboard-shortcuts-like-a-ninja).
+Sometimes you need to edit or rearrange text quickly. No matter if you use a [word processor](https://www.libreoffice.org/discover/writer) an [editor](http://notepad-plus-plus.org), an [IDE](https://eclipse.org)  or just write an email or a post on [facebook](http://www.facebook.com) or [something](http://www.reddit.com), the basic keyboard shortcuts are mainly the same.
+But [just memorizing them](https://www.shortcutfoo.com) alone is not enough to really [save time](http://lifehacker.com/5970089/back-to-the-basics-learn-to-use-keyboard-shortcuts-like-a-ninja).
+It is also important (and sometimes even fun) to choose the most efficient tactics effortlessly.
 
-But real efficiency is not reached by [just memorizing all shortcuts](https://www.shortcutfoo.com). It is also important (and fun!) to be able to effortlessly choose the tactics with the smallest amount of shortcuts to reach the desired goal.
-
-EditGym helps you acquire this set of skills by letting you practice and compete on standardized text snippets.
+EditGym helps you to acquire this set of skills by letting you practice and compete on standardized text snippets.
 
 """
 
