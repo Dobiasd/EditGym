@@ -56,9 +56,9 @@ menuButton str url =
 menuItems : List (String, String)
 menuItems = [
     ("Home", "?page=start")
-  , ("Levels", "?page=levels")
+  , ("Exercises", "?page=exercises")
   , ("High scores", "?page=highscores")
-  , ("Create level", "?page=create_level")
+  , ("Create exercise", "?page=create_exercise")
   , ("Help", "?page=help")
   ]
 

@@ -10,8 +10,8 @@ import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
   , defaultSpacer)
 import Skeleton
 
-levelsButton : Element
-levelsButton = niceButton "Work out" "?page=levels"
+exercisesButton : Element
+exercisesButton = niceButton "Work out" "?page=exercises"
 
 introduction : Int -> Element
 introduction w = Skeleton.showTextPart w <| Markdown.toElement """
@@ -28,5 +28,5 @@ scene w h =
   flow down [
     introduction w
   , defaultSpacer
-  , centerHorizontally w levelsButton ]
+  , centerHorizontally w exercisesButton ]
   |> Skeleton.showPage w h

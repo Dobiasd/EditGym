@@ -76,17 +76,17 @@ function Init() {
 
   var mainDiv = document.getElementById('main');
 
-  if (page == "levels")
-    elmContent = Elm.embed(Elm.Levels, mainDiv, {});
+  if (page == "exercises")
+    elmContent = Elm.embed(Elm.Exercises, mainDiv, {});
   else if (page == "highscores")
     elmContent = Elm.embed(Elm.Highscores, mainDiv, {});
   else if (page == "newsletter")
     elmContent = Elm.embed(Elm.Newsletter, mainDiv, {});
-  else if (page == "create_level")
-    elmContent = Elm.embed(Elm.CreateLevel, mainDiv, {});
+  else if (page == "create_exercise")
+    elmContent = Elm.embed(Elm.CreateExercise, mainDiv, {});
   else if (page == "game")
   {
-    level = getURLParameterDef("level", "");
+    exercise = getURLParameterDef("exercise", "");
     loadingTextStart = "loading ...";
     loadingTextGoal = "... loading";
     elmContent = Elm.embed(Elm.Game, mainDiv,
@@ -95,9 +95,9 @@ function Init() {
     elmContent.ports.start.send(loadingTextStart);
     elmContent.ports.goal.send(loadingTextGoal);
 
-    levelBaseUrl = "levels/" + level + "/";
-    startUrl = levelBaseUrl + "start.txt";
-    goalUrl = levelBaseUrl + "goal.txt";
+    exerciseBaseUrl = "exercise/" + exercise + "/";
+    startUrl = exerciseBaseUrl + "start.txt";
+    goalUrl = exerciseBaseUrl + "goal.txt";
 
     // http://stackoverflow.com/questions/6470567/jquery-load-txt-file-and-insert-into-div
     // In chrome you have to start with the following flag to make it work: --allow-file-access-from-files

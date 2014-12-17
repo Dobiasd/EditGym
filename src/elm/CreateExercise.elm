@@ -1,4 +1,4 @@
-module CreateLevel where
+module CreateExercise where
 
 import Signal
 import Window
@@ -13,7 +13,7 @@ import Skeleton
 introduction : Int -> Element
 introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 
-todo: Allow to create levels by linking files or using the url.
+todo: Allow to create exercises by linking files or using the url.
 
 """
 

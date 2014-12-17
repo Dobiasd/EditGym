@@ -5,13 +5,13 @@ rm -r build
 mkdir build
 mkdir build/js
 
-elm-make src/elm/Start.elm src/elm/Levels.elm src/elm/Game.elm src/elm/Highscores.elm src/elm/Contact.elm src/elm/Help.elm src/elm/FAQ.elm src/elm/CreateLevel.elm src/elm/Newsletter.elm --output build/js/Bundle_uncompressed.js
+elm-make src/elm/Start.elm src/elm/Exercises.elm src/elm/Game.elm src/elm/Highscores.elm src/elm/Contact.elm src/elm/Help.elm src/elm/FAQ.elm src/elm/CreateExercise.elm src/elm/Newsletter.elm --output build/js/Bundle_uncompressed.js
 
 if [ $? -eq 0 ]
 then
 
   cp -r ./src/imgs ./build
-  cp -R ./src/levels ./build
+  cp -R ./src/exercises ./build
 
   uglifyjs build/js/Bundle_uncompressed.js > build/js/Bundle.js
   rm build/js/Bundle_uncompressed.js

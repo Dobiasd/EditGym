@@ -11,7 +11,7 @@ import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
   , defaultSpacer)
 
 startButton : Element
-startButton = niceButton "Start" "?page=levels"
+startButton = niceButton "Start" "?page=exercises"
 
 helpButton : Element
 helpButton = niceButton "Help" "?page=help"

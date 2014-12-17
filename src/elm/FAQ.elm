@@ -10,8 +10,8 @@ import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
   , defaultSpacer)
 import Skeleton
 
-levelsButton : Element
-levelsButton = niceButton "Work out" "?page=levels"
+exercisesButton : Element
+exercisesButton = niceButton "Work out" "?page=exercises"
 
 introduction : Int -> Element
 introduction w = Skeleton.showTextPart w <| Markdown.toElement """
@@ -22,7 +22,7 @@ introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 No, this is not planned at the moment.
 
 ## Why are some keys disabled for typing?
-Only the keys needed for the [default levels](?page=levels) are activated.
+Only the keys needed for the [default exercises](?page=exercises) are activated.
 
 ## Why is the text selection displayed so ugly?
 Normally it should look fine. But since it is generated using an [UTF-8 character](http://www.fileformat.info/info/unicode/char/2588/index.htm), your browser has to support a nice monospace font.
@@ -34,7 +34,7 @@ The editor simply does not use the clipboard provided by the operating system bu
 Is is disabled because this page was build to make you a keyboarding master, not a mouse fool.
 
 ## Why does holding down a key not produce many characters like usually?
-You are here to learn efficient shortcuts. Solving a level by holding down a key would reinforce inefficient habits.
+You are here to learn efficient shortcuts. Solving a exercise by holding down a key would reinforce inefficient habits.
 
 ## Why does EditGym not behave like my favorite text editor?
 In some cases not all editors behave the same.
@@ -73,9 +73,9 @@ Your cursor is at the beginning of line 3 (left of the l) and you press
 * Sublime Text (3, build 3065) will remove only the newline character between line 2 and line 3.
 So it is not possible to cover everything. [I](?page=contact) opted for the behavior that subjectively seemed to be the most sane and woult not teach habits not applicable when switching between editors. So in this particular case I have chosen "do nothing at all".
 
-## I have a suggestion for an awesome level. Can you include it?
+## I have a suggestion for an awesome exercise. Can you include it?
 Yes, perhaps. Just [send me an email](?page=contact) with the start and goal text, and I will see if I think it fits here. ;)
-In any case, you can simply [upload it and play it here](?page=create_level).
+In any case, you can simply [upload it and play it here](?page=create_exercise).
 
 ## How was this page made?
 This page was mostly written in [Elm](http://elm-lang.org), an awesome [pure functional](http://en.wikipedia.org/wiki/Functional_programming) [Haskell](http://www.haskell.org)-like programming language that compiles to Javascript.
@@ -93,5 +93,5 @@ scene w h =
   flow down [
     introduction w
   , defaultSpacer
-  , centerHorizontally w levelsButton ]
+  , centerHorizontally w exercisesButton ]
   |> Skeleton.showPage w h

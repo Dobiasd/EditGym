@@ -1,4 +1,4 @@
-module Levels where
+module Exercises where
 
 import Graphics.Element (Element, flow, down, right, spacer, color)
 import Window
@@ -11,8 +11,8 @@ import Layout (toColText, toDefText, green1, blue1, darkGray1
   , centerHorizontally, divider, doubleDefSpacer)
 import Skeleton
 
-levelButton : String -> Element
-levelButton s = niceButtonSize 26 s ("?page=game&level=" ++ s)
+exerciseButton : String -> Element
+exerciseButton s = niceButtonSize 26 s ("?page=game&exercise=" ++ s)
 
 main : Signal Element
 main = Signal.map2 scene Window.width Window.height
@@ -68,14 +68,14 @@ subjects =
   ]
 
 showSubject : Int -> String -> List String -> Element
-showSubject w subject levels =
+showSubject w subject exercises =
   let subjectElem = toSizedText 40 subject |> centerHorizontally w
-      levelsElem =
-        levels
-        |> List.map levelButton
+      exercisesElem =
+        exercises
+        |> List.map exerciseButton
         |> asGrid 3
         |> centerHorizontally w
-  in flow down [ subjectElem, doubleDefSpacer, levelsElem ]
+  in flow down [ subjectElem, doubleDefSpacer, exercisesElem ]
 
 scene : Int -> Int -> Element
 scene w h =
