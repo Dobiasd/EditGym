@@ -71,6 +71,27 @@ function CleanTextData(data) {
   return data;
 }
 
+// http://stackoverflow.com/questions/6470567/jquery-load-txt-file-and-insert-into-div
+// In chrome you have to start with the following flag to make it work: --allow-file-access-from-files
+function LoadAndForward(dataUrl, doClean, dest) {
+  $.ajax({
+    dataType: "text",
+    mimeType: "text/plain",
+    url: dataUrl,
+    success: function(data) {
+      if (doClean) {
+        data = CleanTextData(data);
+      }
+      dest.send(data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      msg = "Unable to load " + dataUrl + "\n"
+              + textStatus + "\n" + errorThrown;
+      dest.send(msg);
+    }
+  });
+}
+
 function Init() {
   var page = getURLParameterDef("page", "start");
 
@@ -89,47 +110,23 @@ function Init() {
     exercise = getURLParameterDef("exercise", "");
     loadingTextStart = "loading ...";
     loadingTextGoal = "... loading";
+    loadingTextCoach = "...";
     elmContent = Elm.embed(Elm.Game, mainDiv,
                             { start : loadingTextStart
-                            , goal : loadingTextGoal });
+                            , goal : loadingTextGoal
+                            , coach : loadingTextCoach });
     elmContent.ports.start.send(loadingTextStart);
     elmContent.ports.goal.send(loadingTextGoal);
+    elmContent.ports.coach.send(loadingTextCoach);
 
-    exerciseBaseUrl = "exercise/" + exercise + "/";
+    exerciseBaseUrl = "exercises/" + exercise + "/";
     startUrl = exerciseBaseUrl + "start.txt";
     goalUrl = exerciseBaseUrl + "goal.txt";
+    coachUrl = exerciseBaseUrl + "coach.txt";
 
-    // http://stackoverflow.com/questions/6470567/jquery-load-txt-file-and-insert-into-div
-    // In chrome you have to start with the following flag to make it work: --allow-file-access-from-files
-    $.ajax({
-      dataType: "text",
-      mimeType: "text/plain",
-      url: goalUrl,
-      success: function(data) {
-        data = CleanTextData(data);
-        elmContent.ports.goal.send(data);
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        msg = "Unable to load " + goalUrl + "\n"
-                + textStatus + "\n" + errorThrown;
-        elmContent.ports.goal.send(msg);
-      }
-    });
-
-    $.ajax({
-      dataType: "text",
-      mimeType: "text/plain",
-      url: startUrl,
-      success: function(data) {
-        data = CleanTextData(data);
-        elmContent.ports.start.send(data);
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        msg = "Unable to load " + startUrl + "\n"
-                + textStatus + "\n" + errorThrown;
-        elmContent.ports.start.send(msg);
-      }
-    });
+    LoadAndForward(startUrl, true, elmContent.ports.start)
+    LoadAndForward(goalUrl, true, elmContent.ports.goal)
+    LoadAndForward(coachUrl, true, elmContent.ports.coach)
 
     DisableBackspaceNavigation();
     DisableCtrlAAndTab();

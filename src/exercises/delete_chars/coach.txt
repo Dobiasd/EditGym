@@ -1,0 +1,2 @@
+Use the arrow keys to navigate the text.
+Press backspace or delete to remove the gaps.

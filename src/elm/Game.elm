@@ -4,12 +4,13 @@ import Window
 import Set
 import Keyboard
 import Time
+import Text
 import Signal
 import List
 import String
 import Graphics.Element (Element, flow, down, right, outward, spacer, empty)
 
-import Layout (toDefText, toSizedText, lightGray1)
+import Layout (toDefText, toSizedText, lightGray1, blue1, toColText)
 import Skeleton
 import Editor
 import KeyHistory
@@ -19,21 +20,25 @@ type alias State = {
   , keyHistory : KeyHistory.State
   , keysDown : Set.Set Keyboard.KeyCode
   , goal : String
+  , coach : String
   , timeInMs : Int
   }
 
 port start : Signal String
 port goal : Signal String
+port coach : Signal String
 
 initialState : State
 initialState = State Editor.initialState
                      KeyHistory.initialState
                      Set.empty
                      "loading"
+                     "loading"
                      0
 
 type Input = Decisecond | Start String
                         | Goal String
+                        | Coach String
                         | Keys Int (Set.Set Keyboard.KeyCode)
 
 startInput : Signal Input
@@ -41,6 +46,9 @@ startInput = Signal.map Start start
 
 goalInput : Signal Input
 goalInput = Signal.map Goal goal
+
+coachInput : Signal Input
+coachInput = Signal.map Coach coach
 
 keyInput : Signal Input
 keyInput =
@@ -55,7 +63,13 @@ timeInput = Signal.map (always Decisecond)
               <| Time.every (100 * Time.millisecond)
 
 input : Signal Input
-input = Signal.mergeMany [startInput, goalInput, keyInput, timeInput]
+input = Signal.mergeMany [
+    startInput
+  , goalInput
+  , keyInput
+  , timeInput
+  , coachInput
+  ]
 
 state : Signal State
 state = Signal.foldp step initialState input
@@ -65,6 +79,7 @@ step input =
   case input of
     Start start -> setStart start
     Goal goal -> setGoal goal
+    Coach coach -> setCoach coach
     Keys time keys -> stepKeys keys time
     Decisecond -> stepDecisecond
 
@@ -80,6 +95,9 @@ setStart start ({editor} as state) =
 
 setGoal : String -> State -> State
 setGoal goal state = { state | goal <- goal }
+
+setCoach : String -> State -> State
+setCoach coach state = { state | coach <- coach }
 
 stepKeys : Set.Set Keyboard.KeyCode -> Int -> State -> State
 stepKeys inKeysDown time ({editor, keyHistory, keysDown, goal} as state) =
@@ -102,8 +120,20 @@ validKey key = KeyHistory.showKey key /= ""
 displayGoal : String -> Element
 displayGoal goal = Editor.displayDocument lightGray1 goal
 
+displayCoach : String -> Element
+displayCoach str =
+  let textElem = str
+        |> Text.fromString
+        |> Text.height 16
+        |> Text.color blue1
+        |> Text.leftAligned
+  in  flow right [
+          toColText blue1 "Coach: "
+        , textElem
+      ]
+
 scene : Int -> Int -> State -> Element
-scene w h ({editor, keyHistory, editor, goal, timeInMs} as state) =
+scene w h ({editor, keyHistory, editor, goal, timeInMs, coach} as state) =
   let finished = editor.document == goal
       result = if finished
                  then flow down [
@@ -118,7 +148,10 @@ scene w h ({editor, keyHistory, editor, goal, timeInMs} as state) =
                     scenePlay w h state
                   , result
                   ]
-  in  Skeleton.showPage w h content
+  in  flow down [
+          content
+        , displayCoach coach
+      ] |> Skeleton.showPage w h
 
 showTimeInPrec : Int -> Int -> String
 showTimeInPrec decimals timeInMs =

@@ -34,8 +34,7 @@ finished: coach asks of next, one more set, highscore
 button to next exercise (ctrl+n) mit pfeil davor
 button to previous exercise (ctrl+p) mit pfeil dahinter
 
-"coach says: ...""
-first exercise coach: goal is to match editor to goal, no mouse, no holding down, keyhistory (white/gray up/down) explanation
+
 
 support ctrl+z
 
@@ -44,7 +43,6 @@ zeit verstellen verhindern, timestamps aller keymoves monoton steigend
 newsletter abbo (keep me informed)
 https for sending?
 FB-page einrichten, like button oben als link dahin
-exercise exp growth: coach: For small n O(n) can be faster than O(log(n))
 Highscore: Histogram mit vertical line wo man steht
 frame around displayText
 web storage fuer sternchen hinter den exercises http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available

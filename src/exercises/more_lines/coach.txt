@@ -1,0 +1,1 @@
+For small n, O(n) can be faster than O(log(n)).
