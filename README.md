@@ -59,6 +59,8 @@ frame around displayText
 levels exercises nennen
 restart = one more set
 web storage fuer sternchen hinter den exercises http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
+IE9: Share buttons in header too low
+IE9: image links in header have a border
 
 quatsch:
 instant replay
