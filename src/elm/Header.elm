@@ -4,13 +4,13 @@ import Window
 import List
 import List ((::))
 import Graphics.Element (Element, container, topRight, color, image, link, flow
-  , down, right, widthOf, heightOf, middle, bottomRight, outward)
+  , down, right, widthOf, heightOf, middle, bottomRight, outward, spacer)
 import Text
 import Footer(menuItems)
 
 import UrlEncode (genLink)
 import Layout (defaultSpacer, toDefText, toSizedText
-  , black1, white1, orange1, blue1, purple1, red1, green1, gray1
+  , white1, orange1, blue1, purple1, red1, green1, gray1
   , divider, darkGray1, lightGray1, doubleDefSpacer, centerHorizontally)
 
 iconSize : Int
@@ -40,6 +40,7 @@ shareIcons =
   in
     toDefText "share: " :: buttons
       |> List.intersperse (defaultSpacer)
+      |> \xs -> xs ++ [defaultSpacer]
       |> flow right
 
 logo : Element
@@ -63,14 +64,11 @@ topBar w =
                   |> flow right
       menu = centerHorizontally (w - logoWidth) buttonRow
              |> container w logoHeight bottomRight
+      topSpacerW = w - (30 + logoWidth + widthOf shareIcons + widthOf defaultSpacer)
+      topSpacer = spacer topSpacerW logoHeight
   in flow outward [ flow down [ defaultSpacer
-                              , flow right [ logo
-                              , flow right [ shareIcons, defaultSpacer ]
-                                |> container (w - logoWidth)
-                                             logoHeight
-                                             topRight
+                              , flow right [ logo, topSpacer, shareIcons ]
                               ]
-                            ] |> color black1
                   , menu ]
 
 header : Int -> Element
@@ -79,4 +77,4 @@ header w =
     topBar w
   , defaultSpacer
   , divider darkGray1 w
-  , defaultSpacer ] |> color black1
+  , defaultSpacer ]

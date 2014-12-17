@@ -19,8 +19,9 @@ showTextPart w content =
   in  container w h middle row |> color white1
 
 showPage : Int -> Int -> Element -> Element
-showPage w h content =
+showPage wFull h content =
   let
+    w = wFull - 2 -- prevent scrollbars from flickering when zoomed in browser
     content' = content |> container w (heightOf content) midTop
     headerElem = header w
     footerElem = footer w
@@ -39,4 +40,4 @@ showPage w h content =
     , content'
     , footerSpacer
     , footerElem
-    ] |> color black1 |> container w (max h h') midTop
+    ] |> container w (max h h') middle
