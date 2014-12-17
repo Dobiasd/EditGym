@@ -45,7 +45,6 @@ FB-page einrichten, like button oben als link dahin
 new level: remove dublicates
 level exp growth: coach: For small n O(n) can be faster than O(log(n))
 Highscore: Histogram mit vertical line wo man steht
-help: "has its own clipboard"
 frame around displayText
 levels exercises nennen
 web storage fuer sternchen hinter den exercises http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
