@@ -97,10 +97,11 @@ function Init() {
     startUrl = levelBaseUrl + "start.txt";
     goalUrl = levelBaseUrl + "goal.txt";
 
-    // Gives "syntax error" in firefox console when running locally.
     // http://stackoverflow.com/questions/6470567/jquery-load-txt-file-and-insert-into-div
+    // In chrome you have to start with the following flag to make it work: --allow-file-access-from-files
     $.ajax({
       dataType: "text",
+      mimeType: "text/plain",
       url: goalUrl,
       success: function(data) {
         data = CleanTextData(data);
@@ -115,6 +116,7 @@ function Init() {
 
     $.ajax({
       dataType: "text",
+      mimeType: "text/plain",
       url: startUrl,
       success: function(data) {
         data = CleanTextData(data);
