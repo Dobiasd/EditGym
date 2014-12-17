@@ -55,6 +55,7 @@ subjects =
     , [
         "numbers"
       , "swap_many_words"
+      , "remove_duplicates"
       ]
     )
   , ( "Stretching"
