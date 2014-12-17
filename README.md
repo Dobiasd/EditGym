@@ -56,7 +56,9 @@ Highscore: Histogram mit vertical line wo man steht
 layout: check for never w wide die page
 help: "has its own clipboard"
 frame around displayText
-
+levels exercises nennen
+restart = one more set
+web storage fuer sternchen hinter den exercises http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
 
 quatsch:
 instant replay
