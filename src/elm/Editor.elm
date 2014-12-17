@@ -13,8 +13,8 @@ import Char (fromCode)
 import Color (Color)
 
 import Layout (toDefText, white1, darkGray1)
-import Graphics.Element (Element, spacer, container, flow, down, outward
-  , empty)
+import Graphics.Element (Element, spacer, container, flow, down, right, outward
+  , empty, widthOf, heightOf, color)
 
 type alias Document = String
 type alias Cursor = Int
@@ -345,34 +345,43 @@ replace : String -> String -> String -> String
 replace token replacement =
   Regex.replace Regex.All (Regex.regex token) (\_ -> replacement)
 
-padLinesLeft : String -> String -> String
-padLinesLeft pad str =
-  str |> replace "^" pad
-      |> replace "\n" (String.append "\n" pad)
-
 replaceAllButNewlines : Char -> String -> String
 replaceAllButNewlines replacement str =
   let transF c = if | c == '\n' -> '\n'
                     | otherwise -> replacement
   in  str |> String.toList |> List.map transF |> String.fromList
 
+safeHead : a -> List a -> a
+safeHead def xs = case xs of
+  x::xs -> x
+  otherwise -> def
+
+safeLast : a -> List a -> a
+safeLast def = List.reverse >> safeHead def
+
+init : List a -> List a
+init = List.reverse >> List.tail >> List.reverse
+
 displayCursor : Document -> Cursor -> Element
 displayCursor document cursor =
-  let str = document |> replaceAllButNewlines ' '
-                     |> String.toList
-                     |> (\l -> ' '::l)
-                     |> List.indexedMap transF
-                     |> List.concat
-                     |> String.fromList
-      transF idx c = let isCursor = idx == cursor
-                     in  case c of
-                           '\n' -> if isCursor
-                                      then ['\n', '▕']
-                                      else ['\n', ' ']
-                           otherwise -> if isCursor
-                                          then ['▕']
-                                          else [c]
-  in  str |> displayTextCol white1
+  let upToCursor = document |> String.left cursor
+      rows = upToCursor |> String.split "\n"
+      lastRow = rows |> safeLast ""
+      dummyStr = "H"
+      yText = if String.isEmpty lastRow
+             then String.append upToCursor dummyStr
+             else upToCursor
+      y = yText
+            |> displayTextCol white1
+            |> heightOf
+            |> \x -> x - cursorHeight
+      x = lastRow |> displayTextCol white1 |> widthOf
+      cursorHeight = displayTextCol white1 dummyStr |> heightOf
+  in  flow down [ spacer 1 y
+                , flow right [ spacer x 1
+                             , spacer 1 cursorHeight |> color white1
+                             ]
+                ]
 
 displaySelection : Document -> Selection -> Element
 displaySelection document selection =
@@ -390,12 +399,12 @@ displaySelection document selection =
                            otherwise -> if isSelected
                                           then ['█']
                                           else [c]
-  in  str |> padLinesLeft " " |> displayTextCol darkGray1
+  in  str |> displayTextCol darkGray1
 
 displaySpaces : Document -> Element
 displaySpaces document =
   let str = document |> replace " " "•"
-  in  str |> padLinesLeft " " |> displayTextCol darkGray1
+  in  str |> displayTextCol darkGray1
 
 displayTextCol : Color -> Document -> Element
 displayTextCol col =
@@ -409,20 +418,14 @@ displayNewLines : Document -> Element
 displayNewLines =
   replaceAllButNewlines ' '
   >> replace "\n" "\\n\n"
-  >> padLinesLeft " "
   >> displayTextCol darkGray1
-
-displayEditText : Color -> Document -> Element
-displayEditText col =
-  padLinesLeft " "
-  >> displayTextCol col
 
 displayDocument : Color -> Document -> Element
 displayDocument col document =
   flow outward [
                  displayNewLines document
                , displaySpaces document
-               , displayEditText col document
+               , displayTextCol col document
   ]
 
 display : State -> Element
