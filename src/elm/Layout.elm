@@ -67,6 +67,9 @@ defaultSpacer = spacer spacerSize spacerSize
 doubleDefSpacer : Element
 doubleDefSpacer = spacer (2 * spacerSize) (2 * spacerSize)
 
+tripleDefSpacer : Element
+tripleDefSpacer = spacer (3 * spacerSize) (3 * spacerSize)
+
 quadDefSpacer : Element
 quadDefSpacer = spacer (4 * spacerSize) (4 * spacerSize)
 

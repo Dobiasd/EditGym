@@ -10,7 +10,8 @@ import Text
 import UrlEncode (genLink)
 import Layout (defaultSpacer, toDefText, toSizedText, octaDefSpacer
   , white1, orange1, blue1, purple1, red1, green1, gray1
-  , divider, darkGray1, lightGray1, doubleDefSpacer, centerHorizontally)
+  , divider, darkGray1, lightGray1, doubleDefSpacer, centerHorizontally
+  , tripleDefSpacer)
 
 iconSize : Int
 iconSize = 32
@@ -56,7 +57,7 @@ menuItems : List (String, String)
 menuItems = [
     ("Home", "?page=start")
   , ("Levels", "?page=levels")
-  , ("Highscore list", "?page=highscores")
+  , ("High scores", "?page=highscores")
   , ("Create level", "?page=create_level")
   , ("Help", "?page=help")
   ]
@@ -69,7 +70,7 @@ menu distSpacer =
 
 topBar : Int -> Element
 topBar w =
-  let buttons = menu doubleDefSpacer menuItems
+  let buttons = menu tripleDefSpacer menuItems
       rightPartW = w - logoWidth
       menuSpacerW = (rightPartW - widthOf buttons) // 2
       shareLeftSpacerW = w - (widthOf shareIcons + logoWidth)
