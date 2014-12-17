@@ -98,5 +98,5 @@ header w =
   flow down [
     topBar w
   , defaultSpacer
-  , divider darkGray1 w
+  , divider gray1 w
   , defaultSpacer ]
