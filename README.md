@@ -43,6 +43,19 @@ zeit verstellen verhindern, timestamps aller keymoves monoton steigend
 
 cursor in firefox in xp wrong positioned
 
+copyright unten
+non-free license?
+newsletter abbo? (keep me informed)
+https for sending?
+canonic url (always www.)
+2 menus: unten nur about, contact, newsletter
+FB-page einrichten, like button oben als link dahin
+new level: remove dublicates
+level exp growth: coach: For small n O(n) can be faster than O(log(n))
+Highscore: Histogram mit vertical line wo man steht
+layout: check for never w wide die page
+help: "has its own clipboard"
+frame around displayText
 
 
 quatsch:
