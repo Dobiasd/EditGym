@@ -80,6 +80,8 @@ function Init() {
     elmContent = Elm.embed(Elm.Levels, mainDiv, {});
   else if (page == "highscores")
     elmContent = Elm.embed(Elm.Highscores, mainDiv, {});
+  else if (page == "newsletter")
+    elmContent = Elm.embed(Elm.Newsletter, mainDiv, {});
   else if (page == "create_level")
     elmContent = Elm.embed(Elm.CreateLevel, mainDiv, {});
   else if (page == "game")
