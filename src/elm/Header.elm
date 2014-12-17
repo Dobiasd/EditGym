@@ -6,10 +6,9 @@ import List ((::))
 import Graphics.Element (Element, container, topRight, color, image, link, flow
   , down, right, widthOf, heightOf, middle, bottomRight, outward, spacer)
 import Text
-import Footer(menuItems)
 
 import UrlEncode (genLink)
-import Layout (defaultSpacer, toDefText, toSizedText
+import Layout (defaultSpacer, toDefText, toSizedText, octaDefSpacer
   , white1, orange1, blue1, purple1, red1, green1, gray1
   , divider, darkGray1, lightGray1, doubleDefSpacer, centerHorizontally)
 
@@ -48,28 +47,51 @@ logo = image logoWidth logoHeight "imgs/logo.png" |> link "?page=start"
 
 menuButton str url =
     let toTxt = Text.fromString
-                >> Text.height 14
+                >> Text.height 18
                 >> Text.color lightGray1
                 >> Text.leftAligned
-        elem = toTxt str
-    in  container (widthOf elem + 4) (heightOf elem + 2) middle elem
-        |> color darkGray1 |> link url
+    in  toTxt str |> link url
+
+menuItems : List (String, String)
+menuItems = [
+    ("Home", "?page=start")
+  , ("Levels", "?page=levels")
+  , ("Highscore list", "?page=highscores")
+  , ("Create level", "?page=create_level")
+  , ("Help", "?page=help")
+  ]
+
+menu : Element -> List (String, String) -> Element
+menu distSpacer =
+  List.map (uncurry menuButton)
+  >> List.intersperse distSpacer
+  >> flow right
 
 topBar : Int -> Element
 topBar w =
-  let buttons = menuItems |> List.map (uncurry menuButton)
-      buttonRow = buttons
-                  |> List.intersperse doubleDefSpacer
-                  |> (\x -> x ++ [doubleDefSpacer] )
-                  |> flow right
-      menu = centerHorizontally (w - logoWidth) buttonRow
-             |> container w logoHeight bottomRight
-      topSpacerW = w - (30 + logoWidth + widthOf shareIcons + widthOf defaultSpacer)
-      topSpacer = spacer topSpacerW logoHeight
-  in flow outward [ flow down [ defaultSpacer
-                              , flow right [ logo, topSpacer, shareIcons ]
-                              ]
-                  , menu ]
+  let buttons = menu doubleDefSpacer menuItems
+      rightPartW = w - logoWidth
+      menuSpacerW = (rightPartW - widthOf buttons) // 2
+      shareLeftSpacerW = w - (widthOf shareIcons + logoWidth)
+  in  flow right [
+          flow down [
+              defaultSpacer
+            , logo
+          ]
+        , flow down [
+              defaultSpacer
+            , flow right [
+                  spacer shareLeftSpacerW 1
+                , shareIcons
+              ]
+            , octaDefSpacer
+            , flow right [
+                  spacer menuSpacerW 1
+                , buttons
+                , spacer menuSpacerW 1
+              ]
+          ]
+      ]
 
 header : Int -> Element
 header w =

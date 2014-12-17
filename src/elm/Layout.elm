@@ -54,7 +54,7 @@ niceButtonSize h str url =
                      >> Text.leftAligned
       textElem = makeText h green1 str
       buttonW = 1.2 * (widthOf textElem |> toFloat) |> round
-      buttonH = 1.3 * (heightOf textElem |> toFloat) |> round
+      buttonH = 1.2 * (heightOf textElem |> toFloat) |> round
 
       textButton = container buttonW buttonH
                              middle textElem
@@ -69,6 +69,9 @@ doubleDefSpacer = spacer (2 * spacerSize) (2 * spacerSize)
 
 quadDefSpacer : Element
 quadDefSpacer = spacer (4 * spacerSize) (4 * spacerSize)
+
+octaDefSpacer : Element
+octaDefSpacer = spacer (8 * spacerSize) (8 * spacerSize)
 
 divider : Color -> Int -> Element
 divider col w = spacer w 1 |> Graphics.Element.color col

@@ -6,7 +6,7 @@ import Signal
 import List ((::))
 import List
 
-import Layout (toColText, toDefText, green1, blue1, darkGray1, black1
+import Layout (toColText, toDefText, green1, blue1, darkGray1
   , niceButton, defaultSpacer, quadDefSpacer, toSizedText, niceButtonSize
   , centerHorizontally, divider, doubleDefSpacer)
 import Skeleton

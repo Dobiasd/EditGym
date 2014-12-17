@@ -5,7 +5,7 @@ import Graphics.Element (Element, container, topRight, width, heightOf
 import Graphics.Collage (collage, toForm)
 import List
 import Layout (defaultSpacer, pageWidth, toDefText, toSizedText
-  , black1, white1, orange1, blue1, purple1, red1, green1, gray1, divider
+  , white1, orange1, blue1, purple1, red1, green1, gray1, divider
   , darkGray1)
 import Footer (footer)
 import Header (header)

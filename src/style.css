@@ -10,6 +10,21 @@ body
     background-color: #272922; /* 39 40 34 */
 }
 
+/* http://stackoverflow.com/questions/814366/how-can-i-remove-the-outline-around-hyperlinks-images */
+a {
+    outline : none;
+}
+a img {
+    outline : none;
+}
+img {
+    border : 0;
+}
+
+a:link {
+    text-decoration: none;
+}
+
 /* http://css-tricks.com/overriding-the-default-text-selection-color-with-css/ */
 ::selection {
   background: #272922; /* WebKit/Blink Browsers */
