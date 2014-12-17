@@ -400,7 +400,7 @@ displaySpaces document =
 displayTextCol : Color -> Document -> Element
 displayTextCol col =
      Text.fromString
-  >> Text.typeface ["inconsolata", "courier new", "monospace"]
+  >> Text.typeface [ "Consolas", "Menlo Regular", "Monospace" ]
   >> Text.height 20
   >> Text.color col
   >> Text.leftAligned
