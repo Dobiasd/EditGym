@@ -12,7 +12,7 @@ import Layout (toColText, toDefText, green1, blue1, darkGray1
 import Skeleton
 
 levelButton : String -> Element
-levelButton s = niceButtonSize 28 s ("?page=game&level=" ++ s)
+levelButton s = niceButtonSize 26 s ("?page=game&level=" ++ s)
 
 main : Signal Element
 main = Signal.map2 scene Window.width Window.height
@@ -68,7 +68,7 @@ subjects =
 
 showSubject : Int -> String -> List String -> Element
 showSubject w subject levels =
-  let subjectElem = toSizedText 48 subject |> centerHorizontally w
+  let subjectElem = toSizedText 40 subject |> centerHorizontally w
       levelsElem =
         levels
         |> List.map levelButton
