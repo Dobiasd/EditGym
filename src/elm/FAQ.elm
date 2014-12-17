@@ -24,8 +24,17 @@ No, this is not planned at the moment.
 ## Why are some keys disabled for typing?
 Only the keys needed for the [default levels](?page=levels) are activated.
 
-## Why are the cursor and the selection displayed so ugly?
-Normally they should look fine. But since they are generated via UTF-8 characters, your browser has to support a nice monospace font containing symbols for these characters.
+## Why is the text selection displayed so ugly?
+Normally it should look fine. But since it is generated using an [UTF-8 character](http://www.fileformat.info/info/unicode/char/2588/index.htm), your browser has to support a nice monospace font.
+
+## Why can I not copy and paste from or into the text editor in the exercises?
+The editor simply does not use the clipboard provided by the operating system but it's owm implementation.
+
+## Why can I not use my mouse to select text?
+Is is disabled because this page was build to make you a keyboarding master, not a mouse fool.
+
+## Why does holding down a key not produce many characters like usually?
+You are here to learn efficient shortcuts. Solving a level by holding down a key would reinforce inefficient habits.
 
 ## Why does EditGym not behave like my favorite text editor?
 In some cases not all editors behave the same.

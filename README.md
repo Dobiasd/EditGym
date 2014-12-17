@@ -28,23 +28,19 @@ replay in help (gif?)
 
 pressed keys anzeigen
 
-warmup-tutorial: schreiben dass maus nicht geht, was ist das ziel. taste gedrueckt halten geht nicht
-keyhistory (white/gray up/down) explanation
-
 finished: coach asks of next, one more set, highscore
 button to next level (ctrl+n) mit pfeil davor
 button to previous level (ctrl+p) mit pfeil dahinter
 
 "coach says: ...""
+first level coach: goal is to match editor to goal, no mouse, no holding down, keyhistory (white/gray up/down) explanation
 
 support ctrl+z
 
 zeit verstellen verhindern, timestamps aller keymoves monoton steigend
 
-copyright unten
-newsletter abbo? (keep me informed)
+newsletter abbo (keep me informed)
 https for sending?
-2 menus: unten nur about, contact, newsletter
 FB-page einrichten, like button oben als link dahin
 new level: remove dublicates
 level exp growth: coach: For small n O(n) can be faster than O(log(n))
@@ -56,6 +52,7 @@ web storage fuer sternchen hinter den exercises http://stackoverflow.com/questio
 IE9: Share buttons in header too low
 IE9: image links in header have a border
 highscrore string: use xor encoding in elm, then port to js, then to server, then xor reverse. have everything twice in string an check this redundancy for equality.
+when done, post here http://acrobolix.com/keyboarding-changed-my-life/ and here http://www.reddit.com/r/productivity/ and here http://www.reddit.com/r/webdev
 
 quatsch:
 instant replay
