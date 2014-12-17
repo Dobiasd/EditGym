@@ -39,7 +39,7 @@ function DisableBackspaceNavigation() {
   });
 }
 
-// http://stackoverflow.com/questions/13562041/jquery-how-to-stop-propagation-of-ctrl-a
+//http://stackoverflow.com/questions/1056562/how-do-i-prevent-scrolling-with-arrow-keys-but-not-the-mouse
 function DisableCtrlAAndTab() {
   jQuery(document).keydown(function(e) {
     if (e.ctrlKey) {
@@ -47,16 +47,12 @@ function DisableCtrlAAndTab() {
         e.preventDefault();
       }
     }
-    if (e.shiftKey) { // arrow scrolling in IE
-      if (e.keyCode >= 37 || e.keyCode <= 40 ) { // arrows
-        e.preventDefault();
-      }
+    // prevent scrolling (mainly in IE) with pgUp, pgDown, end, pos1 and arrows
+    if (e.keyCode >= 33 && e.keyCode <= 40 ) {
+      e.preventDefault();
     }
-    else
-    {
-      if ( e.keyCode == 9 ) { // or tab
-        e.preventDefault();
-      }
+    if ( e.keyCode == 9 ) { // tab
+      e.preventDefault();
     }
   });
 }
