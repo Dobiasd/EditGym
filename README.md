@@ -22,7 +22,6 @@ no negative values in highscore (keys and time)
 highscore spam von einer ip verhindern
 email an mich schicken wenn die highscore-liste eine zweierpotent erreicht
 ads
-in game button: "restart (ctrl+r)"
 custom levels: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
 
 replay in help (gif?)
@@ -32,6 +31,7 @@ pressed keys anzeigen
 warmup-tutorial: schreiben dass maus nicht geht, was ist das ziel. taste gedrueckt halten geht nicht
 keyhistory (white/gray up/down) explanation
 
+finished: coach asks of next, one more set, highscore
 button to next level (ctrl+n) mit pfeil davor
 button to previous level (ctrl+p) mit pfeil dahinter
 
@@ -41,26 +41,21 @@ support ctrl+z
 
 zeit verstellen verhindern, timestamps aller keymoves monoton steigend
 
-cursor in firefox in xp wrong positioned
-
 copyright unten
-non-free license?
 newsletter abbo? (keep me informed)
 https for sending?
-canonic url (always www.)
 2 menus: unten nur about, contact, newsletter
 FB-page einrichten, like button oben als link dahin
 new level: remove dublicates
 level exp growth: coach: For small n O(n) can be faster than O(log(n))
 Highscore: Histogram mit vertical line wo man steht
-layout: check for never w wide die page
 help: "has its own clipboard"
 frame around displayText
 levels exercises nennen
-restart = one more set
 web storage fuer sternchen hinter den exercises http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
 IE9: Share buttons in header too low
 IE9: image links in header have a border
+highscrore string: use xor encoding in elm, then port to js, then to server, then xor reverse. have everything twice in string an check this redundancy for equality.
 
 quatsch:
 instant replay
