@@ -29,6 +29,7 @@ footer w =
                   |> Text.height 12
                   |> Text.color lightGray1
                   |> Text.rightAligned
+    copyRightElem = flow right [copyright, defaultSpacer]
     leftSpacerW = (w - widthOf buttons) // 2
     rightSpacerW = leftSpacerW - widthOf copyright
     content = flow down [ defaultSpacer
@@ -37,7 +38,7 @@ footer w =
                          , flow right [ spacer leftSpacerW 1
                                       , buttons
                                       , spacer rightSpacerW 1
-                                      , flow right [copyright, defaultSpacer]
+                                      , copyRightElem
                                       ]
                          , defaultSpacer ]
   in
