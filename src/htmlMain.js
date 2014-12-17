@@ -47,6 +47,11 @@ function DisableCtrlAAndTab() {
         e.preventDefault();
       }
     }
+    if (e.shiftKey) { // arrow scrolling in IE
+      if (e.keyCode >= 37 || e.keyCode <= 40 ) { // arrows
+        e.preventDefault();
+      }
+    }
     else
     {
       if ( e.keyCode == 9 ) { // or tab
