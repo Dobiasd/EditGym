@@ -34,10 +34,6 @@ finished: coach asks of next, one more set, highscore
 button to next exercise (ctrl+n) mit pfeil davor
 button to previous exercise (ctrl+p) mit pfeil dahinter
 
-
-
-support ctrl+z
-
 zeit verstellen verhindern, timestamps aller keymoves monoton steigend
 
 newsletter abbo (keep me informed)
@@ -46,8 +42,6 @@ FB-page einrichten, like button oben als link dahin
 Highscore: Histogram mit vertical line wo man steht
 frame around displayText
 web storage fuer sternchen hinter den exercises http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
-IE9: Share buttons in header too low
-IE9: image links in header have a border
 highscrore string: use xor encoding in elm, then port to js, then to server, then xor reverse. have everything twice in string an check this redundancy for equality.
 when done, post here http://acrobolix.com/keyboarding-changed-my-life/ and here http://www.reddit.com/r/productivity/ and here http://www.reddit.com/r/webdev
 warmup level 3: word replicate
