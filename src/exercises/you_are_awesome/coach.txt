@@ -1,2 +1,3 @@
 Great workout!
-You can go grab a protein shake from the bar.
+You can now go the bar
+and grab the protein shake Alfred made for you.

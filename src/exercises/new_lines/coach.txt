@@ -1,1 +1,1 @@
-Watch out for the invisible characters (space and newline).
+Watch out!
