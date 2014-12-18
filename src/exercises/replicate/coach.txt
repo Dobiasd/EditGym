@@ -1,5 +1,5 @@
 Replicate the word.
-If you do not know how, my suggestion is as follows:
+If you do not yet know how, my suggestion is as follows:
 - Select the first word by pressing shift + end arrow.
 - Copy it to your clipboard by pressing ctrl + c.
 - Press right to discard the selection.
