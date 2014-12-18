@@ -50,6 +50,8 @@ IE9: Share buttons in header too low
 IE9: image links in header have a border
 highscrore string: use xor encoding in elm, then port to js, then to server, then xor reverse. have everything twice in string an check this redundancy for equality.
 when done, post here http://acrobolix.com/keyboarding-changed-my-life/ and here http://www.reddit.com/r/productivity/ and here http://www.reddit.com/r/webdev
+warmup level 3: word replicate
+tut: no strg z
 
 quatsch:
 instant replay
