@@ -9,7 +9,8 @@ import Char(fromCode)
 import String(cons)
 import Graphics.Element (Element, spacer, color, flow, right)
 
-import Layout (toDefText, toColText, white1, lightGray1, darkGray1)
+import Layout (toDefText, toColText, white1, lightGray1, darkGray1
+  , toSizedText)
 
 type KeyAction = Up Int Keyboard.KeyCode
                | Down Int Keyboard.KeyCode
@@ -77,13 +78,13 @@ getTimeSpan {history} =
     else (history |> last |> keyActionTime) -
          (history |> List.head |> keyActionTime)
 
-display : State -> Element
-display {history} =
-  let visibleHistory = List.drop (List.length history - 5) history
+display : Int -> State -> Element
+display w {history} =
+  let visibleHistory = List.drop (List.length history - 8) history
       sep = spacer 2 8 |> color darkGray1
   in  flow right [
-        List.length history |> toString |> toDefText
-      , spacer 30 1
+        List.length history |> toString |> toSizedText 38
+      , spacer 24 1
       , List.map showKeyAction visibleHistory |> List.intersperse sep
         |> flow right
       ]

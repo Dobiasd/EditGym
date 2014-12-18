@@ -8,9 +8,11 @@ import Text
 import Signal
 import List
 import String
-import Graphics.Element (Element, flow, down, right, outward, spacer, empty)
-
-import Layout (toDefText, toSizedText, lightGray1, blue1, toColText)
+import Graphics.Element (Element, flow, down, right, outward, spacer, empty
+  , heightOf, color, widthOf)
+import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
+  , quadDefSpacer, toColoredSizedText, yellow1, centerHorizontally, gray1
+  , showRight, defaultSpacer)
 import Skeleton
 import Editor
 import KeyHistory
@@ -150,6 +152,7 @@ scene w h ({editor, keyHistory, editor, goal, timeInMs, coach} as state) =
                   ]
   in  flow down [
           content
+        , quadDefSpacer
         , displayCoach coach
       ] |> Skeleton.showPage w h
 
@@ -169,33 +172,53 @@ showTimeInDs = showTimeInPrec 1
 showTimeInMs : Int -> String
 showTimeInMs = showTimeInPrec 3
 
+showPressedKeys : Set.Set Keyboard.KeyCode -> Element
+showPressedKeys =
+  Set.toList
+  >> List.map KeyHistory.showKey
+  >> String.join ","
+  >> toDefText
+
 -- todo: fixed widths, center texts
 scenePlay : Int -> Int -> State -> Element
-scenePlay w h {editor, keyHistory, goal, timeInMs} =
+scenePlay w h {editor, keyHistory, goal, timeInMs, keysDown} =
   let finished = editor.document == goal
+      editorElem = flow down [
+                       spacer 560 1 |> color gray1
+                     , defaultSpacer
+                     , "Editor" |> toColoredSizedText yellow1 32
+                                |> centerHorizontally 560
+                     , spacer 1 30
+                     , Editor.display editor
+                   ]
+      goalElem = flow down [
+                     spacer 560 1 |> color gray1
+                   , defaultSpacer
+                   , "Goal" |> toColoredSizedText yellow1 32
+                            |> centerHorizontally 560
+                   , spacer 1 30
+                   , displayGoal goal
+                 ]
+      middleElem = flow right [
+                       editorElem
+                     , spacer 14 1
+                     , spacer 1 (max (heightOf editorElem) (heightOf goalElem))
+                       |> color gray1
+                     , spacer 14 1
+                     , goalElem
+                   ]
+      timeElem = (if finished
+                     then KeyHistory.getTimeSpan keyHistory |> showTimeInMs
+                     else timeInMs |> showTimeInDs)
+                 |> toSizedText 38
+      pressedKeysElem = showPressedKeys keysDown
+      w = (widthOf middleElem)
   in  flow down [
-          spacer 800 1
-        , flow right [
-              KeyHistory.display keyHistory
-            , spacer 200 1
-            , (if finished
-                then KeyHistory.getTimeSpan keyHistory |> showTimeInMs
-                else timeInMs |> showTimeInDs)
-              |> toSizedText 48
+          flow outward [
+              KeyHistory.display 560 keyHistory
+            , timeElem |> centerHorizontally w
+            , showRight w pressedKeysElem
           ]
-        , flow right [
-              flow down [
-                  spacer 400 1
-                , "editor" |> toSizedText 48
-                , spacer 1 30
-                , Editor.display editor
-              ]
-            , spacer 100 1
-            , flow down [
-                  spacer 400 1
-                , "goal" |> toSizedText 48
-                , spacer 1 30
-                , displayGoal goal
-              ]
-          ]
+        , defaultSpacer
+        , middleElem
       ]

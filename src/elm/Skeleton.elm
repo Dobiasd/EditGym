@@ -1,27 +1,25 @@
 module Skeleton where
 
 import Graphics.Element (Element, container, topRight, width, heightOf
-  , fittedImage, middle, color, midTop, flow, down, spacer)
-import Graphics.Collage (collage, toForm)
+  , fittedImage, middle, color, midTop, flow, down, spacer, outward, topLeft)
 import List
-import Layout (defaultSpacer, pageWidth, toDefText, toSizedText
+import Layout (defaultSpacer, toDefText, toSizedText
   , white1, orange1, blue1, purple1, red1, green1, gray1, divider
-  , darkGray1)
+  , darkGray1, centerHorizontally)
 import Footer (footer)
 import Header (header)
 
 showTextPart : Int -> Element -> Element
 showTextPart w content =
-  let content' = content |> width 640
+  let content' = content |> width 720
       h = (heightOf content')
       img = fittedImage w h "imgs/keyboard_bg.jpg"
-      row = collage w h [toForm img, toForm content']
-  in  container w h middle row |> color white1
+  in  flow outward [ img, content' |> centerHorizontally w ]
 
 showPage : Int -> Int -> Element -> Element
 showPage wFull h content =
   let
-    w = wFull - 2 -- prevent scrollbars from flickering when zoomed in browser
+    w = wFull - 40 -- prevent scrollbars from flickering when zoomed in browser
     content' = content |> container w (heightOf content) midTop
     headerElem = header w
     footerElem = footer w
@@ -32,7 +30,7 @@ showPage wFull h content =
       , heightOf content'
       , heightOf footerElem
       ]
-    h' = max h pageH
+    h' = max h pageH - 40
     footerSpacer = spacer 2 <| h' - pageContentHeight
   in
     flow down [
@@ -40,4 +38,4 @@ showPage wFull h content =
     , content'
     , footerSpacer
     , footerElem
-    ] |> container w (max h h') middle
+    ] |> container w (max h h') topLeft

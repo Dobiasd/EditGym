@@ -11,10 +11,13 @@ import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
   , defaultSpacer)
 
 startButton : Element
-startButton = niceButton "Start" "?page=exercises"
+startButton = niceButton "Start" "?page=game&exercise=introduction"
 
 helpButton : Element
 helpButton = niceButton "Help" "?page=help"
+
+broseButton : Element
+broseButton = niceButton "Browse exercises" "?page=exercises"
 
 introduction : Int -> Element
 introduction w = Skeleton.showTextPart w <| Markdown.toElement """
@@ -38,6 +41,8 @@ scene w h =
   , defaultSpacer
   , centerHorizontally w (flow right [ startButton
                                      , spacer 40 1
-                                     , helpButton ])
+                                     , helpButton
+                                     , spacer 40 1
+                                     , broseButton ])
   ]
   |> Skeleton.showPage w h

@@ -2,7 +2,8 @@ module Layout where
 
 import Text
 import Color (Color, rgb)
-import Graphics.Element (Element, spacer, container, widthOf, heightOf, middle)
+import Graphics.Element (Element, spacer, container, widthOf, heightOf
+  , middle, flow, outward, midRight)
 import Graphics.Element
 
 spacerSize : Int
@@ -53,8 +54,9 @@ niceButtonSize h str url =
                      >> Text.color c
                      >> Text.leftAligned
       textElem = makeText h green1 str
-      buttonW = 1.2 * (widthOf textElem |> toFloat) |> round
-      buttonH = 1.2 * (heightOf textElem |> toFloat) |> round
+      border = 0.2 * (heightOf textElem |> toFloat) |> round
+      buttonW = widthOf textElem + 3 * border
+      buttonH = heightOf textElem + border
 
       textButton = container buttonW buttonH
                              middle textElem
@@ -79,15 +81,18 @@ octaDefSpacer = spacer (8 * spacerSize) (8 * spacerSize)
 divider : Color -> Int -> Element
 divider col w = spacer w 1 |> Graphics.Element.color col
 
-pageWidth : Int
-pageWidth = 450
-
 centerHorizontally : Int -> Element -> Element
 centerHorizontally w element = container w (heightOf element) middle element
 
+showRight : Int -> Element -> Element
+showRight w element = container w (heightOf element) midRight element
+
 toSizedText : Float -> String -> Element
-toSizedText s = Text.fromString >> Text.height s >> Text.color white1
-                >> Text.leftAligned
+toSizedText = toColoredSizedText white1
+
+toColoredSizedText : Color -> Float -> String -> Element
+toColoredSizedText col s = Text.fromString >> Text.height s >> Text.color col
+                           >> Text.leftAligned
 
 toSizedTextMod : (Text.Text -> Text.Text) -> Float -> String -> Element
 toSizedTextMod f s =
