@@ -36,6 +36,9 @@ Is is disabled because this page was build to make you a keyboarding master, not
 ## Why does holding down a key not produce many characters like usually?
 You are here to learn efficient shortcuts. Solving a exercise by holding down a key would reinforce inefficient habits.
 
+## Why does this site not scale correctly onto my tiny screen?
+At the default zoom level the layout was made for screen resolutions with at least 1280 pixels in width. But you can always just zoom in and zoom out with ctrl + plus / ctrl + minus / ctrl + mouse wheel.
+
 ## Why does EditGym not behave like my favorite text editor?
 In some cases not all editors behave the same.
 
@@ -75,10 +78,10 @@ So it is not possible to cover everything. [I](?page=contact) opted for the beha
 
 ## I have a suggestion for an awesome exercise. Can you include it?
 Yes, perhaps. Just [send me an email](?page=contact) with the start and goal text, and I will see if I think it fits here. ;)
-In any case, you can simply [upload it and play it here](?page=create_exercise).
+In any case, you can always simply [create your own exercise](?page=create_exercise).
 
 ## How was this page made?
-This page was mostly written in [Elm](http://elm-lang.org), an awesome [pure functional](http://en.wikipedia.org/wiki/Functional_programming) [Haskell](http://www.haskell.org)-like programming language that compiles to Javascript.
+This page was mostly written in [Elm](http://elm-lang.org), an awesome [FRP](http://en.wikipedia.org/wiki/Functional_reactive_programming)-utilizing [pure functional](http://en.wikipedia.org/wiki/Functional_programming) programming language that compiles to Javascript.
 
 """
 
