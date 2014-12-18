@@ -35,11 +35,11 @@ subjects : List (String, List String)
 subjects =
   [ ( "Warm up"
     , [
-        "just_type"
-      , "delete_chars"
-      , "replicate_word"
-      , "word_swap"
-      , "line_swap"
+        "introduction"
+      , "arrows"
+      , "replicate"
+      , "swap_words"
+      , "swap_lines"
       , "remove_words_1"
       ]
     )
@@ -48,7 +48,7 @@ subjects =
         "insert"
       , "new_lines"
       , "remove_words_2"
-      , "replace_words"
+      , "surely"
       , "batman"
       ]
     )
@@ -62,8 +62,8 @@ subjects =
   , ( "Stretching"
     , [
         "indentation"
-      , "more_lines"
-      , "i_am_awesome"
+      , "growth"
+      , "you_are_awesome"
       ]
     )
   ]
