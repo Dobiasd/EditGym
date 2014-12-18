@@ -60,7 +60,7 @@ subjects =
     )
   , ( "Stretching"
     , [
-        "alignment"
+        "indentation"
       , "more_lines"
       , "i_am_awesome"
       ]
