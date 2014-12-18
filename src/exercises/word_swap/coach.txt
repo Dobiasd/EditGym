@@ -1,10 +1,5 @@
-Swap the two words. My suggestion is as follows:
-- Select the first word by pressing shift + ctrl + right arrow.
-- Cut it by pressing ctrl + x.
-- Remove the space by pressing the delete key.
-- Navigate the cursor to the end by pressing the end key.
-- Insert a space character by pressing the space bar.
-- Insert what you have in your clipboard with ctrl + v.
-But of course, you can develop your own style.
-Only using the mouse or holding down a key to produce multiple
-actions is against our gym rules.
+Swap the two words.
+You can move your cursor one word forward
+by pressing ctrl + right arrow.
+Btw, there is no undo function here.
+If you mess up, you can just start over.

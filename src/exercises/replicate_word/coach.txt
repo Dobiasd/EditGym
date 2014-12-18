@@ -1,0 +1,10 @@
+Replicate the word.
+If you do not know how, my suggestion is as follows:
+- Select the first word by pressing shift + end arrow.
+- Copy it to your clipboard by pressing ctrl + c.
+- Press right to discard the selection.
+- Insert a space character by pressing the space bar.
+- Insert what you have in your clipboard with ctrl + v.
+But of course, you can develop your own style.
+Only using the mouse or holding down a key to produce multiple
+actions is against our gym rules.

@@ -1,5 +1,6 @@
 Hi,
 I'm your personal trainer for today.
-Just call me 'coach'. ;)
-Your task is to make the editor match the goal.
-For now, just type in the missing characters.
+Just call me 'coach'.
+Your task is to make the editor match the goal exactly.
+For now, just type in the missing words:
+"I feel great"

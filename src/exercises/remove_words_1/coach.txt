@@ -1,2 +1,3 @@
-By the way; I will not only time your performance today,
-but also count how many key movements (up *and* down) you needed.
+In case you did not notice yet; I will not only time your performance today,
+but also count how many key movements (up *and* down)
+you used to solve an exercise.

@@ -1,0 +1,2 @@
+Remember, you can jump one word forward/backward
+with ctrl and the horizontal arrow keys.

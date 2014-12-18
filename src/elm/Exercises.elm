@@ -37,6 +37,7 @@ subjects =
     , [
         "just_type"
       , "delete_chars"
+      , "replicate_word"
       , "word_swap"
       , "line_swap"
       , "remove_words_1"
