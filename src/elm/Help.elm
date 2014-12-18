@@ -60,9 +60,8 @@ To achieve a good score you will need to be efficient at using some simple keybo
 ## Typing
 Of course you also can just type in the required text, but in most cases this is not the most efficient way.
 
-## Reverting
-* ctrl+z - undo last change
-* ctrl+y - redo change
+## Indentation
+Hitting the tabulator key produces four space characters.
 
 
 Now go and [work out your skills](?page=exercises). :)
