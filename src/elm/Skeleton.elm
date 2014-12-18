@@ -19,7 +19,7 @@ showTextPart w content =
 showPage : Int -> Int -> Element -> Element
 showPage wFull h content =
   let
-    w = wFull - 40 -- prevent scrollbars from flickering when zoomed in browser
+    w = wFull - 4 -- prevent scrollbars from flickering when zoomed in browser
     content' = content |> container w (heightOf content) midTop
     headerElem = header w
     footerElem = footer w
@@ -30,7 +30,7 @@ showPage wFull h content =
       , heightOf content'
       , heightOf footerElem
       ]
-    h' = max h pageH - 40
+    h' = max h pageH - 4
     footerSpacer = spacer 2 <| h' - pageContentHeight
   in
     flow down [

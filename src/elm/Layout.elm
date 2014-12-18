@@ -54,8 +54,8 @@ niceButtonSize h str url =
                      >> Text.color c
                      >> Text.leftAligned
       textElem = makeText h green1 str
-      border = 0.2 * (heightOf textElem |> toFloat) |> round
-      buttonW = widthOf textElem + 3 * border
+      border = 0.14 * (heightOf textElem |> toFloat) |> round
+      buttonW = widthOf textElem + 6 * border
       buttonH = heightOf textElem + border
 
       textButton = container buttonW buttonH

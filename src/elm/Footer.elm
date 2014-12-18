@@ -40,6 +40,6 @@ footer w =
                                       , spacer rightSpacerW 1
                                       , copyRightElem
                                       ]
-                         , defaultSpacer ]
+                         ]
   in
     content |> container w (heightOf content) midTop
