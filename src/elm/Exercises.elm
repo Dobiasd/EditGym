@@ -10,6 +10,7 @@ import Layout (toColText, toDefText, green1, blue1, darkGray1
   , niceButton, defaultSpacer, quadDefSpacer, toSizedText, niceButtonSize
   , centerHorizontally, divider, doubleDefSpacer)
 import Skeleton
+import Editor(safeHead)
 
 exerciseButton : String -> Element
 exerciseButton s = niceButtonSize 26 s ("?page=game&exercise=" ++ s)
@@ -67,6 +68,28 @@ subjects =
       ]
     )
   ]
+
+subjectsWithCat : List (String, String)
+subjectsWithCat =
+  let expand (cat, exercises) = List.map (\e -> (e, cat)) exercises
+  in  subjects |> List.map expand |> List.concat
+
+getPrev : String -> String
+getPrev exercise =
+  let pairs = List.map2 (,) (List.tail subjectsWithCat) subjectsWithCat
+      founds = List.filter (\((e, _), _) -> e == exercise) pairs
+  in  if List.isEmpty founds then "" else founds |> List.head |> snd |> fst
+
+getNext : String -> String
+getNext exercise =
+  let pairs = List.map2 (,) (List.tail subjectsWithCat) subjectsWithCat
+      founds = List.filter (\(_, (e, _)) -> e == exercise) pairs
+  in  if List.isEmpty founds then "" else founds |> List.head |> fst |> fst
+
+getCategorie : String -> String
+getCategorie exercise =
+  let founds = List.filter (\(e, _) -> e == exercise) subjectsWithCat
+  in  if List.isEmpty founds then "" else founds |> List.head |> snd
 
 showSubject : Int -> String -> List String -> Element
 showSubject w subject exercises =

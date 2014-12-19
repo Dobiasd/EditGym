@@ -97,21 +97,25 @@ function Init() {
     loadingTextGoal = "... loading";
     loadingTextCoach = "";
     elmContent = Elm.embed(Elm.Game, mainDiv,
-                            { start : loadingTextStart
-                            , goal : loadingTextGoal
-                            , coach : loadingTextCoach });
-    elmContent.ports.start.send(loadingTextStart);
-    elmContent.ports.goal.send(loadingTextGoal);
-    elmContent.ports.coach.send(loadingTextCoach);
+                            { startIn : loadingTextStart
+                            , goalIn : loadingTextGoal
+                            , coachIn : loadingTextCoach
+                            , exerciseIn : exercise });
+
+    // Elm signals do not fire initially.
+    elmContent.ports.startIn.send(loadingTextStart);
+    elmContent.ports.goalIn.send(loadingTextGoal);
+    elmContent.ports.coachIn.send(loadingTextCoach);
+    elmContent.ports.exerciseIn.send(exercise);
 
     exerciseBaseUrl = "exercises/" + exercise + "/";
     startUrl = exerciseBaseUrl + "start.txt";
     goalUrl = exerciseBaseUrl + "goal.txt";
     coachUrl = exerciseBaseUrl + "coach.txt";
 
-    LoadAndForward(startUrl, elmContent.ports.start, false)
-    LoadAndForward(goalUrl, elmContent.ports.goal, false)
-    LoadAndForward(coachUrl, elmContent.ports.coach, true)
+    LoadAndForward(startUrl, elmContent.ports.startIn, false)
+    LoadAndForward(goalUrl, elmContent.ports.goalIn, false)
+    LoadAndForward(coachUrl, elmContent.ports.coachIn, true)
 
     DisableBackspaceNavigation();
     DisableCtrlAAndTab();

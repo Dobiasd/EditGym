@@ -10,13 +10,15 @@ import List
 import String
 import Regex
 import Graphics.Element (Element, flow, down, right, outward, spacer, empty
-  , heightOf, color, widthOf)
+  , heightOf, color, widthOf, link)
+
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
-  , showRight, defaultSpacer)
+  , showRight, defaultSpacer, green1, octaDefSpacer, defTextSize)
 import Skeleton
 import Editor
 import KeyHistory
+import Exercises
 
 type alias State = {
     editor : Editor.State
@@ -25,18 +27,21 @@ type alias State = {
   , goal : String
   , coach : String
   , timeInMs : Int
+  , prev : (String, String)
+  , exercise : (String, String)
+  , next : (String, String)
   }
 
-port start : Signal String
-port goal : Signal String
-port coach : Signal String
-
+port startIn : Signal String
+port goalIn : Signal String
+port coachIn : Signal String
+port exerciseIn : Signal String
 
 regExReplaceInStr : String -> String -> String -> String
 regExReplaceInStr exp rep =
   Regex.replace Regex.All (Regex.regex exp) (\_ -> rep)
 
-cleanEditorText : String -> String
+cleanEditorText  : String -> String
 cleanEditorText =
   cleanCoachText
   >> regExReplaceInStr "[^0-9A-z ,.\\n]" ""
@@ -55,20 +60,27 @@ initialState = State Editor.initialState
                      "loading"
                      "loading"
                      0
+                     ("", "")
+                     ("", "")
+                     ("", "")
 
 type Input = Decisecond | Start String
                         | Goal String
                         | Coach String
+                        | Exercise String
                         | Keys Int (Set.Set Keyboard.KeyCode)
 
 startInput : Signal Input
-startInput = Signal.map (cleanEditorText >> Start) start
+startInput = Signal.map (cleanEditorText >> Start) startIn
 
 goalInput : Signal Input
-goalInput = Signal.map (cleanEditorText >> Goal) goal
+goalInput = Signal.map (cleanEditorText >> Goal) goalIn
 
 coachInput : Signal Input
-coachInput = Signal.map (cleanCoachText >> Coach) coach
+coachInput = Signal.map (cleanCoachText >> Coach) coachIn
+
+exerciseInput : Signal Input
+exerciseInput = Signal.map Exercise exerciseIn
 
 keyInput : Signal Input
 keyInput =
@@ -89,6 +101,7 @@ input = Signal.mergeMany [
   , keyInput
   , timeInput
   , coachInput
+  , exerciseInput
   ]
 
 state : Signal State
@@ -100,6 +113,7 @@ step input =
     Start start -> setStart start
     Goal goal -> setGoal goal
     Coach coach -> setCoach coach
+    Exercise exercise -> setExercise exercise
     Keys time keys -> stepKeys keys time
     Decisecond -> stepDecisecond
 
@@ -118,6 +132,14 @@ setGoal goal state = { state | goal <- goal }
 
 setCoach : String -> State -> State
 setCoach coach state = { state | coach <- coach }
+
+setExercise : String -> State -> State
+setExercise exercise state =
+  let prev = Exercises.getPrev exercise
+      next = Exercises.getNext exercise
+  in  { state | exercise <- (exercise, Exercises.getCategorie exercise)
+              , prev <- (prev, Exercises.getCategorie prev)
+              , next <- (next, Exercises.getCategorie next) }
 
 stepKeys : Set.Set Keyboard.KeyCode -> Int -> State -> State
 stepKeys inKeysDown time ({editor, keyHistory, keysDown, goal} as state) =
@@ -153,7 +175,8 @@ displayCoach str =
       ]
 
 scene : Int -> Int -> State -> Element
-scene w h ({editor, keyHistory, editor, goal, timeInMs, coach} as state) =
+scene w h
+  ({editor, keyHistory, editor, goal, timeInMs, coach, exercise} as state) =
   let finished = editor.document == goal
       result = if finished
                  then flow down [
@@ -168,11 +191,12 @@ scene w h ({editor, keyHistory, editor, goal, timeInMs, coach} as state) =
                     scenePlay w h state
                   , result
                   ]
+      header = String.concat [snd exercise, " - ", fst exercise]
   in  flow down [
           content
         , quadDefSpacer
         , displayCoach coach
-      ] |> Skeleton.showPage w h
+      ] |> Skeleton.showPageWithHeadline w h header
 
 showTimeInPrec : Int -> Int -> String
 showTimeInPrec decimals timeInMs =
@@ -197,24 +221,59 @@ showPressedKeys =
   >> String.join ","
   >> toDefText
 
+showExercise : (String, String) -> (Text.Text -> Element) -> Element
+showExercise (name, cat) align =
+  String.concat ["\n", name, "\n(", cat, ")"]
+  |> Text.fromString
+     >> Text.height defTextSize
+     >> Text.color green1
+     >> align
+
+exerciseLink : String -> (Element -> Element)
+exerciseLink name = link (String.append "?page=game&exercise=" name)
+
+showPrev : (String, String) -> Element
+showPrev (name, cat) =
+  if String.isEmpty name then empty else
+    flow right [
+        showExercise (name, cat) Text.rightAligned
+      , toColoredSizedText green1 82 " <--"
+    ] |> exerciseLink name
+
+showNext : (String, String) -> Element
+showNext (name, cat) =
+  if String.isEmpty name then empty else
+    flow right [
+        toColoredSizedText green1 82 "--> "
+      , showExercise (name, cat) Text.leftAligned
+    ] |> exerciseLink name
+
+showButtons : Int -> State -> Element
+showButtons w {exercise, prev, next} =
+  flow outward [
+      showPrev prev
+    , showExercise exercise Text.centered |> centerHorizontally w
+    , showNext next |> showRight w
+  ]
+
 -- todo: fixed widths, center texts
 scenePlay : Int -> Int -> State -> Element
-scenePlay w h {editor, keyHistory, goal, timeInMs, keysDown} =
+scenePlay w h ({editor, keyHistory, goal, timeInMs, keysDown} as state) =
   let finished = editor.document == goal
       editorElem = flow down [
                        spacer 560 1 |> color gray1
                      , defaultSpacer
-                     , "Editor" |> toColoredSizedText orange1 32
+                     , "Editor" |> toColoredSizedText orange1 28
                                 |> centerHorizontally 560
-                     , spacer 1 30
+                     , spacer 1 20
                      , Editor.display editor
                    ]
       goalElem = flow down [
                      spacer 560 1 |> color gray1
                    , defaultSpacer
-                   , "Goal" |> toColoredSizedText orange1 32
+                   , "Goal" |> toColoredSizedText orange1 28
                             |> centerHorizontally 560
-                   , spacer 1 30
+                   , spacer 1 20
                    , displayGoal goal
                  ]
       middleElem = flow right [
@@ -239,4 +298,6 @@ scenePlay w h {editor, keyHistory, goal, timeInMs, keysDown} =
           ]
         , defaultSpacer
         , middleElem
+        , defaultSpacer
+        , showButtons w state
       ]

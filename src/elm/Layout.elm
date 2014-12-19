@@ -3,7 +3,7 @@ module Layout where
 import Text
 import Color (Color, rgb)
 import Graphics.Element (Element, spacer, container, widthOf, heightOf
-  , middle, flow, outward, midRight)
+  , middle, flow, outward, bottomRight)
 import Graphics.Element
 
 spacerSize : Int
@@ -85,7 +85,7 @@ centerHorizontally : Int -> Element -> Element
 centerHorizontally w element = container w (heightOf element) middle element
 
 showRight : Int -> Element -> Element
-showRight w element = container w (heightOf element) midRight element
+showRight w element = container w (heightOf element) bottomRight element
 
 toSizedText : Float -> String -> Element
 toSizedText = toColoredSizedText white1

@@ -11,7 +11,7 @@ import UrlEncode (genLink)
 import Layout (defaultSpacer, toDefText, toSizedText, octaDefSpacer
   , white1, orange1, blue1, purple1, red1, green1, gray1
   , divider, darkGray1, lightGray1, doubleDefSpacer, centerHorizontally
-  , tripleDefSpacer)
+  , tripleDefSpacer, toColoredSizedText, quadDefSpacer)
 
 iconSize : Int
 iconSize = 32
@@ -67,12 +67,18 @@ menu distSpacer =
   >> List.intersperse distSpacer
   >> flow right
 
-topBar : Int -> Element
-topBar w =
+showHeadline : String -> Element
+showHeadline = toColoredSizedText green1 32
+
+topBar : Int -> String -> Element
+topBar w headline =
   let buttons = menu tripleDefSpacer menuItems
       rightPartW = w - logoWidth
       menuSpacerW = (rightPartW - widthOf buttons) // 2
-      shareLeftSpacerW = w - (widthOf shareIcons + logoWidth)
+      headlineElem = flow down [ defaultSpacer, showHeadline headline ]
+      shareLeftSpacerElemW = w - (widthOf shareIcons + logoWidth
+                                + widthOf headlineElem )
+      headlineSpacerW = shareLeftSpacerElemW // 2
   in  flow right [
           flow down [
               defaultSpacer
@@ -81,10 +87,13 @@ topBar w =
         , flow down [
               defaultSpacer
             , flow right [
-                  spacer shareLeftSpacerW 1
+                  spacer headlineSpacerW 1
+                , headlineElem
+                , spacer headlineSpacerW 1
                 , shareIcons
               ]
-            , octaDefSpacer
+            , quadDefSpacer
+            , doubleDefSpacer
             , flow right [
                   spacer menuSpacerW 1
                 , buttons
@@ -93,10 +102,10 @@ topBar w =
           ]
       ]
 
-header : Int -> Element
-header w =
+header : Int -> String -> Element
+header w headline =
   flow down [
-    topBar w
+    topBar w headline
   , defaultSpacer
   , divider gray1 w
   , defaultSpacer ]
