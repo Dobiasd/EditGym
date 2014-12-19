@@ -13,13 +13,11 @@ EditGym helps you to acquire this set of skills by letting you practice and comp
 ---
 
 todo:
-finished: coach asks of next, one more set, highscore
-button to next exercise (ctrl+n) mit pfeil davor
-button to previous exercise (ctrl+p) mit pfeil dahinter
-arrows mit ascii
-game.elm imports exercises.elm and can generate prev and next
+finished: Coach: "Your score: 42.1s, 23 key moves. You can go on to the next exercise (ctrl+n), try to improve (ctrl+r) or register your result to the highscore list (ctrl+h)."
+stars: display when finished, in exercise header and in exercise list
+save stars with web storage http://stackoverflow.com/
 
-time and keystrokes gleichzeitig messen, dann beim eintragen in die highscore auswaehlen lassen
+beim highscore-eintrag auswaehlen lassen ob time, keys oder beides
 highscore position regarding last 100 users of this exercise anzeigen
 highscore-dialog am Ende automatisch über das game einblenden
 highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann timestamp, wenn das equal dann name. Kombination aus allem unique in der DB.
@@ -36,10 +34,13 @@ https for sending?
 FB-page einrichten, like button oben als link dahin
 Highscore: Histogram mit vertical line wo man steht
 best of today anzeigen
-web storage fuer sternchen hinter den exercises http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
+questions/16427636/check-if-localstorage-is-available
 highscrore string: use xor encoding in elm, then port to js, then to server, then xor reverse. have everything twice in string an check this redundancy for equality.
 
-when done, post here http://acrobolix.com/keyboarding-changed-my-life/ and here http://www.reddit.com/r/productivity/ and here http://www.reddit.com/r/webdev
+when done, post here:
+http://acrobolix.com/keyboarding-changed-my-life/ "Hi, I made a website for practicing to rearrange text with keyboard shortcuts. www.editgym.com"
+http://www.reddit.com/r/productivity/ "Become lightning fast at rearraning text with EditGym.com"
+http://www.reddit.com/r/webdev EditGym.com - A website for practicing to rearrange text with keyboard shortcuts (hobby project)
 
 optimize performance
 
