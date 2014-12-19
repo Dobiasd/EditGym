@@ -1,3 +1,4 @@
 Hi, I'm your personal trainer for today. Just call me 'coach'.
-Your task is to make the editor match the goal exactly.
+If you work with me, you can become a true master at text rearranging.
+Your task will always be to make the editor match the goal exactly.
 For now, just type in the missing words: "I feel great"
