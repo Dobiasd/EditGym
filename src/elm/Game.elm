@@ -8,6 +8,7 @@ import Text
 import Signal
 import List
 import String
+import Regex
 import Graphics.Element (Element, flow, down, right, outward, spacer, empty
   , heightOf, color, widthOf)
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
@@ -30,6 +31,18 @@ port start : Signal String
 port goal : Signal String
 port coach : Signal String
 
+cleanEditorText : String -> String
+cleanEditorText =
+  cleanCoachText
+  >> Regex.replace Regex.All (Regex.regex "[^0-9A-z ,.\\n]") (\_ -> "")
+
+cleanCoachText : String -> String
+cleanCoachText =
+  Regex.replace Regex.All (Regex.regex "\\r\\n") (\_ -> "\n")
+  >> Regex.replace Regex.All (Regex.regex "\\r") (\_ -> "\n")
+  >> Regex.replace Regex.All (Regex.regex "\\t") (\_ -> "    ")
+  >> Regex.replace Regex.All (Regex.regex "[^0-9A-z ,.'!\\]+\\-*/\\(\\)\"\\n]") (\_ -> "")
+
 initialState : State
 initialState = State Editor.initialState
                      KeyHistory.initialState
@@ -44,13 +57,13 @@ type Input = Decisecond | Start String
                         | Keys Int (Set.Set Keyboard.KeyCode)
 
 startInput : Signal Input
-startInput = Signal.map Start start
+startInput = Signal.map (cleanEditorText >> Start) start
 
 goalInput : Signal Input
-goalInput = Signal.map Goal goal
+goalInput = Signal.map (cleanEditorText >> Goal) goal
 
 coachInput : Signal Input
-coachInput = Signal.map Coach coach
+coachInput = Signal.map (cleanCoachText >> Coach) coach
 
 keyInput : Signal Input
 keyInput =

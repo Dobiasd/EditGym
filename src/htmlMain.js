@@ -64,30 +64,22 @@ $(document).keydown(function(objEvent) {
     }
 })
 
-function CleanTextData(data) {
-  data = data.replace(/(\r\n)/gm,"\n");
-  data = data.replace(/(\r)/gm,"\n");
-  data = data.replace(/\t/g,"    ");
-  return data;
-}
-
 // http://stackoverflow.com/questions/6470567/jquery-load-txt-file-and-insert-into-div
 // In chrome you have to start with the following flag to make it work: --allow-file-access-from-files
-function LoadAndForward(dataUrl, doClean, dest) {
+function LoadAndForward(dataUrl, dest, canBeAbsent) {
   $.ajax({
     dataType: "text",
     mimeType: "text/plain",
     url: dataUrl,
     success: function(data) {
-      if (doClean) {
-        data = CleanTextData(data);
-      }
       dest.send(data);
     },
     error: function(jqXHR, textStatus, errorThrown) {
-      msg = "Unable to load " + dataUrl + "\n"
-              + textStatus + "\n" + errorThrown;
-      dest.send(msg);
+      if (!canBeAbsent) {
+        msg = "Unable to load " + dataUrl + "\n"
+                + textStatus + "\n" + errorThrown;
+        dest.send(msg);
+      }
     }
   });
 }
@@ -110,7 +102,7 @@ function Init() {
     exercise = getURLParameterDef("exercise", "");
     loadingTextStart = "loading ...";
     loadingTextGoal = "... loading";
-    loadingTextCoach = "...";
+    loadingTextCoach = "";
     elmContent = Elm.embed(Elm.Game, mainDiv,
                             { start : loadingTextStart
                             , goal : loadingTextGoal
@@ -124,9 +116,9 @@ function Init() {
     goalUrl = exerciseBaseUrl + "goal.txt";
     coachUrl = exerciseBaseUrl + "coach.txt";
 
-    LoadAndForward(startUrl, true, elmContent.ports.start)
-    LoadAndForward(goalUrl, true, elmContent.ports.goal)
-    LoadAndForward(coachUrl, true, elmContent.ports.coach)
+    LoadAndForward(startUrl, elmContent.ports.start, false)
+    LoadAndForward(goalUrl, elmContent.ports.goal, false)
+    LoadAndForward(coachUrl, elmContent.ports.coach, true)
 
     DisableBackspaceNavigation();
     DisableCtrlAAndTab();
