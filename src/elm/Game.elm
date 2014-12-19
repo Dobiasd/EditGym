@@ -232,11 +232,12 @@ scene w h
 showTimeInPrec : Int -> Int -> String
 showTimeInPrec decimals timeInMs =
   let str = timeInMs |> toString |> String.dropRight (3 - decimals)
+      part2 = String.right decimals str
   in  String.concat [
            if timeInMs < 1000 then "0" else ""
         ,  String.dropRight decimals str
         , "."
-        , String.right decimals str
+        , if String.isEmpty part2 then "0" else part2
         , "s" ]
 
 showTimeInDs : Int -> String
