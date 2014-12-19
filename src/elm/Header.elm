@@ -107,5 +107,5 @@ header w headline =
   flow down [
     topBar w headline
   , defaultSpacer
-  , divider gray1 w
+  , divider purple1 w
   , defaultSpacer ]
