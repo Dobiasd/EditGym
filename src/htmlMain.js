@@ -57,13 +57,6 @@ function DisableCtrlAAndTab() {
   });
 }
 
-
-$(document).keydown(function(objEvent) {
-    if (objEvent.keyCode == 9) {  //tab pressed
-        objEvent.preventDefault(); // stops its action
-    }
-})
-
 // http://stackoverflow.com/questions/6470567/jquery-load-txt-file-and-insert-into-div
 // In chrome you have to start with the following flag to make it work: --allow-file-access-from-files
 function LoadAndForward(dataUrl, dest, canBeAbsent) {
