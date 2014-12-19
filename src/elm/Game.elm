@@ -139,7 +139,7 @@ displayCoach : String -> Element
 displayCoach str =
   let textElem = str
         |> Text.fromString
-        |> Text.height 18
+        |> Text.height 20
         |> Text.color blue1
         |> Text.leftAligned
   in  flow right [
