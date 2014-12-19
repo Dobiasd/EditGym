@@ -40,10 +40,19 @@ function DisableBackspaceNavigation() {
 }
 
 //http://stackoverflow.com/questions/1056562/how-do-i-prevent-scrolling-with-arrow-keys-but-not-the-mouse
-function DisableCtrlAAndTab() {
+function DisableNeededKeysandCombos() {
   jQuery(document).keydown(function(e) {
     if (e.ctrlKey) {
       if (e.keyCode == 65 || e.keyCode == 97 ) { // 'A' or 'a'
+        e.preventDefault();
+      }
+      if (e.keyCode == 82 || e.keyCode == 114 ) { // 'r' or 'r'
+        e.preventDefault();
+      }
+      if (e.keyCode == 78 || e.keyCode == 110 ) { // 'n' or 'n'
+        e.preventDefault();
+      }
+      if (e.keyCode == 80 || e.keyCode == 112 ) { // 'p' or 'p'
         e.preventDefault();
       }
     }
@@ -118,7 +127,7 @@ function Init() {
     LoadAndForward(coachUrl, elmContent.ports.coachIn, true)
 
     DisableBackspaceNavigation();
-    DisableCtrlAAndTab();
+    DisableNeededKeysandCombos();
   }
   else if (page == "help")
     elmContent = Elm.embed(Elm.Help, mainDiv, {});

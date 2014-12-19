@@ -24,18 +24,24 @@ type alias State = {
     editor : Editor.State
   , keyHistory : KeyHistory.State
   , keysDown : Set.Set Keyboard.KeyCode
+  , start : String
   , goal : String
   , coach : String
   , timeInMs : Int
   , prev : (String, String)
   , exercise : (String, String)
   , next : (String, String)
+  , redirectTo : String
+  , waitForNoKeys : Bool
   }
 
 port startIn : Signal String
 port goalIn : Signal String
 port coachIn : Signal String
 port exerciseIn : Signal String
+
+port redirect : Signal String
+port redirect = Signal.map .redirectTo state
 
 regExReplaceInStr : String -> String -> String -> String
 regExReplaceInStr exp rep =
@@ -59,10 +65,13 @@ initialState = State Editor.initialState
                      Set.empty
                      "loading"
                      "loading"
+                     "loading"
                      0
                      ("", "")
                      ("", "")
                      ("", "")
+                     ""
+                     False
 
 type Input = Decisecond | Start String
                         | Goal String
@@ -125,7 +134,8 @@ stepDecisecond ({editor, timeInMs, keyHistory, goal} as state) =
 
 setStart : String -> State -> State
 setStart start ({editor} as state) =
-  { state | editor <- Editor.setDocument start editor }
+  { state | editor <- Editor.setDocument start editor
+          , start <- start}
 
 setGoal : String -> State -> State
 setGoal goal state = { state | goal <- goal }
@@ -141,17 +151,43 @@ setExercise exercise state =
               , prev <- (prev, Exercises.getCategorie prev)
               , next <- (next, Exercises.getCategorie next) }
 
-stepKeys : Set.Set Keyboard.KeyCode -> Int -> State -> State
-stepKeys inKeysDown time ({editor, keyHistory, keysDown, goal} as state) =
-  let finished = editor.document == goal
-      keysDownNew = Set.diff inKeysDown keysDown |> Set.toList
+stepSwitchExercise : Set.Set Keyboard.KeyCode -> State -> State
+stepSwitchExercise keys ({prev, next, start} as state) =
+  let ctrl = Set.member 17 keys
+      p = Set.member 80 keys
+      r = Set.member 82 keys
+      n = Set.member 78 keys
+  in  if | ctrl && r -> { state | editor <- (Editor.setDocument start Editor.initialState)
+                                , keyHistory <- KeyHistory.initialState
+                                , timeInMs <- 0
+                                , waitForNoKeys <- True }
+         | ctrl && p -> { state | redirectTo <- exerciseLink (fst prev) }
+         | ctrl && n -> { state | redirectTo <- exerciseLink (fst next) }
+         | otherwise -> state
+
+stepKeysEdit : Set.Set Keyboard.KeyCode -> Int -> State -> State
+stepKeysEdit inKeysDown time
+             ({editor, keyHistory, keysDown, goal} as state) =
+  let keysDownNew = Set.diff inKeysDown keysDown |> Set.toList
       keysUpNew = Set.diff keysDown inKeysDown |> Set.toList
-  in  if finished then state
-      else { state | editor <- Editor.step editor keysDown keysDownNew
-                   , keyHistory <- KeyHistory.step keyHistory keysDown
-                                                   keysDownNew keysUpNew
-                                                   time
-                   , keysDown <- inKeysDown }
+  in  { state | editor <- Editor.step editor keysDown keysDownNew
+              , keyHistory <- KeyHistory.step keyHistory keysDown
+                                              keysDownNew keysUpNew
+                                              time
+              , keysDown <- inKeysDown }
+
+stepKeys : Set.Set Keyboard.KeyCode -> Int -> State -> State
+stepKeys inKeysDown time
+         ({editor, keyHistory, keysDown, goal, waitForNoKeys} as state) =
+  let finished = editor.document == goal
+      state' =
+        if | finished -> state
+           | state.waitForNoKeys && (not <| inKeysDown == Set.empty) -> state
+           | state.waitForNoKeys && inKeysDown == Set.empty ->
+             { state | waitForNoKeys <- False }
+           | not <| waitForNoKeys -> stepKeysEdit inKeysDown time state
+           | otherwise -> state
+  in  state' |> stepSwitchExercise inKeysDown
 
 main : Signal Element
 main = Signal.map3 scene Window.width Window.height state
@@ -187,16 +223,11 @@ scene w h
                      |> toSizedText 180
                    ]
                  else empty
-      content = flow outward [
-                    scenePlay w h state
-                  , result
-                  ]
       header = String.concat [snd exercise, " - ", fst exercise]
-  in  flow down [
-          content
-        , quadDefSpacer
-        , displayCoach coach
-      ] |> Skeleton.showPageWithHeadline w h header
+  in  flow outward [
+                     scenePlay w h state
+                   , result
+                   ] |> Skeleton.showPageWithHeadline w h header
 
 showTimeInPrec : Int -> Int -> String
 showTimeInPrec decimals timeInMs =
@@ -229,36 +260,53 @@ showExercise (name, cat) align =
      >> Text.color green1
      >> align
 
-exerciseLink : String -> (Element -> Element)
-exerciseLink name = link (String.append "?page=game&exercise=" name)
+exerciseLink : String -> String
+exerciseLink str =
+  if String.isEmpty str
+     then ""
+     else String.append "?page=game&exercise=" str
+
+toExerciseLink : String -> (Element -> Element)
+toExerciseLink = exerciseLink >> link
 
 showPrev : (String, String) -> Element
 showPrev (name, cat) =
   if String.isEmpty name then empty else
     flow right [
         showExercise (name, cat) Text.rightAligned
-      , toColoredSizedText green1 82 " <--"
-    ] |> exerciseLink name
+      , toColoredSizedText green1 82 " <-- "
+      , toColText green1 "\n(ctrl+p)"
+    ] |> toExerciseLink name
 
 showNext : (String, String) -> Element
 showNext (name, cat) =
   if String.isEmpty name then empty else
     flow right [
-        toColoredSizedText green1 82 "--> "
+        toColText green1 "\n(ctrl+n)"
+      , toColoredSizedText green1 82 " --> "
       , showExercise (name, cat) Text.leftAligned
-    ] |> exerciseLink name
+    ] |> toExerciseLink name
+
+showRestart : Element
+showRestart =
+  "\nrestart\n(ctrl+r)"
+  |> Text.fromString
+     >> Text.height defTextSize
+     >> Text.color green1
+     >> Text.centered
 
 showButtons : Int -> State -> Element
 showButtons w {exercise, prev, next} =
   flow outward [
       showPrev prev
-    , showExercise exercise Text.centered |> centerHorizontally w
+    , showRestart |> centerHorizontally w
     , showNext next |> showRight w
   ]
 
 -- todo: fixed widths, center texts
 scenePlay : Int -> Int -> State -> Element
-scenePlay w h ({editor, keyHistory, goal, timeInMs, keysDown} as state) =
+scenePlay w h
+  ({editor, keyHistory, goal, timeInMs, keysDown, coach} as state) =
   let finished = editor.document == goal
       editorElem = flow down [
                        spacer 560 1 |> color gray1
@@ -289,7 +337,8 @@ scenePlay w h ({editor, keyHistory, goal, timeInMs, keysDown} as state) =
                      else timeInMs |> showTimeInDs)
                  |> toSizedText 38
       pressedKeysElem = showPressedKeys keysDown
-      w = (widthOf middleElem)
+      w = widthOf middleElem
+      verticalScalerH = max 0 (260 - heightOf middleElem)
   in  flow down [
           flow outward [
               KeyHistory.display 560 keyHistory
@@ -298,6 +347,9 @@ scenePlay w h ({editor, keyHistory, goal, timeInMs, keysDown} as state) =
           ]
         , defaultSpacer
         , middleElem
+        , spacer 1 verticalScalerH
+        , defaultSpacer
+        , displayCoach coach
         , defaultSpacer
         , showButtons w state
       ]
