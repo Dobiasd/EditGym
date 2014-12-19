@@ -37,8 +37,7 @@ shareIcons =
       , ( image iconSize iconSize "imgs/bufferapp.png", genLink "https://bufferapp.com/add" [("url", "http://www.editgym.com"), ("text", "Text editing training")] )
       , ( image iconSize iconSize "imgs/email.png", genLink "mailto: " [("subject", "EditGym"), ("body", "Text editing training at http://www.editgym.com")] ) ]
       |> List.map (\ (img, url) -> img |> link url)
-  in
-    toDefText "share: " :: buttons
+  in  buttons
       |> List.intersperse (defaultSpacer)
       |> \xs -> xs ++ [defaultSpacer]
       |> flow right
