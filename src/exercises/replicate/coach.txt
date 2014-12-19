@@ -6,5 +6,4 @@ If you do not yet know how, my suggestion is as follows:
 - Insert a space character by pressing the space bar.
 - Insert what you have in your clipboard with ctrl + v.
 But of course, you can develop your own style.
-Only using the mouse or holding down a key to produce multiple
-actions is against our gym rules.
+Only using the mouse or holding down a key to produce multiple actions is against our gym rules.

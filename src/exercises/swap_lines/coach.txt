@@ -1,5 +1,4 @@
 OK, you know what to do.
 Try to select the whole line at once.
 Ah, and before I forget,
-the two normally invisible charaters (space and newline)
-are displayed in dark gray.
+the two normally invisible charaters (space and newline) are displayed in dark gray.

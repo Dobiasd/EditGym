@@ -1,5 +1,3 @@
 Swap the two words.
-You can move your cursor one word forward
-by pressing ctrl + right arrow.
-Btw, there is no undo function here.
-If you mess up, you can just start over.
+You can move your cursor one word forward by pressing ctrl + right arrow.
+Btw, there is no undo function here. If you mess up, you can just start over.
