@@ -17,6 +17,7 @@ finished: coach asks of next, one more set, highscore
 button to next exercise (ctrl+n) mit pfeil davor
 button to previous exercise (ctrl+p) mit pfeil dahinter
 arrows mit ascii
+game.elm imports exercises.elm and can generate prev and next
 
 time and keystrokes gleichzeitig messen, dann beim eintragen in die highscore auswaehlen lassen
 highscore position regarding last 100 users of this exercise anzeigen
@@ -39,6 +40,8 @@ web storage fuer sternchen hinter den exercises http://stackoverflow.com/questio
 highscrore string: use xor encoding in elm, then port to js, then to server, then xor reverse. have everything twice in string an check this redundancy for equality.
 
 when done, post here http://acrobolix.com/keyboarding-changed-my-life/ and here http://www.reddit.com/r/productivity/ and here http://www.reddit.com/r/webdev
+
+optimize performance
 
 quatsch:
 instant replay
