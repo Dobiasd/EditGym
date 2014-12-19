@@ -12,7 +12,7 @@ import Regex
 import Graphics.Element (Element, flow, down, right, outward, spacer, empty
   , heightOf, color, widthOf)
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
-  , quadDefSpacer, toColoredSizedText, yellow1, centerHorizontally, gray1
+  , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
   , showRight, defaultSpacer)
 import Skeleton
 import Editor
@@ -31,17 +31,22 @@ port start : Signal String
 port goal : Signal String
 port coach : Signal String
 
+
+regExReplaceInStr : String -> String -> String -> String
+regExReplaceInStr exp rep =
+  Regex.replace Regex.All (Regex.regex exp) (\_ -> rep)
+
 cleanEditorText : String -> String
 cleanEditorText =
   cleanCoachText
-  >> Regex.replace Regex.All (Regex.regex "[^0-9A-z ,.\\n]") (\_ -> "")
+  >> regExReplaceInStr "[^0-9A-z ,.\\n]" ""
 
 cleanCoachText : String -> String
 cleanCoachText =
-  Regex.replace Regex.All (Regex.regex "\\r\\n") (\_ -> "\n")
-  >> Regex.replace Regex.All (Regex.regex "\\r") (\_ -> "\n")
-  >> Regex.replace Regex.All (Regex.regex "\\t") (\_ -> "    ")
-  >> Regex.replace Regex.All (Regex.regex "[^0-9A-z ,.'!\\]+\\-*/\\(\\)\"\\n]") (\_ -> "")
+  regExReplaceInStr "\\r\\n" "\n"
+  >> regExReplaceInStr "\\r" "\n"
+  >> regExReplaceInStr "\\t" "    "
+  >> regExReplaceInStr "[^0-9A-z ,.'!\\]+\\-*/\\(\\)\"\\n:]" ""
 
 initialState : State
 initialState = State Editor.initialState
@@ -199,7 +204,7 @@ scenePlay w h {editor, keyHistory, goal, timeInMs, keysDown} =
       editorElem = flow down [
                        spacer 560 1 |> color gray1
                      , defaultSpacer
-                     , "Editor" |> toColoredSizedText yellow1 32
+                     , "Editor" |> toColoredSizedText orange1 32
                                 |> centerHorizontally 560
                      , spacer 1 30
                      , Editor.display editor
@@ -207,7 +212,7 @@ scenePlay w h {editor, keyHistory, goal, timeInMs, keysDown} =
       goalElem = flow down [
                      spacer 560 1 |> color gray1
                    , defaultSpacer
-                   , "Goal" |> toColoredSizedText yellow1 32
+                   , "Goal" |> toColoredSizedText orange1 32
                             |> centerHorizontally 560
                    , spacer 1 30
                    , displayGoal goal
