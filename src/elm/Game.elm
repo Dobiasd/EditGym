@@ -72,7 +72,7 @@ initialState = State Editor.initialState
                      ("", "")
                      ("", "")
                      ""
-                     True
+                     False
 
 type Input = Decisecond | Start String
                         | Goal String
@@ -314,7 +314,7 @@ coachResult {keyHistory, exercise} =
                 , " or try to improve (ctrl+r)."
               ]
   in  [ displayCoach text
-      , keyStarsElem True 1 name keyMoves span
+      , keyStarsElem False 1 name keyMoves span
       ]
 
 scenePlay : Int -> Int -> State -> Element
