@@ -12,6 +12,7 @@ import Regex
 import Graphics.Element (Element, flow, down, right, outward, spacer, empty
   , heightOf, color, widthOf, link)
 
+import Stars (keyStarsElem)
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
   , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize)
@@ -71,7 +72,7 @@ initialState = State Editor.initialState
                      ("", "")
                      ("", "")
                      ""
-                     False
+                     True
 
 type Input = Decisecond | Start String
                         | Goal String
@@ -184,7 +185,8 @@ stepKeys inKeysDown time
         if | finished -> state
            | state.waitForNoKeys && (not <| inKeysDown == Set.empty) -> state
            | state.waitForNoKeys && inKeysDown == Set.empty ->
-             { state | waitForNoKeys <- False }
+             { state | waitForNoKeys <- False
+                     , keysDown <- Set.empty }
            | not <| waitForNoKeys -> stepKeysEdit inKeysDown time state
            | otherwise -> state
   in  state' |> stepSwitchExercise inKeysDown
@@ -218,22 +220,9 @@ showHeadline = toColoredSizedText green1 32
 scene : Int -> Int -> State -> Element
 scene w h
   ({editor, keyHistory, editor, goal, timeInMs, coach, exercise} as state) =
-  let finished = editor.document == goal
-      result = if finished
-                 then flow down [
-                     List.length keyHistory.history |> toString
-                       |> toSizedText 180
-                   , spacer 1 10
-                   , KeyHistory.getTimeSpan keyHistory |> showTimeInMs
-                     |> toSizedText 180
-                   ]
-                 else empty
-      header = String.concat [snd exercise, " - ", fst exercise]
+  let header = String.concat [snd exercise, " - ", fst exercise]
       headline = flow down [ defaultSpacer, showHeadline header ]
-  in  flow outward [
-                     scenePlay w h state
-                   , result
-                   ] |> Skeleton.showPageWithHeadline w h headline
+  in  scenePlay w h state |> Skeleton.showPageWithHeadline w h headline
 
 showTimeInPrec : Int -> Int -> String
 showTimeInPrec decimals timeInMs =
@@ -310,25 +299,42 @@ showButtons w {exercise, prev, next} =
     , showNext next |> showRightBottom w
   ]
 
--- todo: fixed widths, center texts
+coachResult : State -> List Element
+coachResult {keyHistory, exercise} =
+  let keyMoves = List.length keyHistory.history
+      span = KeyHistory.getTimeSpan keyHistory
+      name = fst exercise
+      text =  String.concat [
+                  "You needed "
+                , keyMoves |> toString
+                , " key moves and "
+                , span |> showTimeInMs |> String.dropRight 1
+                , " seconds."
+                , "\nYou can go on to the next exercise (ctrl+n)"
+                , " or try to improve (ctrl+r)."
+              ]
+  in  [ displayCoach text
+      , keyStarsElem True 1 name keyMoves span
+      ]
+
 scenePlay : Int -> Int -> State -> Element
-scenePlay w h
+scenePlay winW winH
   ({editor, keyHistory, goal, timeInMs, keysDown, coach} as state) =
   let finished = editor.document == goal
       editorElem = flow down [
                        spacer 560 1 |> color gray1
-                     , defaultSpacer
-                     , "Editor" |> toColoredSizedText orange1 28
-                                |> centerHorizontally 560
-                     , spacer 1 20
+                     , spacer 1 3
+                     , "Your editor" |> toColoredSizedText orange1 28
+                                     |> centerHorizontally 560
+                     , spacer 1 10
                      , Editor.display editor
                    ]
       goalElem = flow down [
                      spacer 560 1 |> color gray1
-                   , defaultSpacer
+                   , spacer 1 3
                    , "Goal" |> toColoredSizedText orange1 28
                             |> centerHorizontally 560
-                   , spacer 1 20
+                   , spacer 1 10
                    , displayGoal goal
                  ]
       middleElem = flow right [
@@ -342,21 +348,22 @@ scenePlay w h
       timeElem = (if finished
                      then KeyHistory.getTimeSpan keyHistory |> showTimeInMs
                      else timeInMs |> showTimeInDs)
-                 |> toSizedText 38
+                 |> toSizedText 32
       pressedKeysElem = showPressedKeys keysDown
       w = widthOf middleElem
-      verticalScalerH = max 0 (260 - heightOf middleElem)
+      verticalScalerH = max 0 (230 - heightOf middleElem)
+      coachElems = if finished then coachResult state
+                               else [displayCoach coach]
   in  flow down [
           flow outward [
               KeyHistory.display 560 keyHistory
             , timeElem |> centerHorizontally w
             , showRightBottom w pressedKeysElem
           ]
-        , defaultSpacer
+        , spacer 1 3
         , middleElem
         , spacer 1 verticalScalerH
         , defaultSpacer
-        , displayCoach coach
-        , defaultSpacer
+        , coachElems |> List.map (centerHorizontally w) |> flow down
         , showButtons w state
       ]

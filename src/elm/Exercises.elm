@@ -13,7 +13,7 @@ import Skeleton
 import Editor(safeHead)
 
 exerciseButton : String -> Element
-exerciseButton s = niceButtonSize 26 s ("?page=game&exercise=" ++ s)
+exerciseButton s = niceButtonSize 24 s ("?page=game&exercise=" ++ s)
 
 main : Signal Element
 main = Signal.map2 scene Window.width Window.height
@@ -93,7 +93,7 @@ getCategorie exercise =
 
 showSubject : Int -> String -> List String -> Element
 showSubject w subject exercises =
-  let subjectElem = toSizedText 40 subject |> centerHorizontally w
+  let subjectElem = toSizedText 36 subject |> centerHorizontally w
       exercisesElem =
         exercises
         |> List.map exerciseButton

@@ -77,7 +77,7 @@ topBar w headline =
                                 + widthOf headline )
       headlineSpacerW = shareLeftSpacerElemW // 2
   in  flow down [
-          defaultSpacer
+          spacer 1 3
         , flow outward [
               logo
             , flow down [
@@ -86,7 +86,7 @@ topBar w headline =
                   (heightOf logo - (heightOf headline + heightOf buttons))
               , buttons |> centerHorizontally w
             ]
-            , shareIcons |> showRightTop w
+            , flow down [ spacer 1 5, shareIcons |> showRightTop w ]
           ]
       ]
 
@@ -94,6 +94,7 @@ header : Int -> Element -> Element
 header w headline =
   flow down [
     topBar w headline
-  , defaultSpacer
+  , spacer 1 3
   , divider purple1 w
-  , defaultSpacer ]
+  , spacer 1 3
+  ]
