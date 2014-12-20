@@ -14,7 +14,7 @@ import Graphics.Element (Element, flow, down, right, outward, spacer, empty
 
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
-  , showRight, defaultSpacer, green1, octaDefSpacer, defTextSize)
+  , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize)
 import Skeleton
 import Editor
 import KeyHistory
@@ -307,7 +307,7 @@ showButtons w {exercise, prev, next} =
   flow outward [
       showPrev prev
     , showRestart |> centerHorizontally w
-    , showNext next |> showRight w
+    , showNext next |> showRightBottom w
   ]
 
 -- todo: fixed widths, center texts
@@ -350,7 +350,7 @@ scenePlay w h
           flow outward [
               KeyHistory.display 560 keyHistory
             , timeElem |> centerHorizontally w
-            , showRight w pressedKeysElem
+            , showRightBottom w pressedKeysElem
           ]
         , defaultSpacer
         , middleElem

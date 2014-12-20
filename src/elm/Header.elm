@@ -11,7 +11,8 @@ import UrlEncode (genLink)
 import Layout (defaultSpacer, toDefText, toSizedText, octaDefSpacer
   , white1, orange1, blue1, purple1, red1, green1, gray1
   , divider, darkGray1, lightGray1, doubleDefSpacer, centerHorizontally
-  , tripleDefSpacer, toColoredSizedText, quadDefSpacer)
+  , tripleDefSpacer, toColoredSizedText, quadDefSpacer
+  , showRightTop)
 
 iconSize : Int
 iconSize = 32
@@ -75,26 +76,17 @@ topBar w headline =
       shareLeftSpacerElemW = w - (widthOf shareIcons + logoWidth
                                 + widthOf headline )
       headlineSpacerW = shareLeftSpacerElemW // 2
-  in  flow right [
-          flow down [
-              defaultSpacer
-            , logo
-          ]
-        , flow down [
-              defaultSpacer
-            , flow right [
-                  spacer headlineSpacerW 1
-                , headline
-                , spacer headlineSpacerW 1
-                , shareIcons
-              ]
-            , quadDefSpacer
-            , doubleDefSpacer
-            , flow right [
-                  spacer menuSpacerW 1
-                , buttons
-                , spacer menuSpacerW 1
-              ]
+  in  flow down [
+          defaultSpacer
+        , flow outward [
+              logo
+            , flow down [
+                headline |> centerHorizontally w
+              , spacer 1
+                  (heightOf logo - (heightOf headline + heightOf buttons))
+              , buttons |> centerHorizontally w
+            ]
+            , shareIcons |> showRightTop w
           ]
       ]
 

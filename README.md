@@ -13,7 +13,6 @@ EditGym helps you to acquire this set of skills by letting you practice with sta
 ---
 
 todo:
-top menu and headline centered
 finished: Coach: "Your score: 42.1s, 23 key moves. You can go on to the next exercise (ctrl+n), try to improve (ctrl+r)."
 stars: display when finished, in exercise header and in exercise list
 save stars with web storage http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
