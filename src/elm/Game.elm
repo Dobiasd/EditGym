@@ -210,6 +210,11 @@ displayCoach str =
         , textElem
       ]
 
+
+showHeadline : String -> Element
+showHeadline = toColoredSizedText green1 32
+
+
 scene : Int -> Int -> State -> Element
 scene w h
   ({editor, keyHistory, editor, goal, timeInMs, coach, exercise} as state) =
@@ -224,10 +229,11 @@ scene w h
                    ]
                  else empty
       header = String.concat [snd exercise, " - ", fst exercise]
+      headline = flow down [ defaultSpacer, showHeadline header ]
   in  flow outward [
                      scenePlay w h state
                    , result
-                   ] |> Skeleton.showPageWithHeadline w h header
+                   ] |> Skeleton.showPageWithHeadline w h headline
 
 showTimeInPrec : Int -> Int -> String
 showTimeInPrec decimals timeInMs =

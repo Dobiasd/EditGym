@@ -8,23 +8,19 @@ A lot of daily tasks require you to edit text. And no matter if you use a word p
 
 But real efficiency is not reached by [just memorizing all shortcuts](https://www.shortcutfoo.com). It is also important (and fun!) to be able to effortlessly choose the tactics with the smallest amount of shortcuts to reach the desired goal.
 
-EditGym helps you to acquire this set of skills by letting you practice and compete on standardized text snippets.
+EditGym helps you to acquire this set of skills by letting you practice with standardized text snippets.
 
 ---
 
 todo:
-finished: Coach: "Your score: 42.1s, 23 key moves. You can go on to the next exercise (ctrl+n), try to improve (ctrl+r) or register your result to the highscore list (ctrl+h)."
+top menu and headline centered
+finished: Coach: "Your score: 42.1s, 23 key moves. You can go on to the next exercise (ctrl+n), try to improve (ctrl+r)."
 stars: display when finished, in exercise header and in exercise list
-save stars with web storage http://stackoverflow.com/
+save stars with web storage http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
+also save and show personal best. Coach congratulates on improvement
+PB-liste im menu. Da auch timestamp zu jedem zeigen.
+5 stars with utf8 and black "Time"/"Keys" on them. not yet = dark gray
 
-beim highscore-eintrag auswaehlen lassen ob time, keys oder beides
-highscore position regarding last 100 users of this exercise anzeigen
-highscore-dialog am Ende automatisch über das game einblenden
-highscore sorting: if criterion 1 is equal then crit 2, wenn auch egal dann timestamp, wenn das equal dann name. Kombination aus allem unique in der DB.
-no negative values in highscore (keys and time)
-highscore spam von einer ip verhindern
-email an mich schicken wenn die highscore-liste eine zweierpotenz erreicht
-ads
 custom exercises: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
 custom exercises: remove unallowed chars
 replay in help (gif?)
@@ -32,10 +28,6 @@ zeit verstellen verhindern, timestamps aller keymoves monoton steigend
 newsletter abbo (keep me informed), email an mich bei zweierpotenz
 https for sending?
 FB-page einrichten, like button oben als link dahin
-Highscore: Histogram mit vertical line wo man steht
-best of today anzeigen
-questions/16427636/check-if-localstorage-is-available
-highscrore string: use xor encoding in elm, then port to js, then to server, then xor reverse. have everything twice in string an check this redundancy for equality.
 
 when done, post here:
 http://acrobolix.com/keyboarding-changed-my-life/ "Hi, I made a website for practicing to rearrange text with keyboard shortcuts. www.editgym.com"

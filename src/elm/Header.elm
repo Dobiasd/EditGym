@@ -67,17 +67,13 @@ menu distSpacer =
   >> List.intersperse distSpacer
   >> flow right
 
-showHeadline : String -> Element
-showHeadline = toColoredSizedText green1 32
-
-topBar : Int -> String -> Element
+topBar : Int -> Element -> Element
 topBar w headline =
   let buttons = menu tripleDefSpacer menuItems
       rightPartW = w - logoWidth
       menuSpacerW = (rightPartW - widthOf buttons) // 2
-      headlineElem = flow down [ defaultSpacer, showHeadline headline ]
       shareLeftSpacerElemW = w - (widthOf shareIcons + logoWidth
-                                + widthOf headlineElem )
+                                + widthOf headline )
       headlineSpacerW = shareLeftSpacerElemW // 2
   in  flow right [
           flow down [
@@ -88,7 +84,7 @@ topBar w headline =
               defaultSpacer
             , flow right [
                   spacer headlineSpacerW 1
-                , headlineElem
+                , headline
                 , spacer headlineSpacerW 1
                 , shareIcons
               ]
@@ -102,7 +98,7 @@ topBar w headline =
           ]
       ]
 
-header : Int -> String -> Element
+header : Int -> Element -> Element
 header w headline =
   flow down [
     topBar w headline

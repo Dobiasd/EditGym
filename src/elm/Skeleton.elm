@@ -1,7 +1,8 @@
 module Skeleton where
 
 import Graphics.Element (Element, container, topRight, width, heightOf
-  , fittedImage, middle, color, midTop, flow, down, spacer, outward, topLeft)
+  , fittedImage, middle, color, midTop, flow, down, spacer, outward, topLeft
+  , empty)
 import List
 import Layout (defaultSpacer, toDefText, toSizedText
   , white1, orange1, blue1, purple1, red1, green1, gray1, divider
@@ -16,7 +17,7 @@ showTextPart w content =
       img = fittedImage w h "imgs/keyboard_bg.jpg"
   in  flow outward [ img, content' |> centerHorizontally w ]
 
-showPageWithHeadline : Int -> Int -> String -> Element -> Element
+showPageWithHeadline : Int -> Int -> Element -> Element -> Element
 showPageWithHeadline wFull h headline content =
   let
     w = wFull - 4 -- prevent scrollbars from flickering when zoomed in browser
@@ -40,4 +41,4 @@ showPageWithHeadline wFull h headline content =
     ] |> container w (max h h') topLeft
 
 showPage : Int -> Int -> Element -> Element
-showPage wFull h content = showPageWithHeadline wFull h " " content
+showPage wFull h content = showPageWithHeadline wFull h empty content

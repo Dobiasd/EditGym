@@ -27,7 +27,7 @@ Sometimes you need to edit or rearrange text quickly. No matter if you use a [wo
 But [just memorizing them](https://www.shortcutfoo.com) alone is not enough to really [save time](http://acrobolix.com/keyboarding-changed-my-life/).
 It is also important (and sometimes even fun) to choose the most efficient tactics effortlessly.
 
-EditGym helps you to acquire this set of skills by letting you practice and compete on standardized text snippets.
+EditGym helps you to acquire this set of skills by letting you practice with standardized text snippets.
 
 """
 
