@@ -97,7 +97,7 @@ showSubject w subject exercises =
       exercisesElem =
         exercises
         |> List.map exerciseButton
-        |> asGrid 3
+        |> asGrid 6
         |> centerHorizontally w
   in flow down [ subjectElem, doubleDefSpacer, exercisesElem ]
 
