@@ -338,7 +338,7 @@ showButtons w {exercise, prev, next} =
   ]
 
 coachResult : State -> List Element
-coachResult {keyHistory, exercise} =
+coachResult {keyHistory, exercise, next} =
   let keyMoves = List.length keyHistory.history
       span = KeyHistory.getTimeSpan keyHistory
       name = fst exercise
@@ -348,8 +348,9 @@ coachResult {keyHistory, exercise} =
                 , " key moves and "
                 , span |> showTimeInMs |> String.dropRight 1
                 , " seconds."
-                , "\nYou can go on to the next exercise (space+n)"
-                , " or try to improve (space+r)."
+                , if String.isEmpty (fst next)
+                     then ""
+                     else "\nYou can go on to the next exercise (space+n) or try to improve (space+r)."
               ]
   in  [ displayCoach text
       , keyStarsElem False 1 name keyMoves span
