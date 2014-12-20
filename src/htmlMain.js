@@ -58,15 +58,6 @@ function DisableNeededKeysandCombos() {
       if (e.keyCode == 65 || e.keyCode == 97 ) { // 'A' or 'a'
         e.preventDefault();
       }
-      if (e.keyCode == 82 || e.keyCode == 114 ) { // 'r' or 'r'
-        e.preventDefault();
-      }
-      if (e.keyCode == 78 || e.keyCode == 110 ) { // 'n' or 'n'
-        e.preventDefault();
-      }
-      if (e.keyCode == 80 || e.keyCode == 112 ) { // 'p' or 'p'
-        e.preventDefault();
-      }
     }
     // prevent scrolling (mainly in IE) with pgUp, pgDown, end, pos1 and arrows
     if (e.keyCode >= 33 && e.keyCode <= 40 ) {

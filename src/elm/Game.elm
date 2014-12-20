@@ -178,19 +178,19 @@ setExercise exercise state =
 
 stepSwitchExercise : Set.Set Keyboard.KeyCode -> State -> State
 stepSwitchExercise keys ({prev, next, start, personalBests} as state) =
-  let ctrl = Set.member 17 keys
+  let space = Set.member 32 keys
       p = Set.member 80 keys
       r = Set.member 82 keys
       n = Set.member 78 keys
-  in  if | ctrl && r -> { state | editor <- (Editor.setDocument
+  in  if | space && r -> { state | editor <- (Editor.setDocument
                                                start
                                                Editor.initialState)
                                 , keyHistory <- KeyHistory.initialState
                                 , timeInMs <- 0
                                 , waitForNoKeys <- True
                                 , personalBests <- personalBests }
-         | ctrl && p -> { state | redirectTo <- exerciseLink (fst prev) }
-         | ctrl && n -> { state | redirectTo <- exerciseLink (fst next) }
+         | space && p -> { state | redirectTo <- exerciseLink (fst prev) }
+         | space && n -> { state | redirectTo <- exerciseLink (fst next) }
          | otherwise -> state
 
 stepKeysEdit : Set.Set Keyboard.KeyCode -> Int -> State -> State
@@ -309,21 +309,21 @@ showPrev (name, cat) =
     flow right [
         showExercise (name, cat) Text.rightAligned
       , toColoredSizedText green1 82 " <-- "
-      , toColText green1 "\n(ctrl+p)"
+      , toColText green1 "\n(space+p)"
     ] |> toExerciseLink name
 
 showNext : (String, String) -> Element
 showNext (name, cat) =
   if String.isEmpty name then empty else
     flow right [
-        toColText green1 "\n(ctrl+n)"
+        toColText green1 "\n(space+n)"
       , toColoredSizedText green1 82 " --> "
       , showExercise (name, cat) Text.leftAligned
     ] |> toExerciseLink name
 
 showRestart : Element
 showRestart =
-  "\nrestart\n(ctrl+r)"
+  "\nrestart\n(space+r)"
   |> Text.fromString
      >> Text.height defTextSize
      >> Text.color green1
