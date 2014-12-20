@@ -19,7 +19,8 @@ import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
 import Skeleton
 import Editor
 import KeyHistory
-import Exercises
+import ExercisesList
+import PersonalBests
 
 type alias State = {
     editor : Editor.State
@@ -34,12 +35,23 @@ type alias State = {
   , next : (String, String)
   , redirectTo : String
   , waitForNoKeys : Bool
+  , personalBests : PersonalBests.PBs
+  , savedPB : Bool
   }
 
 port startIn : Signal String
 port goalIn : Signal String
 port coachIn : Signal String
 port exerciseIn : Signal String
+port loadPBsIn : Signal String
+
+port savePBsOut : Signal String
+port savePBsOut =
+  state
+  |> Signal.keepIf .savedPB initialState
+  |> Signal.map .personalBests
+  |> Signal.dropRepeats
+  |> Signal.map PersonalBests.showBests
 
 port redirect : Signal String
 port redirect = Signal.map .redirectTo state
@@ -73,11 +85,14 @@ initialState = State Editor.initialState
                      ("", "")
                      ""
                      False
+                     []
+                     False
 
 type Input = Decisecond | Start String
                         | Goal String
                         | Coach String
                         | Exercise String
+                        | PBs String
                         | Keys Int (Set.Set Keyboard.KeyCode)
 
 startInput : Signal Input
@@ -88,6 +103,9 @@ goalInput = Signal.map (cleanEditorText >> Goal) goalIn
 
 coachInput : Signal Input
 coachInput = Signal.map (cleanCoachText >> Coach) coachIn
+
+loadPBsInput : Signal Input
+loadPBsInput = Signal.map PBs loadPBsIn
 
 exerciseInput : Signal Input
 exerciseInput = Signal.map Exercise exerciseIn
@@ -111,6 +129,7 @@ input = Signal.mergeMany [
   , keyInput
   , timeInput
   , coachInput
+  , loadPBsInput
   , exerciseInput
   ]
 
@@ -126,6 +145,7 @@ step input =
     Exercise exercise -> setExercise exercise
     Keys time keys -> stepKeys keys time
     Decisecond -> stepDecisecond
+    PBs pbs -> setPersonalBests pbs
 
 stepDecisecond : State -> State
 stepDecisecond ({editor, timeInMs, keyHistory, goal} as state) =
@@ -144,24 +164,31 @@ setGoal goal state = { state | goal <- goal }
 setCoach : String -> State -> State
 setCoach coach state = { state | coach <- coach }
 
+setPersonalBests : String -> State -> State
+setPersonalBests pbs state =
+  { state | personalBests <- PersonalBests.readBests pbs }
+
 setExercise : String -> State -> State
 setExercise exercise state =
-  let prev = Exercises.getPrev exercise
-      next = Exercises.getNext exercise
-  in  { state | exercise <- (exercise, Exercises.getCategorie exercise)
-              , prev <- (prev, Exercises.getCategorie prev)
-              , next <- (next, Exercises.getCategorie next) }
+  let prev = ExercisesList.getPrev exercise
+      next = ExercisesList.getNext exercise
+  in  { state | exercise <- (exercise, ExercisesList.getCategorie exercise)
+              , prev <- (prev, ExercisesList.getCategorie prev)
+              , next <- (next, ExercisesList.getCategorie next) }
 
 stepSwitchExercise : Set.Set Keyboard.KeyCode -> State -> State
-stepSwitchExercise keys ({prev, next, start} as state) =
+stepSwitchExercise keys ({prev, next, start, personalBests} as state) =
   let ctrl = Set.member 17 keys
       p = Set.member 80 keys
       r = Set.member 82 keys
       n = Set.member 78 keys
-  in  if | ctrl && r -> { state | editor <- (Editor.setDocument start Editor.initialState)
+  in  if | ctrl && r -> { state | editor <- (Editor.setDocument
+                                               start
+                                               Editor.initialState)
                                 , keyHistory <- KeyHistory.initialState
                                 , timeInMs <- 0
-                                , waitForNoKeys <- True }
+                                , waitForNoKeys <- True
+                                , personalBests <- personalBests }
          | ctrl && p -> { state | redirectTo <- exerciseLink (fst prev) }
          | ctrl && n -> { state | redirectTo <- exerciseLink (fst next) }
          | otherwise -> state
@@ -179,17 +206,28 @@ stepKeysEdit inKeysDown time
 
 stepKeys : Set.Set Keyboard.KeyCode -> Int -> State -> State
 stepKeys inKeysDown time
-         ({editor, keyHistory, keysDown, goal, waitForNoKeys} as state) =
+         ({editor, keyHistory, keysDown, goal, waitForNoKeys
+         , personalBests, savedPB, exercise} as state) =
   let finished = editor.document == goal
-      state' =
-        if | finished -> state
+      (savedPB', personalBests') =
+        if finished && (not savedPB)
+           then let newPBs = PersonalBests.insert personalBests
+                               { name = fst exercise
+                               , keys = List.length keyHistory.history
+                               , time = KeyHistory.getTimeSpan keyHistory }
+                in  (newPBs /= personalBests, newPBs)
+           else (True, personalBests)
+      state' = { state | savedPB <- savedPB'
+                       , personalBests <- personalBests' }
+      state'' =
+        if | finished -> state'
            | state.waitForNoKeys && (not <| inKeysDown == Set.empty) -> state
            | state.waitForNoKeys && inKeysDown == Set.empty ->
              { state | waitForNoKeys <- False
                      , keysDown <- Set.empty }
            | not <| waitForNoKeys -> stepKeysEdit inKeysDown time state
            | otherwise -> state
-  in  state' |> stepSwitchExercise inKeysDown
+  in  state'' |> stepSwitchExercise inKeysDown
 
 main : Signal Element
 main = Signal.map3 scene Window.width Window.height state

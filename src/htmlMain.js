@@ -39,6 +39,18 @@ function DisableBackspaceNavigation() {
   });
 }
 
+// http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
+function lsTest(){
+  var test = 'test';
+  try {
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
 //http://stackoverflow.com/questions/1056562/how-do-i-prevent-scrolling-with-arrow-keys-but-not-the-mouse
 function DisableNeededKeysandCombos() {
   jQuery(document).keydown(function(e) {
@@ -89,7 +101,43 @@ function LoadAndForward(dataUrl, dest, canBeAbsent) {
   });
 }
 
+function SavePersonalBests(strJSON) {
+  if (lsTest() === true) {
+    try {
+      localStorage.setItem("personalBests", strJSON);
+      console.log("Saved personal bests.")
+    } catch(e) {
+    }
+  }
+}
+
+function LoadPersonalBests(strJSON) {
+  if (lsTest() === true) {
+    try {
+      strJSON = localStorage.getItem("personalBests");
+      if (!strJSON)
+        strJSON = "";
+      console.log("Loaded personal bests.")
+      return strJSON;
+    } catch(e) {
+      return "";
+    }
+  }
+}
+
+function DeletePersonalBests(strJSON) {
+  if (lsTest() === true) {
+    try {
+      localStorage.removeItem("personalBests");
+    } catch(e) {
+    }
+  }
+}
+
 function Init() {
+  if (lsTest === false) {
+    console.log("HTML5 web storage not available. Personal bests will not be saved.")
+  }
   var page = getURLParameterDef("page", "start");
 
   var mainDiv = document.getElementById('main');
@@ -112,13 +160,16 @@ function Init() {
                             { startIn : loadingTextStart
                             , goalIn : loadingTextGoal
                             , coachIn : loadingTextCoach
-                            , exerciseIn : exercise });
+                            , exerciseIn : exercise
+                            , loadPBsIn : "" });
 
     // Elm signals do not fire initially.
     elmContent.ports.startIn.send(loadingTextStart);
     elmContent.ports.goalIn.send(loadingTextGoal);
     elmContent.ports.coachIn.send(loadingTextCoach);
     elmContent.ports.exerciseIn.send(exercise);
+    elmContent.ports.loadPBsIn.send(LoadPersonalBests());
+    elmContent.ports.savePBsOut.subscribe(SavePersonalBests);
 
     exerciseBaseUrl = "exercises/" + exercise + "/";
     startUrl = exerciseBaseUrl + "start.txt";
