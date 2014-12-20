@@ -348,8 +348,8 @@ coachResult {keyHistory, exercise} =
                 , " key moves and "
                 , span |> showTimeInMs |> String.dropRight 1
                 , " seconds."
-                , "\nYou can go on to the next exercise (ctrl+n)"
-                , " or try to improve (ctrl+r)."
+                , "\nYou can go on to the next exercise (space+n)"
+                , " or try to improve (space+r)."
               ]
   in  [ displayCoach text
       , keyStarsElem False 1 name keyMoves span
