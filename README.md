@@ -13,20 +13,20 @@ EditGym helps you to acquire this set of skills by letting you practice with sta
 ---
 
 todo:
-finished: Coach: "Your score: 42.1s, 23 key moves. You can go on to the next exercise (ctrl+n), try to improve (ctrl+r)."
 stars: display when finished, in exercise header and in exercise list
-save stars with web storage http://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
-also save and show personal best. Coach congratulates on improvement
-PB-liste im menu. Da auch timestamp zu jedem zeigen.
-5 stars with utf8 and black "Time"/"Keys" on them. not yet = dark gray
+show stars in game header and exercise list
+Coach congratulates on improvement.
+"high scores" -> raus
+faq: clear personal bests
 
 custom exercises: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
 custom exercises: remove unallowed chars
 replay in help (gif?)
 zeit verstellen verhindern, timestamps aller keymoves monoton steigend
 newsletter abbo (keep me informed), email an mich bei zweierpotenz
-https for sending?
 FB-page einrichten, like button oben als link dahin
+
+bug: game: footer invisible when window not high enough
 
 when done, post here:
 http://acrobolix.com/keyboarding-changed-my-life/ "Hi, I made a website for practicing to rearrange text with keyboard shortcuts. www.editgym.com"
