@@ -63,6 +63,9 @@ function DisableNeededKeysandCombos() {
     if ( e.keyCode == 9 ) { // tab
       e.preventDefault();
     }
+    if ( e.keyCode == 32 ) { // space - to prevent scrolling
+      e.preventDefault();
+    }
   });
 }
 
