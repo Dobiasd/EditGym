@@ -24,7 +24,7 @@ footer : Int -> Element
 footer w =
   let
     buttons = menuItems |> menu quadDefSpacer
-    copyright = "Copyright © 2015 Tobias Hermann. All rights reserved."
+    copyright = "Copyright © 2014 Tobias Hermann. All rights reserved."
                   |> Text.fromString
                   |> Text.height 12
                   |> Text.color lightGray1
