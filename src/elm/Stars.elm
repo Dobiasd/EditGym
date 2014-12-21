@@ -141,11 +141,13 @@ referenceBests = PersonalBests.readBests referenceBestsJson
 
 toOnStarText : Float -> String -> Element
 toOnStarText sizeDiv =
-  Text.fromString
-  >> Text.bold
-  >> Text.height (12 / sizeDiv)
-  >> Text.color gray1
-  >> Text.leftAligned
+  if sizeDiv > 1.5
+    then always empty
+    else Text.fromString
+         >> Text.bold
+         >> Text.height (12 / sizeDiv)
+         >> Text.color gray1
+         >> Text.leftAligned
 
 starWithChar : Float -> Bool -> Char -> Element
 starWithChar sizeDiv filled c =
