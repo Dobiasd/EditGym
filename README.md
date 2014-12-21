@@ -13,9 +13,6 @@ EditGym helps you to acquire this set of skills by letting you practice with sta
 ---
 
 todo:
-stars formula: 5 stars is my PB, 2 stars is my pb * 2, 1 star is finished at all
-stars: display when finished, in exercise header and in exercise list
-PBs: Coach congratulates on improvement.
 adsense
 
 make restart "button" clickable?
