@@ -85,9 +85,6 @@ display : Int -> State -> Element
 display w {history} =
   let visibleHistory = List.drop (List.length history - 8) history
       sep = spacer 2 8 |> color darkGray1
-  in  flow right [
-        List.length history |> toString |> toSizedText 32
-      , spacer 24 1
-      , List.map showKeyAction visibleHistory |> List.intersperse sep
-        |> flow right
-      ]
+  in  List.map showKeyAction visibleHistory
+      |> List.intersperse sep
+      |> flow right

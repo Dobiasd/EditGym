@@ -378,10 +378,15 @@ scenePlay winW winH
                      , spacer 14 1
                      , goalElem
                    ]
-      timeElem = (if finished
-                     then KeyHistory.getTimeSpan keyHistory |> showTimeInMs
-                     else timeInMs |> showTimeInDs)
-                 |> toSizedText 32
+      scoreElem = String.concat [
+                      List.length keyHistory.history
+                      |> toString
+                    , " / "
+                    , if finished
+                         then KeyHistory.getTimeSpan keyHistory
+                              |> showTimeInMs
+                         else timeInMs |> showTimeInDs
+                  ] |> toSizedText 32
       pressedKeysElem = showPressedKeys keysDown
       w = widthOf middleElem
       verticalScalerH = max 0 (230 - heightOf middleElem)
@@ -390,7 +395,7 @@ scenePlay winW winH
   in  flow down [
           flow outward [
               KeyHistory.display 560 keyHistory
-            , timeElem |> centerHorizontally w
+            , scoreElem |> centerHorizontally w
             , showRightBottom w pressedKeysElem
           ]
         , spacer 1 3
