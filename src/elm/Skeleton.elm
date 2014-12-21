@@ -24,14 +24,9 @@ showPageWithHeadline wFull h headline content =
     content' = content |> container w (heightOf content) midTop
     headerElem = header w headline
     footerElem = footer w
-    pageH = List.map heightOf [ headerElem, content, footerElem ] |> List.sum
-    pageContentHeight = List.sum [
-        heightOf headerElem
-      , heightOf content'
-      , heightOf footerElem
-      ]
+    pageH = List.map heightOf [ headerElem, content', footerElem ] |> List.sum
     h' = max h pageH - 4
-    footerSpacer = spacer 2 <| h' - pageContentHeight
+    footerSpacer = spacer 2 <| max 0 (h' - pageH)
   in
     flow down [
       headerElem
