@@ -38,7 +38,10 @@ type alias State = {
   , redirectTo : String
   , waitForNoKeys : Bool
   , personalBests : PersonalBests.PBs
+  , finished : Bool
   , savedPB : Bool
+  , improvedBestKeys : Bool
+  , improvedBestTime : Bool
   }
 
 port startIn : Signal String
@@ -88,6 +91,9 @@ initialState = State Editor.initialState
                      ""
                      False
                      []
+                     False
+                     False
+                     False
                      False
 
 type Input = Decisecond | Start String
@@ -191,7 +197,8 @@ stepSwitchExercise keys ({prev, next, start, personalBests} as state) =
                                 , timeInMs <- 0
                                 , waitForNoKeys <- True
                                 , personalBests <- personalBests
-                                , savedPB <- False }
+                                , savedPB <- False
+                                , finished <- False }
          | space && p -> { state | redirectTo <- exerciseLink (fst prev) }
          | space && n -> { state | redirectTo <- exerciseLink (fst next) }
          | otherwise -> state
@@ -207,34 +214,68 @@ stepKeysEdit inKeysDown time
                                               time
               , keysDown <- inKeysDown }
 
+generatePB : State -> PersonalBests.PB
+generatePB {keyHistory, exercise} =
+  let endTime = KeyHistory.getEndTime keyHistory
+      dateStr = timeToString endTime
+      name = fst exercise
+      keys = List.length keyHistory.history
+      time = KeyHistory.getTimeSpan keyHistory
+  in  { name = name
+      , keys = keys
+      , time = time
+      , keysdate = dateStr
+      , timedate = dateStr }
+
+stepFinishedWithOldPB : PersonalBests.PB -> State -> State
+stepFinishedWithOldPB oldPB
+  ({keyHistory, exercise, personalBests} as state) =
+  let newPB = generatePB state
+      newPBs = PersonalBests.insert personalBests newPB
+      improvedBestKeys' = newPB.keys < oldPB.keys
+      improvedBestTime' = newPB.time < oldPB.time
+  in  { state | personalBests <- newPBs
+              , improvedBestKeys <- improvedBestKeys'
+              , improvedBestTime <- improvedBestTime'
+              , savedPB <- improvedBestKeys' || improvedBestTime'}
+
+stepFinishedWithOutOldPB : State -> State
+stepFinishedWithOutOldPB ({personalBests} as state) =
+  let newPBs = PersonalBests.insert personalBests
+                 (generatePB state)
+  in  { state | personalBests <- newPBs
+              , savedPB <- True }
+
+stepFinished : State -> State
+stepFinished ({personalBests, exercise} as state) =
+  case PersonalBests.get personalBests (fst exercise) of
+         Just pb -> stepFinishedWithOldPB pb state
+         Nothing -> stepFinishedWithOutOldPB state
+
+stepCheckFinished : State -> State
+stepCheckFinished ({finished, editor, goal} as state) =
+  if finished
+    then state
+    else
+      let finished' = editor.document == goal
+      in  if finished'
+            then { state | finished <- finished' } |> stepFinished
+            else state
+
 stepKeys : Set.Set Keyboard.KeyCode -> Int -> State -> State
 stepKeys inKeysDown time
-         ({editor, keyHistory, keysDown, goal, waitForNoKeys
-         , personalBests, savedPB, exercise} as state) =
-  let finished = editor.document == goal
-      (savedPB', personalBests') =
-        if finished && (not savedPB)
-           then let endTime = KeyHistory.getEndTime keyHistory
-                    dateStr = timeToString endTime
-                    newPBs = PersonalBests.insert personalBests
-                               { name = fst exercise
-                               , keys = List.length keyHistory.history
-                               , time = KeyHistory.getTimeSpan keyHistory
-                               , keysdate = dateStr
-                               , timedate = dateStr }
-                in  (newPBs /= personalBests, newPBs)
-           else (True, personalBests)
-      state' = { state | savedPB <- savedPB'
-                       , personalBests <- personalBests' }
-      state'' =
-        if | finished -> state'
+ ({editor, keyHistory, keysDown, goal, waitForNoKeys
+ , personalBests, savedPB, exercise} as oldState) =
+  let state = oldState |> stepCheckFinished
+      state' =
+        if | state.finished -> state
            | state.waitForNoKeys && (not <| inKeysDown == Set.empty) -> state
            | state.waitForNoKeys && inKeysDown == Set.empty ->
              { state | waitForNoKeys <- False
                      , keysDown <- Set.empty }
            | not <| waitForNoKeys -> stepKeysEdit inKeysDown time state
            | otherwise -> state
-  in  state'' |> stepSwitchExercise inKeysDown
+  in  state' |> stepSwitchExercise inKeysDown
 
 main : Signal Element
 main = Signal.map3 scene Window.width Window.height state
@@ -244,7 +285,6 @@ validKey key = KeyHistory.showKey key /= ""
 
 displayGoal : String -> Element
 displayGoal goal = Editor.displayDocument lightGray1 goal
-
 
 showHeadline : String -> Element
 showHeadline = toColoredSizedText green1 32
@@ -334,19 +374,30 @@ showButtons w {exercise, prev, next} =
   ]
 
 coachResult : State -> List Element
-coachResult {keyHistory, exercise, next, personalBests} =
+coachResult {keyHistory, exercise, next, personalBests
+  , improvedBestKeys, improvedBestTime} =
   let keyMoves = List.length keyHistory.history
       span = KeyHistory.getTimeSpan keyHistory
       name = fst exercise
+      hasImprovedSomething = improvedBestKeys || improvedBestTime
       text =  String.concat [
                   "You needed "
                 , keyMoves |> toString
                 , " key moves and "
                 , span |> showTimeInMs |> String.dropRight 1
                 , " seconds."
+                , let improveIntro = "\nThis means you have improved your personal best regarding "
+                  in  if | improvedBestKeys && improvedBestTime -> String.append improveIntro "key movements and time!"
+                         | improvedBestKeys -> String.append improveIntro "key movements!"
+                         | improvedBestTime -> String.append improveIntro "time!"
+                         | otherwise -> ""
                 , if String.isEmpty (fst next)
                      then ""
-                     else "\nYou can go on to the next exercise (space+n) or try to improve (space+r)."
+                     else String.concat [
+                              "\nYou can go on to the next exercise (space+n) or try to improve "
+                            , if hasImprovedSomething then "even more " else ""
+                            , "(space+r)."
+                          ]
               ]
   in  [ displayCoach text
       , keyStarsElemFromPBs False 1 personalBests name
@@ -354,9 +405,8 @@ coachResult {keyHistory, exercise, next, personalBests} =
 
 scenePlay : Int -> Int -> State -> Element
 scenePlay winW winH
-  ({editor, keyHistory, goal, timeInMs, keysDown, coach} as state) =
-  let finished = editor.document == goal
-      editorElem = flow down [
+  ({editor, keyHistory, goal, timeInMs, keysDown, coach, finished} as state) =
+  let editorElem = flow down [
                        spacer 560 1 |> color gray1
                      , spacer 1 3
                      , "Your editor" |> toColoredSizedText orange1 28
