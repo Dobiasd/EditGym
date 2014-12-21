@@ -13,23 +13,22 @@ EditGym helps you to acquire this set of skills by letting you practice with sta
 ---
 
 todo:
+stars formula: 5 stars is my PB, 2 stars is my pb * 2, 1 star is finished at all
 stars: display when finished, in exercise header and in exercise list
-show stars in game header and exercise list
-Coach congratulates on improvement.
-"high scores" -> raus
-faq: clear personal bests
+PBs: Coach congratulates on improvement.
+adsense
 
+make restart "button" clickable?
 custom exercises: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
 custom exercises: remove unallowed chars
 replay in help (gif?)
-zeit verstellen verhindern, timestamps aller keymoves monoton steigend
-newsletter abbo (keep me informed), email an mich bei zweierpotenz
 FB-page einrichten, like button oben als link dahin
 
 bug: game: footer invisible when window not high enough
 
 when done, post here:
-http://acrobolix.com/keyboarding-changed-my-life/ "Hi, I made a website for practicing to rearrange text with keyboard shortcuts. www.editgym.com"
+http://acrobolix.com/keyboarding-changed-my-life/ "Hey Juji, I made a website for practicing to rearrange text with keyboard shortcuts. www.editgym.com
+Dobi"
 http://www.reddit.com/r/productivity/ "Become lightning fast at rearraning text with EditGym.com"
 http://www.reddit.com/r/webdev EditGym.com - A website for practicing to rearrange text with keyboard shortcuts (hobby project)
 
@@ -38,3 +37,4 @@ optimize performance
 quatsch:
 instant replay
 compete live (with chat)
+zeit verstellen verhindern, timestamps aller keymoves monoton steigend
