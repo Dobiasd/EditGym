@@ -140,8 +140,11 @@ function Init() {
   }
   else if (page == "personal_bests")
   {
-    elmContent = Elm.embed(Elm.PersonalBestList, mainDiv, {loadPBsIn : ""});
-    elmContent.ports.loadPBsIn.send(LoadPersonalBests());
+    pbs = LoadPersonalBests();
+    // Markdown in Elm does not render correctly if Signal
+    // is not present at initialization.
+    elmContent = Elm.embed(Elm.PersonalBestList, mainDiv, {loadPBsIn : pbs});
+    elmContent.ports.loadPBsIn.send(pbs);
   }
   else if (page == "newsletter")
     elmContent = Elm.embed(Elm.Newsletter, mainDiv, {});

@@ -36,9 +36,9 @@ If you want to delete all your personal bests, click [here](?page=delete_persona
 showBest : PersonalBests.PB -> String
 showBest {name, keys, keysdate, time, timedate} =
   String.concat [
-      "## ", name, "\n"
-    , "\n    Key movements: ", toString keys, " (", keysdate, ")"
-    , "\n    Time: ", showTimeInMs time, " (", timedate, ")"
+      "** ", name, "**: "
+    , "Key movements: **", toString keys, "** (", keysdate, ")"
+    , "; Time: **", showTimeInMs time, "** (", timedate, ")"
   ]
 
 genBestList : PersonalBests.PBs -> String
@@ -57,7 +57,7 @@ main = Signal.map3 scene Window.width Window.height personalBests
 
 scene : Int -> Int -> PersonalBests.PBs -> Element
 scene w h personalBests =
-  genText personalBests-- |> toDefText
+  genText personalBests -- |> toDefText
   |> Markdown.toElement
   |> Skeleton.showTextPart w
   |> Skeleton.showPage w h

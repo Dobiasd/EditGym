@@ -344,7 +344,7 @@ scenePlay winW winH
                      , spacer 1 3
                      , "Your editor" |> toColoredSizedText orange1 28
                                      |> centerHorizontally 560
-                     , spacer 1 10
+                     , spacer 1 7
                      , Editor.display editor
                    ]
       goalElem = flow down [
@@ -352,7 +352,7 @@ scenePlay winW winH
                    , spacer 1 3
                    , "Goal" |> toColoredSizedText orange1 28
                             |> centerHorizontally 560
-                   , spacer 1 10
+                   , spacer 1 7
                    , displayGoal goal
                  ]
       middleElem = flow right [
