@@ -17,8 +17,6 @@ adsense
 
 make restart "button" clickable?
 custom exercises: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
-custom exercises: remove unallowed chars
-replay in help (gif?)
 FB-page einrichten, like button oben als link dahin
 
 bug: game: footer invisible when window not high enough
@@ -35,3 +33,4 @@ quatsch:
 instant replay
 compete live (with chat)
 zeit verstellen verhindern, timestamps aller keymoves monoton steigend
+replay in help (gif?)
