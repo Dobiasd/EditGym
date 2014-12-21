@@ -24,6 +24,9 @@ No, this is not planned at the moment.
 ## Why are some keys disabled for typing?
 Only the keys needed for the [default exercises](?page=exercises) are activated.
 
+## Where are my personal bests saved?
+They are saved on your PC (i.e. in your browser) in [web storage](http://en.wikipedia.org/wiki/Web_storage). Nothing is ever uploaded to a server or something like that.
+
 ## Why is the text selection displayed so ugly?
 Normally it should look fine. But since it is generated using an [UTF-8 character](http://www.fileformat.info/info/unicode/char/2588/index.htm), your browser has to support a nice monospace font.
 
@@ -38,6 +41,9 @@ You are here to learn efficient shortcuts. Solving a exercise by holding down a 
 
 ## Why does this site not scale correctly onto my tiny screen?
 At the default zoom level the layout was made for screen resolutions with at least 1280 pixels in width. But you can always just zoom in and zoom out with ctrl + plus / ctrl + minus / ctrl + mouse wheel.
+
+## Why does the editor sometimes stutter when I'm very fast?
+This seems to be mainly a [problem in Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1111361#c5). I dope its garbadge collector, which seems to be the problem, will be improved soon. Up to then you can try to use Chrome. If it's also not fluent there, your PC is not good enough to handle my awesomely wasteful programming. ;)
 
 ## Why does EditGym not behave like my favorite text editor?
 In some cases not all editors behave the same.
