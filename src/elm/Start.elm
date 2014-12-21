@@ -22,9 +22,9 @@ broseButton = niceButton "Browse exercises" "?page=exercises"
 introduction : Int -> Element
 introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 
-Sometimes you need to edit or rearrange text quickly. No matter if you use a [word processor](https://www.libreoffice.org/discover/writer), an [editor](http://notepad-plus-plus.org), an [IDE](https://eclipse.org)  or just write an [email](https://www.mozilla.org/en-US/thunderbird/) or a post on [facebook](http://www.facebook.com), the basic keyboard shortcuts are mostly the same.
+Sometimes you need to edit or rearrange text quickly. Using the mouse it way to slow, but no matter if you use a [word processor](https://www.libreoffice.org/discover/writer), an [editor](http://notepad-plus-plus.org), an [IDE](https://eclipse.org)  or just write an [email](https://www.mozilla.org/en-US/thunderbird/) or a post on [facebook](http://www.facebook.com), the basic keyboard shortcuts are mostly the same.
 
-But [just memorizing them](https://www.shortcutfoo.com) alone is not enough to really [save time](http://acrobolix.com/keyboarding-changed-my-life/).
+However [just memorizing them](https://www.shortcutfoo.com) alone is not enough to really [save time](http://acrobolix.com/keyboarding-changed-my-life/).
 It is also important (and sometimes even fun) to choose the most efficient tactics effortlessly.
 
 EditGym helps you to acquire this set of skills by letting you practice with standardized text snippets.
