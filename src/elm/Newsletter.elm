@@ -23,9 +23,10 @@ unsubscribeLink = genLink "mailto:info@editgym.com" [("subject", "unsubscribe"),
 scene : Int -> Int -> Element
 scene w h =
   flow down [
-      displayCoach "Do you me to keep you informed about updates like new exercises and stuff?\n Just use the subscribe button to send me an email. I will not send you any spam or something."
+      spacer 1 40
+    , displayCoach "Do you me to keep you informed about updates like new exercises and stuff?\n Just use the subscribe button to send me an email. I will not send you any spam or something."
     , Layout.niceButton "subscribe" subscribeLink
-    , spacer 1 100
+    , spacer 1 60
     , displayCoach "You no longer want to receive updates? No problem, just use the unsubscribe button below."
     , Layout.niceButton "unsubscribe" unsubscribeLink
   ] |> Skeleton.showPage w h
