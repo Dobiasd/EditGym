@@ -3,7 +3,7 @@ module Layout where
 import Text
 import Color (Color, rgb)
 import Graphics.Element (Element, spacer, container, widthOf, heightOf
-  , middle, flow, outward, bottomRight, topRight)
+  , middle, flow, outward, bottomRight, topRight, right)
 import Graphics.Element
 
 spacerSize : Int
@@ -46,6 +46,18 @@ darkGray1 = rgb 56 56 48
 -- https://groups.google.com/forum/#!topic/elm-discuss/IdbMAlFHAAE
 niceButton : String -> String -> Element
 niceButton = niceButtonSize 42
+
+displayCoach : String -> Element
+displayCoach str =
+  let textElem = str
+        |> Text.fromString
+        |> Text.height 20
+        |> Text.color blue1
+        |> Text.leftAligned
+  in  flow right [
+          toColText blue1 "Coach: "
+        , textElem
+      ]
 
 niceButtonSize : Float -> String -> String -> Element
 niceButtonSize h str url =

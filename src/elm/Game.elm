@@ -15,7 +15,8 @@ import Graphics.Element (Element, flow, down, right, outward, spacer, empty
 import Stars (keyStarsElem)
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
-  , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize)
+  , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize
+  , displayCoach)
 import Skeleton
 import Editor
 import KeyHistory
@@ -242,18 +243,6 @@ validKey key = KeyHistory.showKey key /= ""
 
 displayGoal : String -> Element
 displayGoal goal = Editor.displayDocument lightGray1 goal
-
-displayCoach : String -> Element
-displayCoach str =
-  let textElem = str
-        |> Text.fromString
-        |> Text.height 20
-        |> Text.color blue1
-        |> Text.leftAligned
-  in  flow right [
-          toColText blue1 "Coach: "
-        , textElem
-      ]
 
 
 showHeadline : String -> Element
