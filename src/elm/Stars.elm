@@ -107,7 +107,7 @@ referenceBestsJson = """
     },
     {
         \"name\": \"swap_lines\",
-        \"keys\": 15,
+        \"keys\": 16,
         \"keysdate\": \"2014-12-21\",
         \"time\": 634,
         \"timedate\": \"2014-12-21\"
