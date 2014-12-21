@@ -7,7 +7,135 @@ import String
 import String(fromChar, slice, padRight)
 import Text
 
+import PersonalBests
 import Layout(yellow1, gray1, darkGray1, toColoredSizedText)
+
+referenceBestsJson : String
+referenceBestsJson = """
+[
+    {
+        \"name\": \"arrows\",
+        \"keys\": 35,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 1038,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"batman\",
+        \"keys\": 80,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 6400,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"growth\",
+        \"keys\": 28,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 1291,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"indentation\",
+        \"keys\": 61,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 2815,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"insert\",
+        \"keys\": 42,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 1415,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"introduction\",
+        \"keys\": 24,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 1151,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"new_lines\",
+        \"keys\": 37,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 3264,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"numbers\",
+        \"keys\": 172,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 10837,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"remove_duplicates\",
+        \"keys\": 347,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 23024,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"remove_words_1\",
+        \"keys\": 37,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 1752,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"remove_words_2\",
+        \"keys\": 79,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 5599,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"replicate\",
+        \"keys\": 14,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 552,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"surely\",
+        \"keys\": 111,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 7887,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"swap_lines\",
+        \"keys\": 15,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 634,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"swap_many_words\",
+        \"keys\": 83,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 5792,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"swap_words\",
+        \"keys\": 18,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 573,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"you_are_awesome\",
+        \"keys\": 90,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 7220,
+        \"timedate\": \"2014-12-21\"
+    }
+]"""
+
+referenceBests : PersonalBests.PBs
+referenceBests = PersonalBests.readBests referenceBestsJson
 
 toOnStarText : Float -> String -> Element
 toOnStarText sizeDiv =

@@ -109,6 +109,7 @@ function LoadPersonalBests(strJSON) {
       if (!strJSON)
         strJSON = "";
       //console.log("Loaded personal bests.")
+      //console.log(strJSON);
       return strJSON;
     } catch(e) {
       return "";
