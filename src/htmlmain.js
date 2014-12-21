@@ -95,8 +95,10 @@ function LoadAndForward(dataUrl, dest, canBeAbsent) {
 function SavePersonalBests(strJSON) {
   if (lsTest() === true) {
     try {
+      if (strJSON || strJSON.length() == 0)
+        return;
       localStorage.setItem("personalBests", strJSON);
-      //console.log("Saved personal bests.")
+      console.log("Saved personal bests.")
     } catch(e) {
     }
   }
