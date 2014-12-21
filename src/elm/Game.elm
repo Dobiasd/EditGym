@@ -21,6 +21,7 @@ import Editor
 import KeyHistory
 import ExercisesList
 import PersonalBests
+import DateTime(timeToString)
 
 type alias State = {
     editor : Editor.State
@@ -211,10 +212,14 @@ stepKeys inKeysDown time
   let finished = editor.document == goal
       (savedPB', personalBests') =
         if finished && (not savedPB)
-           then let newPBs = PersonalBests.insert personalBests
+           then let endTime = KeyHistory.getEndTime keyHistory
+                    dateStr = timeToString endTime
+                    newPBs = PersonalBests.insert personalBests
                                { name = fst exercise
                                , keys = List.length keyHistory.history
-                               , time = KeyHistory.getTimeSpan keyHistory }
+                               , time = KeyHistory.getTimeSpan keyHistory
+                               , keysdate = dateStr
+                               , timedate = dateStr }
                 in  (newPBs /= personalBests, newPBs)
            else (True, personalBests)
       state' = { state | savedPB <- savedPB'

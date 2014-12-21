@@ -10,16 +10,25 @@ import Json.Decode as Decode
 import Json.Decode((:=))
 import Json.Encode as Encode
 
-type alias PBValues = { keys : Int, time : Int }
-type alias PB = { name : String, keys : Int, time : Int }
+type alias PBValues = { keys : Int
+                      , keysdate : String
+                      , time : Int
+                      , timedate : String }
+type alias PB = { name : String
+                , keys : Int
+                , keysdate : String
+                , time : Int
+                , timedate : String }
 type alias PBs = List PB
 
 bestDecoder : Decode.Decoder PB
 bestDecoder =
-  Decode.object3 PB
+  Decode.object5 PB
     ("name" := Decode.string)
     ("keys" := Decode.int)
+    ("keysdate" := Decode.string)
     ("time" := Decode.int)
+    ("timedate" := Decode.string)
 
 bestsDecoder : Decode.Decoder PBs
 bestsDecoder =
@@ -36,10 +45,12 @@ readBests str =
                                 in  []
 
 showBest : PB -> Encode.Value
-showBest {name, keys, time} =
+showBest {name, keys, time, keysdate, timedate} =
   Encode.object [ ("name", Encode.string name)
                 , ("keys", Encode.int keys)
+                , ("keysdate", Encode.string keysdate)
                 , ("time", Encode.int time)
+                , ("timedate", Encode.string timedate)
                 ]
 
 showBests : PBs -> String
@@ -53,10 +64,23 @@ get bests name =
         Maybe.Just res -> Maybe.Just { res | name = name }
         Nothing -> Nothing
 
-updateBest : PB -> Int -> Int -> PB
-updateBest ({time, keys} as best) newKeys newTime =
-  { best | time <- min time newTime
-         , keys <- min keys newKeys }
+updateTime : PB -> PB -> PB
+updateTime pb newBest =
+  if newBest.time < pb.time then { pb | time <- newBest.time
+                                      , timedate <- newBest.timedate }
+                            else pb
+
+updateKeys : PB -> PB -> PB
+updateKeys pb newBest =
+  if newBest.keys < pb.keys then { pb | keys <- newBest.keys
+                                      , keysdate <- newBest.keysdate }
+                            else pb
+
+updateBest : PB -> PB -> PB
+updateBest best newBest =
+  best
+  |> updateKeys newBest
+  |> updateKeys newBest
 
 toPair : PB -> (String, PBValues)
 toPair best = (best.name, { best - name })
@@ -73,9 +97,7 @@ insert bests newBest =
       name = newBest.name
       newEntry = case Dict.get name dict of
                         Maybe.Just ob ->
-                          updateBest { ob | name = name }
-                                     newBest.keys
-                                     newBest.time
+                          updateBest { ob | name = name } newBest
                         Nothing -> newBest
       newDict = uncurry Dict.insert (toPair newEntry) dict
   in  newDict |> Dict.toList |> List.map fromPair

@@ -78,6 +78,9 @@ getTimeSpan {history} =
     else (history |> last |> keyActionTime) -
          (history |> List.head |> keyActionTime)
 
+getEndTime : State -> Int
+getEndTime {history} = history |> last |> keyActionTime
+
 display : Int -> State -> Element
 display w {history} =
   let visibleHistory = List.drop (List.length history - 8) history
