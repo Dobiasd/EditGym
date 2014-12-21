@@ -16,7 +16,7 @@ exercisesButton = niceButton "Work out" "?page=exercises"
 introduction : Int -> Element
 introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 
-contact: info (at) editgym.com
+Just send an email to [info@editgym.com](mailto:info@editgym.com).
 
 """
 
