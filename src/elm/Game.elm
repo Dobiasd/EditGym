@@ -16,7 +16,7 @@ import Stars (keyStarsElem)
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
   , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize
-  , displayCoach)
+  , displayCoach, showTimeInDs, showTimeInMs)
 import Skeleton
 import Editor
 import KeyHistory
@@ -107,7 +107,7 @@ coachInput : Signal Input
 coachInput = Signal.map (cleanCoachText >> Coach) coachIn
 
 loadPBsInput : Signal Input
-loadPBsInput = Signal.map PBs loadPBsIn
+loadPBsInput = Signal.map PBs (Signal.dropRepeats loadPBsIn)
 
 exerciseInput : Signal Input
 exerciseInput = Signal.map Exercise exerciseIn
@@ -256,22 +256,7 @@ scene w h
       headline = flow down [ defaultSpacer, showHeadline header ]
   in  scenePlay w h state |> Skeleton.showPageWithHeadline w h headline
 
-showTimeInPrec : Int -> Int -> String
-showTimeInPrec decimals timeInMs =
-  let str = timeInMs |> toString |> String.dropRight (3 - decimals)
-      part2 = String.right decimals str
-  in  String.concat [
-           if timeInMs < 1000 then "0" else ""
-        ,  String.dropRight decimals str
-        , "."
-        , if String.isEmpty part2 then "0" else part2
-        , "s" ]
 
-showTimeInDs : Int -> String
-showTimeInDs = showTimeInPrec 1
-
-showTimeInMs : Int -> String
-showTimeInMs = showTimeInPrec 3
 
 showPressedKeys : Set.Set Keyboard.KeyCode -> Element
 showPressedKeys =

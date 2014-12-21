@@ -96,7 +96,7 @@ function SavePersonalBests(strJSON) {
   if (lsTest() === true) {
     try {
       localStorage.setItem("personalBests", strJSON);
-      console.log("Saved personal bests.")
+      //console.log("Saved personal bests.")
     } catch(e) {
     }
   }
@@ -108,7 +108,7 @@ function LoadPersonalBests(strJSON) {
       strJSON = localStorage.getItem("personalBests");
       if (!strJSON)
         strJSON = "";
-      console.log("Loaded personal bests.")
+      //console.log("Loaded personal bests.")
       return strJSON;
     } catch(e) {
       return "";
@@ -135,12 +135,12 @@ function Init() {
 
   if (page == "exercises")
   {
-    elmContent = Elm.embed(Elm.Exercises, mainDiv, {loadPBsIn : ""});
+    elmContent = Elm.embed(Elm.Exercises, mainDiv,{loadPBsIn : LoadPersonalBests()});
     elmContent.ports.loadPBsIn.send(LoadPersonalBests());
   }
   else if (page == "personal_bests")
   {
-    elmContent = Elm.embed(Elm.PersonalBestList, mainDiv, {loadPBsIn : ""});
+    elmContent = Elm.embed(Elm.PersonalBestList, mainDiv, {loadPBsIn : LoadPersonalBests()});
     elmContent.ports.loadPBsIn.send(LoadPersonalBests());
   }
   else if (page == "newsletter")
@@ -158,7 +158,7 @@ function Init() {
                             , goalIn : loadingTextGoal
                             , coachIn : loadingTextCoach
                             , exerciseIn : exercise
-                            , loadPBsIn : "" });
+                            , loadPBsIn : LoadPersonalBests() });
 
     // Elm signals do not fire initially.
     elmContent.ports.startIn.send(loadingTextStart);

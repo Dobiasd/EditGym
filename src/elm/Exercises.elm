@@ -5,6 +5,7 @@ import Window
 import Signal
 import List ((::))
 import List
+import PersonalBests
 
 import Layout (toColText, toDefText, green1, blue1, darkGray1
   , niceButton, defaultSpacer, quadDefSpacer, toSizedText, niceButtonSize
@@ -14,6 +15,10 @@ import Editor(safeHead)
 import ExercisesList(..)
 
 port loadPBsIn : Signal String
+
+personalBests : Signal PersonalBests.PBs
+personalBests = Signal.map PersonalBests.readBests
+  (Signal.dropRepeats loadPBsIn)
 
 exerciseButton : String -> Element
 exerciseButton s = niceButtonSize 24 s ("?page=game&exercise=" ++ s)

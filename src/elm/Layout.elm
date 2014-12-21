@@ -5,6 +5,7 @@ import Color (Color, rgb)
 import Graphics.Element (Element, spacer, container, widthOf, heightOf
   , middle, flow, outward, bottomRight, topRight, right)
 import Graphics.Element
+import String
 
 spacerSize : Int
 spacerSize = 8
@@ -122,3 +123,20 @@ defTextSize = 20
 
 toDefText : String -> Element
 toDefText = toSizedText defTextSize
+
+showTimeInPrec : Int -> Int -> String
+showTimeInPrec decimals timeInMs =
+  let str = timeInMs |> toString |> String.dropRight (3 - decimals)
+      part2 = String.right decimals str
+  in  String.concat [
+           if timeInMs < 1000 then "0" else ""
+        ,  String.dropRight decimals str
+        , "."
+        , if String.isEmpty part2 then "0" else part2
+        , "s" ]
+
+showTimeInDs : Int -> String
+showTimeInDs = showTimeInPrec 1
+
+showTimeInMs : Int -> String
+showTimeInMs = showTimeInPrec 3
