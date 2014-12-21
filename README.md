@@ -19,8 +19,6 @@ make restart "button" clickable?
 custom exercises: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
 FB-page einrichten, like button oben als link dahin
 
-bug: game: footer invisible when window not high enough
-
 when done, post here:
 http://acrobolix.com/keyboarding-changed-my-life/ "Hey Juji, I made a website for practicing to rearrange text with keyboard shortcuts. www.editgym.com
 Dobi"
