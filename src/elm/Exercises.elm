@@ -1,6 +1,7 @@
 module Exercises where
 
-import Graphics.Element (Element, flow, down, right, spacer, color)
+import Graphics.Element (Element, flow, down, right, spacer, color, empty
+  , widthOf)
 import Window
 import Signal
 import List ((::))
@@ -13,6 +14,7 @@ import Layout (toColText, toDefText, green1, blue1, darkGray1
 import Skeleton
 import Editor(safeHead)
 import ExercisesList(..)
+import Stars(keyStarsElem)
 
 port loadPBsIn : Signal String
 
@@ -24,7 +26,7 @@ exerciseButton : String -> Element
 exerciseButton s = niceButtonSize 24 s ("?page=game&exercise=" ++ s)
 
 main : Signal Element
-main = Signal.map2 scene Window.width Window.height
+main = Signal.map3 scene Window.width Window.height personalBests
 
 asGrid : Int -> List Element -> Element
 asGrid colCnt =
@@ -33,25 +35,37 @@ asGrid colCnt =
   >> List.intersperse quadDefSpacer
   >> flow down
 
-showSubject : Int -> String -> List String -> Element
-showSubject w subject exercises =
+exerciseButtonWithStars : PersonalBests.PBs -> String -> Element
+exerciseButtonWithStars pbs name =
+  let starsElem = case PersonalBests.get pbs name of
+                    Just pb -> keyStarsElem False 4 name pb.keys pb.time
+                    Nothing -> empty
+      btn = exerciseButton name
+      w = max (widthOf starsElem) (widthOf btn)
+  in  flow down [
+          starsElem |> centerHorizontally w
+        , btn |> centerHorizontally w
+      ]
+
+showSubject : Int -> PersonalBests.PBs -> String -> List String -> Element
+showSubject w pbs subject exercises =
   let subjectElem = toSizedText 36 subject |> centerHorizontally w
       exercisesElem =
         exercises
-        |> List.map exerciseButton
+        |> List.map (exerciseButtonWithStars pbs)
         |> asGrid 6
         |> centerHorizontally w
   in flow down [ subjectElem, doubleDefSpacer, exercisesElem ]
 
-scene : Int -> Int -> Element
-scene w h =
+scene : Int -> Int -> PersonalBests.PBs -> Element
+scene w h pbs =
   let paddedDivider = flow down [
                           doubleDefSpacer
                         , divider blue1 w
                         , doubleDefSpacer
                       ]
   in  subjects
-        |> List.map (showSubject w |> uncurry)
+        |> List.map (showSubject w pbs |> uncurry)
         |> List.intersperse paddedDivider
         |> flow down
         |> Skeleton.showPage w h

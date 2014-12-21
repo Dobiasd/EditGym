@@ -12,7 +12,7 @@ import Regex
 import Graphics.Element (Element, flow, down, right, outward, spacer, empty
   , heightOf, color, widthOf, link)
 
-import Stars (keyStarsElem)
+import Stars (keyStarsElem, keyStarsElemFromPBs)
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
   , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize
@@ -190,7 +190,8 @@ stepSwitchExercise keys ({prev, next, start, personalBests} as state) =
                                 , keyHistory <- KeyHistory.initialState
                                 , timeInMs <- 0
                                 , waitForNoKeys <- True
-                                , personalBests <- personalBests }
+                                , personalBests <- personalBests
+                                , savedPB <- False }
          | space && p -> { state | redirectTo <- exerciseLink (fst prev) }
          | space && n -> { state | redirectTo <- exerciseLink (fst next) }
          | otherwise -> state
@@ -248,15 +249,30 @@ displayGoal goal = Editor.displayDocument lightGray1 goal
 showHeadline : String -> Element
 showHeadline = toColoredSizedText green1 32
 
+makeHeader : State -> Element
+makeHeader {exercise, personalBests} =
+  let header = String.concat [snd exercise, " - ", fst exercise]
+      name = fst exercise
+      pbsAndStarElem = case PersonalBests.get personalBests name of
+        Just pb -> flow right [
+                       pb.keys |> toString |> toDefText
+                     , spacer 10 1
+                     , keyStarsElem False 3 name pb.keys pb.time
+                     , spacer 10 1
+                     , pb.time |> showTimeInMs |> toDefText
+                   ]
+        Nothing -> empty
+      headLine = showHeadline header
+      w = max (widthOf pbsAndStarElem) (widthOf headLine)
+  in  flow down [ defaultSpacer
+                , headLine |> centerHorizontally w
+                , pbsAndStarElem |> centerHorizontally w ]
 
 scene : Int -> Int -> State -> Element
 scene w h
   ({editor, keyHistory, editor, goal, timeInMs, coach, exercise} as state) =
-  let header = String.concat [snd exercise, " - ", fst exercise]
-      headline = flow down [ defaultSpacer, showHeadline header ]
+  let headline = makeHeader state
   in  scenePlay w h state |> Skeleton.showPageWithHeadline w h headline
-
-
 
 showPressedKeys : Set.Set Keyboard.KeyCode -> Element
 showPressedKeys =

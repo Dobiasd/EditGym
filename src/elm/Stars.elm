@@ -1,11 +1,12 @@
 module Stars where
 
 import Graphics.Element (Element, flow, outward, sizeOf, container, middle
-    , right, spacer, down, heightOf)
+    , right, spacer, down, heightOf, empty)
 import List(repeat, append, map2)
 import String
 import String(fromChar, slice, padRight)
 import Text
+import Maybe
 
 import PersonalBests
 import Layout(yellow1, gray1, darkGray1, toColoredSizedText)
@@ -132,7 +133,8 @@ referenceBestsJson = """
         \"time\": 7220,
         \"timedate\": \"2014-12-21\"
     }
-]"""
+]
+"""
 
 referenceBests : PersonalBests.PBs
 referenceBests = PersonalBests.readBests referenceBestsJson
@@ -163,13 +165,30 @@ getStarsWithString sizeDiv str fullCnt =
       starFills = append (repeat fullCnt' True) (repeat (5 - fullCnt') False)
   in flow right <| map2 (starWithChar sizeDiv) starFills (String.toList str')
 
+scoreLine : Int -> Float -> Int -> Int
+scoreLine ref fact val =
+  let val' = toFloat val / toFloat ref
+      normRes = -3/(fact - 1) * val' + 5 + 3/(fact - 1)
+  in  normRes + 0.01 |> floor
+
+scoreFunc : Int -> Float -> Int -> Int
+scoreFunc ref fact val =
+  let lineRes = scoreLine ref fact val
+  in  max 1 (min 5 lineRes)
+
 getTimeStarsElem : Float -> String -> Int -> Element
 getTimeStarsElem sizeDiv name span =
-  getStarsWithString sizeDiv "Time" 2
+  let starCnt = case PersonalBests.get referenceBests name of
+                  Maybe.Just ref -> scoreFunc ref.time 5 span
+                  Nothing -> 5
+  in  getStarsWithString sizeDiv "Time" starCnt
 
 getKeyMovesStarsElem : Float -> String -> Int -> Element
 getKeyMovesStarsElem sizeDiv name keyMoves =
-  getStarsWithString sizeDiv "Keys" 5
+  let starCnt = case PersonalBests.get referenceBests name of
+                  Maybe.Just ref -> scoreFunc ref.keys 2 keyMoves
+                  Nothing -> 5
+  in  getStarsWithString sizeDiv "Keys" starCnt
 
 keyStarsElem : Bool -> Float -> String -> Int -> Int -> Element
 keyStarsElem below sizeDiv name keyMoves timeSpan =
@@ -186,3 +205,9 @@ keyStarsElem below sizeDiv name keyMoves timeSpan =
                 , spacer (32 / sizeDiv |> round) 1
                 , elem2
               ]
+
+keyStarsElemFromPBs : Bool -> Float -> PersonalBests.PBs -> String -> Element
+keyStarsElemFromPBs below sizeDiv pbs name =
+  case PersonalBests.get pbs name of
+    Just pb -> keyStarsElem False sizeDiv name pb.keys pb.time
+    Nothing -> empty
