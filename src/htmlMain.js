@@ -134,9 +134,15 @@ function Init() {
   var mainDiv = document.getElementById('main');
 
   if (page == "exercises")
-    elmContent = Elm.embed(Elm.Exercises, mainDiv, {});
-  else if (page == "highscores")
-    elmContent = Elm.embed(Elm.Highscores, mainDiv, {});
+  {
+    elmContent = Elm.embed(Elm.Exercises, mainDiv, {loadPBsIn : ""});
+    elmContent.ports.loadPBsIn.send(LoadPersonalBests());
+  }
+  else if (page == "personal_bests")
+  {
+    elmContent = Elm.embed(Elm.PersonalBestList, mainDiv, {loadPBsIn : ""});
+    elmContent.ports.loadPBsIn.send(LoadPersonalBests());
+  }
   else if (page == "newsletter")
     elmContent = Elm.embed(Elm.Newsletter, mainDiv, {});
   else if (page == "create_exercise")
@@ -180,6 +186,12 @@ function Init() {
     elmContent = Elm.embed(Elm.Contact, mainDiv, {});
   else if (page == "faq")
     elmContent = Elm.embed(Elm.FAQ, mainDiv, {});
+  else if (page == "delete_personal_bests")
+  {
+    if (confirm('Are you sure you want to delete all your personal bests?'))
+      DeletePersonalBests();
+    window.location.replace("?page=personal_bests");
+  }
   else
   {
     elmContent = Elm.embed(Elm.Start, mainDiv, {});

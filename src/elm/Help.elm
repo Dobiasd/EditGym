@@ -19,8 +19,9 @@ introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 # Introduction
 After choosing a [exercise](?page=exercises) your goal is to get the content of the editor window to match the content of the goal window by editing the text without using your mouse.
 The number of key movements (up *and* down) is counted and there also is a stop watch.
-When you completed a exercise you will see how good you were compared to other users and be able to create highscrore entries if you wish.
+When you completed an exercise you will receive stars indicating the quality of your performance.
 To achieve a good score you will need to be efficient at using some simple keyboard shortcuts.
+Your personal bests will be saved.
 
 # Shortcuts
 

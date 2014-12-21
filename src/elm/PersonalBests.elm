@@ -65,13 +65,13 @@ get bests name =
         Nothing -> Nothing
 
 updateTime : PB -> PB -> PB
-updateTime pb newBest =
+updateTime newBest pb =
   if newBest.time < pb.time then { pb | time <- newBest.time
                                       , timedate <- newBest.timedate }
                             else pb
 
 updateKeys : PB -> PB -> PB
-updateKeys pb newBest =
+updateKeys newBest pb =
   if newBest.keys < pb.keys then { pb | keys <- newBest.keys
                                       , keysdate <- newBest.keysdate }
                             else pb
@@ -80,7 +80,7 @@ updateBest : PB -> PB -> PB
 updateBest best newBest =
   best
   |> updateKeys newBest
-  |> updateKeys newBest
+  |> updateTime newBest
 
 toPair : PB -> (String, PBValues)
 toPair best = (best.name, { best - name })

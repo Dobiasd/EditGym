@@ -57,7 +57,7 @@ menuItems : List (String, String)
 menuItems = [
     ("Home", "?page=start")
   , ("Exercises", "?page=exercises")
-  , ("High scores", "?page=highscores")
+  , ("Personal bests", "?page=personal_bests")
   , ("Create exercise", "?page=create_exercise")
   , ("Help", "?page=help")
   ]

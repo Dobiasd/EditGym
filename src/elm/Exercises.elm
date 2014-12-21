@@ -13,6 +13,8 @@ import Skeleton
 import Editor(safeHead)
 import ExercisesList(..)
 
+port loadPBsIn : Signal String
+
 exerciseButton : String -> Element
 exerciseButton s = niceButtonSize 24 s ("?page=game&exercise=" ++ s)
 
