@@ -1,10 +1,10 @@
 module PersonalBests where
 
 import Result
-import Debug
 import Dict
 import Maybe
 import List
+import Debug
 import String
 import Json.Decode as Decode
 import Json.Decode((:=))
@@ -37,8 +37,7 @@ bestsDecoder =
 readBests : String -> PBs
 readBests str =
   if String.isEmpty str
-     then let dummy = Debug.log "Json.Decode:" "No saved personal bests."
-          in  []
+     then []
      else case Decode.decodeString bestsDecoder str of
             Result.Ok pbs -> pbs
             Result.Err error -> let dummy = Debug.log "Json.Decode:" error

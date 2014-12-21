@@ -135,12 +135,12 @@ function Init() {
 
   if (page == "exercises")
   {
-    elmContent = Elm.embed(Elm.Exercises, mainDiv,{loadPBsIn : LoadPersonalBests()});
+    elmContent = Elm.embed(Elm.Exercises, mainDiv,{loadPBsIn : ""});
     elmContent.ports.loadPBsIn.send(LoadPersonalBests());
   }
   else if (page == "personal_bests")
   {
-    elmContent = Elm.embed(Elm.PersonalBestList, mainDiv, {loadPBsIn : LoadPersonalBests()});
+    elmContent = Elm.embed(Elm.PersonalBestList, mainDiv, {loadPBsIn : ""});
     elmContent.ports.loadPBsIn.send(LoadPersonalBests());
   }
   else if (page == "newsletter")
@@ -158,7 +158,7 @@ function Init() {
                             , goalIn : loadingTextGoal
                             , coachIn : loadingTextCoach
                             , exerciseIn : exercise
-                            , loadPBsIn : LoadPersonalBests() });
+                            , loadPBsIn : "" });
 
     // Elm signals do not fire initially.
     elmContent.ports.startIn.send(loadingTextStart);

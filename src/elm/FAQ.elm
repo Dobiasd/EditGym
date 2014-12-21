@@ -24,6 +24,9 @@ No, this is not planned at the moment.
 ## Why are some keys disabled for typing?
 Only the keys needed for the [default exercises](?page=exercises) are activated.
 
+## Why are my personal bests not saved?
+Your browser needs to suppot [HTML5 web storage](http://en.wikipedia.org/wiki/Web_storage) to enable this functionality.
+
 ## Where are my personal bests saved?
 They are saved on your PC (i.e. in your browser) in [web storage](http://en.wikipedia.org/wiki/Web_storage). Nothing is ever uploaded to a server or something like that.
 
