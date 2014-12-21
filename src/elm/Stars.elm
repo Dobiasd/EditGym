@@ -128,9 +128,9 @@ referenceBestsJson = """
     },
     {
         \"name\": \"you_are_awesome\",
-        \"keys\": 90,
+        \"keys\": 177,
         \"keysdate\": \"2014-12-21\",
-        \"time\": 7220,
+        \"time\": 10418,
         \"timedate\": \"2014-12-21\"
     }
 ]

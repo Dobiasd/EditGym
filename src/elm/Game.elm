@@ -266,6 +266,7 @@ makeHeader {exercise, personalBests} =
       w = max (widthOf pbsAndStarElem) (widthOf headLine)
   in  flow down [ defaultSpacer
                 , headLine |> centerHorizontally w
+                , spacer 1 8
                 , pbsAndStarElem |> centerHorizontally w ]
 
 scene : Int -> Int -> State -> Element
