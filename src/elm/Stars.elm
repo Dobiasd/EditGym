@@ -190,11 +190,9 @@ getKeyMovesStarsElem sizeDiv name keyMoves =
                   Nothing -> 5
   in  getStarsWithString sizeDiv "Keys" starCnt
 
-keyStarsElem : Bool -> Float -> String -> Int -> Int -> Element
-keyStarsElem below sizeDiv name keyMoves timeSpan =
-  let elem1 = getKeyMovesStarsElem sizeDiv name keyMoves
-      elem2 = getTimeStarsElem sizeDiv name timeSpan
-      topDist = heightOf elem1 - (20 / sizeDiv |> round)
+arrangeStarElems : Bool -> Float -> Element -> Element -> Element
+arrangeStarElems below sizeDiv elem1 elem2 =
+  let topDist = heightOf elem1 - (20 / sizeDiv |> round)
   in  if below
          then flow outward [
                   elem1
@@ -206,8 +204,16 @@ keyStarsElem below sizeDiv name keyMoves timeSpan =
                 , elem2
               ]
 
+keyStarsElem : Bool -> Float -> String -> Int -> Int -> Element
+keyStarsElem below sizeDiv name keyMoves timeSpan =
+  let elem1 = getKeyMovesStarsElem sizeDiv name keyMoves
+      elem2 = getTimeStarsElem sizeDiv name timeSpan
+  in  arrangeStarElems below sizeDiv elem1 elem2
+
 keyStarsElemFromPBs : Bool -> Float -> PersonalBests.PBs -> String -> Element
 keyStarsElemFromPBs below sizeDiv pbs name =
   case PersonalBests.get pbs name of
     Just pb -> keyStarsElem False sizeDiv name pb.keys pb.time
-    Nothing -> empty
+    Nothing ->   let elem1 = getStarsWithString sizeDiv "Keys" 0
+                     elem2 = getStarsWithString sizeDiv "Time" 0
+                 in  arrangeStarElems below sizeDiv elem1 elem2

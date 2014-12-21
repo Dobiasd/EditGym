@@ -12,7 +12,7 @@ import Regex
 import Graphics.Element (Element, flow, down, right, outward, spacer, empty
   , heightOf, color, widthOf, link)
 
-import Stars (keyStarsElem, keyStarsElemFromPBs)
+import Stars (keyStarsElemFromPBs)
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
   , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize
@@ -257,11 +257,11 @@ makeHeader {exercise, personalBests} =
         Just pb -> flow right [
                        pb.keys |> toString |> toDefText
                      , spacer 10 1
-                     , keyStarsElem False 3 name pb.keys pb.time
+                     , keyStarsElemFromPBs False 3 personalBests name
                      , spacer 10 1
                      , pb.time |> showTimeInMs |> toDefText
                    ]
-        Nothing -> empty
+        Nothing -> keyStarsElemFromPBs False 3 personalBests name
       headLine = showHeadline header
       w = max (widthOf pbsAndStarElem) (widthOf headLine)
   in  flow down [ defaultSpacer
@@ -334,7 +334,7 @@ showButtons w {exercise, prev, next} =
   ]
 
 coachResult : State -> List Element
-coachResult {keyHistory, exercise, next} =
+coachResult {keyHistory, exercise, next, personalBests} =
   let keyMoves = List.length keyHistory.history
       span = KeyHistory.getTimeSpan keyHistory
       name = fst exercise
@@ -349,7 +349,7 @@ coachResult {keyHistory, exercise, next} =
                      else "\nYou can go on to the next exercise (space+n) or try to improve (space+r)."
               ]
   in  [ displayCoach text
-      , keyStarsElem False 1 name keyMoves span
+      , keyStarsElemFromPBs False 1 personalBests name
       ]
 
 scenePlay : Int -> Int -> State -> Element

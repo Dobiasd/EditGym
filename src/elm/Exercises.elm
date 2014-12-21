@@ -14,7 +14,7 @@ import Layout (toColText, toDefText, green1, blue1, darkGray1
 import Skeleton
 import Editor(safeHead)
 import ExercisesList(..)
-import Stars(keyStarsElem)
+import Stars(keyStarsElemFromPBs)
 
 port loadPBsIn : Signal String
 
@@ -37,9 +37,7 @@ asGrid colCnt =
 
 exerciseButtonWithStars : PersonalBests.PBs -> String -> Element
 exerciseButtonWithStars pbs name =
-  let starsElem = case PersonalBests.get pbs name of
-                    Just pb -> keyStarsElem False 4 name pb.keys pb.time
-                    Nothing -> empty
+  let starsElem = keyStarsElemFromPBs False 4 pbs name
       btn = exerciseButton name
       w = max (widthOf starsElem) (widthOf btn)
   in  flow down [
