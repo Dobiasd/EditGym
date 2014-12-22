@@ -113,10 +113,17 @@ referenceBestsJson = """
         \"timedate\": \"2014-12-21\"
     },
     {
-        \"name\": \"swap_many_words\",
+        \"name\": \"swap_many_lines\",
         \"keys\": 137,
         \"keysdate\": \"2014-12-21\",
         \"time\": 12535,
+        \"timedate\": \"2014-12-21\"
+    },
+    {
+        \"name\": \"swap_many_words\",
+        \"keys\": 113,
+        \"keysdate\": \"2014-12-21\",
+        \"time\": 13928,
         \"timedate\": \"2014-12-21\"
     },
     {

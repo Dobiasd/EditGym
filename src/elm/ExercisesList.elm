@@ -37,6 +37,7 @@ subjects =
         "numbers"
       , "swap_many_words"
       , "remove_duplicates"
+      , "swap_many_lines"
       ]
     )
   , ( "Stretching"
