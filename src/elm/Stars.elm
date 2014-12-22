@@ -2,7 +2,7 @@ module Stars where
 
 import Graphics.Element (Element, flow, outward, sizeOf, container, middle
     , right, spacer, down, heightOf, empty)
-import List(repeat, append, map, map2, all)
+import List(repeat, append, map, map2, all, length)
 import String
 import String(fromChar, slice, padRight)
 import Text
@@ -243,4 +243,4 @@ fiveStarsInEverything : PersonalBests.PBs -> Bool
 fiveStarsInEverything pbs =
   let names = ExercisesList.subjectsWithCat |> map fst
       starPairs = names |> map (starsFromPB pbs)
-  in  all (\p -> p == (5, 5)) starPairs
+  in  all (\p -> p == (5, 5)) starPairs && length pbs >= length names
