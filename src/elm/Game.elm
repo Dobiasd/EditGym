@@ -59,7 +59,7 @@ port savePBsOut =
   |> Signal.map PersonalBests.showBests
 
 port redirect : Signal String
-port redirect = Signal.map .redirectTo state
+port redirect = Signal.dropRepeats <| Signal.map .redirectTo state
 
 regExReplaceInStr : String -> String -> String -> String
 regExReplaceInStr exp rep =
@@ -444,16 +444,18 @@ scenePlay winW winH
       verticalScalerH = max 0 (230 - heightOf middleElem)
       coachElems = if finished then coachResult state
                                else [displayCoach coach]
-  in  flow down [
-          flow outward [
-              KeyHistory.display 560 keyHistory
-            , scoreElem |> centerHorizontally w
-            , showRightBottom w pressedKeysElem
-          ]
-        , spacer 1 3
-        , middleElem
-        , spacer 1 verticalScalerH
-        , defaultSpacer
-        , coachElems |> List.map (centerHorizontally w) |> flow down
-        , showButtons w state
-      ]
+  in  if String.isEmpty state.redirectTo then
+        flow down [
+            flow outward [
+                KeyHistory.display 560 keyHistory
+              , scoreElem |> centerHorizontally w
+              , showRightBottom w pressedKeysElem
+            ]
+          , spacer 1 3
+          , middleElem
+          , spacer 1 verticalScalerH
+          , defaultSpacer
+          , coachElems |> List.map (centerHorizontally w) |> flow down
+          , showButtons w state
+        ]
+      else "loading ..." |> toDefText
