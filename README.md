@@ -29,5 +29,5 @@ optimize performance
 quatsch:
 instant replay
 compete live (with chat)
-zeit verstellen verhindern, timestamps aller keymoves monoton steigend
+zeit verstellen verhindern, timestamps aller keymoves monoton steigend (nicht mehr noetig ohne highscore, oder?)
 replay in help (gif?)
