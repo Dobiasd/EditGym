@@ -13,6 +13,9 @@ EditGym helps you to acquire this set of skills by letting you practice with sta
 ---
 
 todo:
+new_level: swap_many_lines
+"loading when switching with keyboard" avoid multiple redirects
+swap_many_words: more words?
 adsense
 
 make restart "button" clickable?
