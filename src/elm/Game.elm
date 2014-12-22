@@ -12,7 +12,7 @@ import Regex
 import Graphics.Element (Element, flow, down, right, outward, spacer, empty
   , heightOf, color, widthOf, link)
 
-import Stars (keyStarsElemFromPBs)
+import Stars (starsElemFromPBs, fiveStarsInEverything)
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
   , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize
@@ -42,6 +42,7 @@ type alias State = {
   , savedPB : Bool
   , improvedBestKeys : Bool
   , improvedBestTime : Bool
+  , justGot5StarsEverywhere : Bool
   }
 
 port startIn : Signal String
@@ -91,6 +92,7 @@ initialState = State Editor.initialState
                      ""
                      False
                      []
+                     False
                      False
                      False
                      False
@@ -237,14 +239,18 @@ stepFinishedWithOldPB oldPB
   in  { state | personalBests <- newPBs
               , improvedBestKeys <- improvedBestKeys'
               , improvedBestTime <- improvedBestTime'
-              , savedPB <- improvedBestKeys' || improvedBestTime'}
+              , savedPB <- improvedBestKeys' || improvedBestTime' }
 
 stepFinishedWithOutOldPB : State -> State
 stepFinishedWithOutOldPB ({personalBests} as state) =
   let newPBs = PersonalBests.insert personalBests
                  (generatePB state)
+      alreadyHad5StarsEverywhere = fiveStarsInEverything personalBests
+      nowHas5StarsEverywhere = fiveStarsInEverything newPBs
   in  { state | personalBests <- newPBs
-              , savedPB <- True }
+              , savedPB <- True
+              , justGot5StarsEverywhere <-
+                  not alreadyHad5StarsEverywhere && nowHas5StarsEverywhere }
 
 stepFinished : State -> State
 stepFinished ({personalBests, exercise} as state) =
@@ -297,11 +303,11 @@ makeHeader {exercise, personalBests} =
         Just pb -> flow right [
                        pb.keys |> toString |> toDefText
                      , spacer 10 1
-                     , keyStarsElemFromPBs False 3 personalBests name
+                     , starsElemFromPBs False 3 personalBests name
                      , spacer 10 1
                      , pb.time |> showTimeInMs |> toDefText
                    ]
-        Nothing -> keyStarsElemFromPBs False 3 personalBests name
+        Nothing -> starsElemFromPBs False 3 personalBests name
       headLine = showHeadline header
       w = max (widthOf pbsAndStarElem) (widthOf headLine)
   in  flow down [ defaultSpacer
@@ -400,7 +406,7 @@ coachResult {keyHistory, exercise, next, personalBests
                           ]
               ]
   in  [ displayCoach text
-      , keyStarsElemFromPBs False 1 personalBests name
+      , starsElemFromPBs False 1 personalBests name
       ]
 
 scenePlay : Int -> Int -> State -> Element

@@ -2,12 +2,12 @@ module Stars where
 
 import Graphics.Element (Element, flow, outward, sizeOf, container, middle
     , right, spacer, down, heightOf, empty)
-import List(repeat, append, map2)
+import List(repeat, append, map, map2, all)
 import String
 import String(fromChar, slice, padRight)
 import Text
 import Maybe
-
+import ExercisesList
 import PersonalBests
 import Layout(yellow1, gray1, darkGray1, toColoredSizedText)
 
@@ -185,19 +185,25 @@ scoreFunc ref fact val =
   let lineRes = scoreLine ref fact val
   in  max 1 (min 5 lineRes)
 
-getTimeStarsElem : Float -> String -> Int -> Element
-getTimeStarsElem sizeDiv name span =
-  let starCnt = case PersonalBests.get referenceBests name of
-                  Maybe.Just ref -> scoreFunc ref.time 5 span
-                  Nothing -> 5
-  in  getStarsWithString sizeDiv "Time" starCnt
+getKeyMovesStars : String -> Int -> Int
+getKeyMovesStars name keyMoves =
+  case PersonalBests.get referenceBests name of
+    Maybe.Just ref -> scoreFunc ref.keys 2 keyMoves
+    Nothing -> 5
 
 getKeyMovesStarsElem : Float -> String -> Int -> Element
 getKeyMovesStarsElem sizeDiv name keyMoves =
-  let starCnt = case PersonalBests.get referenceBests name of
-                  Maybe.Just ref -> scoreFunc ref.keys 2 keyMoves
-                  Nothing -> 5
-  in  getStarsWithString sizeDiv "Keys" starCnt
+  getStarsWithString sizeDiv "Keys" (getKeyMovesStars name keyMoves)
+
+getTimeStars: String -> Int -> Int
+getTimeStars name span =
+  case PersonalBests.get referenceBests name of
+    Maybe.Just ref -> scoreFunc ref.time 5 span
+    Nothing -> 5
+
+getTimeStarsElem : Float -> String -> Int -> Element
+getTimeStarsElem sizeDiv name span =
+  getStarsWithString sizeDiv "Time" (getTimeStars name span)
 
 arrangeStarElems : Bool -> Float -> Element -> Element -> Element
 arrangeStarElems below sizeDiv elem1 elem2 =
@@ -213,16 +219,28 @@ arrangeStarElems below sizeDiv elem1 elem2 =
                 , elem2
               ]
 
-keyStarsElem : Bool -> Float -> String -> Int -> Int -> Element
-keyStarsElem below sizeDiv name keyMoves timeSpan =
+starsElem : Bool -> Float -> String -> Int -> Int -> Element
+starsElem below sizeDiv name keyMoves timeSpan =
   let elem1 = getKeyMovesStarsElem sizeDiv name keyMoves
       elem2 = getTimeStarsElem sizeDiv name timeSpan
   in  arrangeStarElems below sizeDiv elem1 elem2
 
-keyStarsElemFromPBs : Bool -> Float -> PersonalBests.PBs -> String -> Element
-keyStarsElemFromPBs below sizeDiv pbs name =
+starsFromPB : PersonalBests.PBs -> String -> (Int, Int)
+starsFromPB pbs name =
   case PersonalBests.get pbs name of
-    Just pb -> keyStarsElem False sizeDiv name pb.keys pb.time
+    Just pb -> (getKeyMovesStars name pb.keys, getTimeStars name pb.time)
+    Nothing -> (5, 5)
+
+starsElemFromPBs : Bool -> Float -> PersonalBests.PBs -> String -> Element
+starsElemFromPBs below sizeDiv pbs name =
+  case PersonalBests.get pbs name of
+    Just pb -> starsElem False sizeDiv name pb.keys pb.time
     Nothing ->   let elem1 = getStarsWithString sizeDiv "Keys" 0
                      elem2 = getStarsWithString sizeDiv "Time" 0
                  in  arrangeStarElems below sizeDiv elem1 elem2
+
+fiveStarsInEverything : PersonalBests.PBs -> Bool
+fiveStarsInEverything pbs =
+  let names = ExercisesList.subjectsWithCat |> map fst
+      starPairs = names |> map (starsFromPB pbs)
+  in  all (\p -> p == (5, 5)) starPairs
