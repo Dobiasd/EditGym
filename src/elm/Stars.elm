@@ -114,9 +114,9 @@ referenceBestsJson = """
     },
     {
         \"name\": \"swap_many_words\",
-        \"keys\": 83,
+        \"keys\": 137,
         \"keysdate\": \"2014-12-21\",
-        \"time\": 5792,
+        \"time\": 12535,
         \"timedate\": \"2014-12-21\"
     },
     {
