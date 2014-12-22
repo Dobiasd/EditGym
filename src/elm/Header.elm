@@ -57,7 +57,7 @@ menuItems = [
     ("Home", "?page=start")
   , ("Exercises", "?page=exercises")
   , ("Personal bests", "?page=personal_bests")
-  , ("Create exercise", "?page=create_exercise")
+  --, ("Create exercise", "?page=create_exercise")
   , ("Help", "?page=help")
   ]
 

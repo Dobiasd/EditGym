@@ -90,7 +90,7 @@ So it is not possible to cover everything. [I](?page=contact) opted for the beha
 
 ## I have a suggestion for an awesome exercise. Can you include it?
 Yes, perhaps. Just [send me an email](?page=contact) with the start and goal text, and I will see if I think it fits here. ;)
-In any case, you can always simply [create your own exercise](?page=create_exercise).
+In any case, soon you will be able to simply [create your own exercise](?page=create_exercise).
 
 ## How was this page made?
 This page was mostly written in [Elm](http://elm-lang.org), an awesome [FRP](http://en.wikipedia.org/wiki/Functional_reactive_programming)-utilizing [pure functional](http://en.wikipedia.org/wiki/Functional_programming) programming language that compiles to Javascript.

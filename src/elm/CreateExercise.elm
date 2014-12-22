@@ -13,7 +13,9 @@ import Skeleton
 introduction : Int -> Element
 introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 
-todo: Allow to create exercises by linking files or using url encoding.
+This feature will enable you to provide custom texts for creating your own exercises.
+
+It is not implemented yet.
 
 """
 
