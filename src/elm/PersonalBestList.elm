@@ -37,7 +37,7 @@ showBest : PersonalBests.PB -> String
 showBest {name, keys, keysdate, time, timedate} =
   String.concat [
       "** ", name, "**: "
-    , "Key movements: **", toString keys, "** (", keysdate, ")"
+    , "Keys: **", toString keys, "** (", keysdate, ")"
     , "; Time: **", showTimeInMs time, "** (", timedate, ")"
   ]
 

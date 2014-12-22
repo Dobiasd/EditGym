@@ -16,129 +16,129 @@ referenceBestsJson = """
 [
     {
         \"name\": \"arrows\",
-        \"keys\": 35,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 18,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 1038,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"batman\",
-        \"keys\": 80,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 42,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 6400,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"growth\",
-        \"keys\": 28,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 15,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 1291,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"indentation\",
-        \"keys\": 61,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 31,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 2815,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"insert\",
-        \"keys\": 42,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 22,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 1415,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"introduction\",
-        \"keys\": 24,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 13,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 1151,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"new_lines\",
-        \"keys\": 37,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 19,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 3264,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"numbers\",
-        \"keys\": 172,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 87,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 10837,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"remove_duplicates\",
-        \"keys\": 347,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 133,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 23024,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"remove_words_1\",
-        \"keys\": 37,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 19,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 1752,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"remove_words_2\",
-        \"keys\": 79,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 37,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 5599,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"replicate\",
-        \"keys\": 14,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 8,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 552,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"surely\",
-        \"keys\": 111,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 55,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 7887,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"swap_lines\",
-        \"keys\": 16,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 9,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 634,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"swap_many_lines\",
-        \"keys\": 137,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 58,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 12535,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"swap_many_words\",
-        \"keys\": 113,
-        \"keysdate\": \"2014-12-21\",
-        \"time\": 13928,
-        \"timedate\": \"2014-12-21\"
+        \"keys\": 68,
+        \"keysdate\": \"2014-12-22\",
+        \"time\": 12257,
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"swap_words\",
-        \"keys\": 18,
-        \"keysdate\": \"2014-12-21\",
+        \"keys\": 10,
+        \"keysdate\": \"2014-12-22\",
         \"time\": 573,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"you_are_awesome\",
         \"keys\": 177,
-        \"keysdate\": \"2014-12-21\",
+        \"keysdate\": \"2014-12-22\",
         \"time\": 10418,
-        \"timedate\": \"2014-12-21\"
+        \"timedate\": \"2014-12-22\"
     }
 ]
 """

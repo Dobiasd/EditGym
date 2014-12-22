@@ -88,3 +88,14 @@ display w {history} =
   in  List.map showKeyAction visibleHistory
       |> List.intersperse sep
       |> flow right
+
+isDown : KeyAction -> Bool
+isDown ka = case ka of
+  Up _ _ -> False
+  Down _ _ -> True
+
+getKeyCount : State -> Int
+getKeyCount {history} =
+  history
+  |> List.filter isDown
+  |> List.length

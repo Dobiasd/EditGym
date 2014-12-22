@@ -221,7 +221,7 @@ generatePB {keyHistory, exercise} =
   let endTime = KeyHistory.getEndTime keyHistory
       dateStr = timeToString endTime
       name = fst exercise
-      keys = List.length keyHistory.history
+      keys = KeyHistory.getKeyCount keyHistory
       time = KeyHistory.getTimeSpan keyHistory
   in  { name = name
       , keys = keys
@@ -381,8 +381,8 @@ showButtons w {exercise, prev, next} =
 
 coachResult : State -> List Element
 coachResult {keyHistory, exercise, next, personalBests
-  , improvedBestKeys, improvedBestTime} =
-  let keyMoves = List.length keyHistory.history
+  , improvedBestKeys, improvedBestTime, justGot5StarsEverywhere} =
+  let keyMoves = KeyHistory.getKeyCount keyHistory
       span = KeyHistory.getTimeSpan keyHistory
       name = fst exercise
       hasImprovedSomething = improvedBestKeys || improvedBestTime
@@ -393,8 +393,8 @@ coachResult {keyHistory, exercise, next, personalBests
                 , span |> showTimeInMs |> String.dropRight 1
                 , " seconds."
                 , let improveIntro = "\nThis means you have improved your personal best regarding "
-                  in  if | improvedBestKeys && improvedBestTime -> String.append improveIntro "key movements and time!"
-                         | improvedBestKeys -> String.append improveIntro "key movements!"
+                  in  if | improvedBestKeys && improvedBestTime -> String.append improveIntro "key presses and time!"
+                         | improvedBestKeys -> String.append improveIntro "key presses!"
                          | improvedBestTime -> String.append improveIntro "time!"
                          | otherwise -> ""
                 , if String.isEmpty (fst next)
@@ -404,6 +404,9 @@ coachResult {keyHistory, exercise, next, personalBests
                             , if hasImprovedSomething then "even more " else ""
                             , "(space+r)."
                           ]
+                , if justGot5StarsEverywhere
+                    then "\nBy the way, you now have 5 key stars and 5 time stars in all exercises.\nCongratulations, you are a true master now!"
+                    else ""
               ]
   in  [ displayCoach text
       , starsElemFromPBs False 1 personalBests name
@@ -437,7 +440,7 @@ scenePlay winW winH
                      , goalElem
                    ]
       scoreElem = String.concat [
-                      List.length keyHistory.history
+                      KeyHistory.getKeyCount keyHistory
                       |> toString
                     , " / "
                     , if finished

@@ -1,8 +1,8 @@
 Tree-like structures
 1) like
 a) to
-- be
-- indented
+. be
+. indented
 b) correctly
 2) in order to
 a) look
