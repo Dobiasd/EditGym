@@ -453,9 +453,11 @@ scenePlay winW winH
       verticalScalerH = max 0 (230 - heightOf middleElem)
       coachElems = if finished then coachResult state
                                else [displayCoach coach]
+      adsSpacer = spacer 1 100
   in  if String.isEmpty state.redirectTo then
         flow down [
-            flow outward [
+            adsSpacer
+          , flow outward [
                 KeyHistory.display 560 keyHistory
               , scoreElem |> centerHorizontally w
               , showRightBottom w pressedKeysElem

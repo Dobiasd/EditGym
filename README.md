@@ -13,7 +13,6 @@ EditGym helps you to acquire this set of skills by letting you practice with sta
 ---
 
 todo:
-adsense
 
 make restart "button" clickable?
 custom exercises: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)

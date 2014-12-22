@@ -155,6 +155,8 @@ function Init() {
     elmContent = Elm.embed(Elm.CreateExercise, mainDiv, {});
   else if (page == "game")
   {
+    var ads_top = document.getElementById("ads-top");
+    ads_top.style.visibility='visible';
     exercise = getURLParameterDef("exercise", "");
     loadingTextStart = "loading ...";
     loadingTextGoal = "... loading";
