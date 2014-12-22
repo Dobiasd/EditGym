@@ -36,8 +36,11 @@ Normally it should look fine. But since it is generated using an [UTF-8 characte
 ## Why can I not copy and paste from or into the text editor in the exercises?
 The editor simply does not use the clipboard provided by the operating system but it's owm implementation.
 
-## Why can I not use my mouse to select text?
+## Why can I not just use my mouse to select text?
 Is is disabled because this page was build to make you a keyboarding master, not a mouse fool.
+
+## Is it really possible to reach 5 stars in every exercise?
+Yes, the key counts and times you have to reach to get 5 stars are the ones [I (the author)](?page=contact) scored. ;-)
 
 ## Why does holding down a key not produce many characters like usually?
 You are here to learn efficient shortcuts. Solving a exercise by holding down a key would reinforce inefficient habits.
