@@ -12,7 +12,7 @@ import Layout (defaultSpacer, toDefText, toSizedText, octaDefSpacer
   , white1, orange1, blue1, purple1, red1, green1, gray1
   , divider, darkGray1, lightGray1, doubleDefSpacer, centerHorizontally
   , tripleDefSpacer, toColoredSizedText, quadDefSpacer
-  , showRightTop)
+  , showRightTop, asGrid)
 
 iconSize : Int
 iconSize = 32
@@ -39,9 +39,8 @@ shareIcons =
       , ( image iconSize iconSize "imgs/email.png", genLink "mailto: " [("subject", "EditGym"), ("body", "Text editing training at http://www.editgym.com")] ) ]
       |> List.map (\ (img, url) -> img |> link url)
   in  buttons
-      |> List.intersperse (defaultSpacer)
-      |> \xs -> xs ++ [defaultSpacer]
-      |> flow right
+      |> asGrid 4 defaultSpacer
+      |> \x -> flow right [ x, defaultSpacer ]
 
 logo : Element
 logo = image logoWidth logoHeight "imgs/logo.png" |> link "?page=start"
@@ -68,32 +67,29 @@ menu distSpacer =
   >> List.intersperse distSpacer
   >> flow right
 
-topBar : Int -> Element -> Element
-topBar w headline =
+topBar : Int -> Element
+topBar w =
   let buttons = menu tripleDefSpacer menuItems
       rightPartW = w - logoWidth
       menuSpacerW = (rightPartW - widthOf buttons) // 2
-      shareLeftSpacerElemW = w - (widthOf shareIcons + logoWidth
-                                + widthOf headline )
-      headlineSpacerW = shareLeftSpacerElemW // 2
+      shareLeftSpacerElemW = w - (widthOf shareIcons + logoWidth )
   in  flow down [
-          spacer 1 3
+          spacer 1 8
         , flow outward [
               logo
             , flow down [
-                headline |> centerHorizontally w
-              , spacer 1
-                  (heightOf logo - (heightOf headline + heightOf buttons))
+                spacer 1
+                  (heightOf logo - heightOf buttons)
               , buttons |> centerHorizontally w
             ]
             , flow down [ spacer 1 5, shareIcons |> showRightTop w ]
           ]
       ]
 
-header : Int -> Element -> Element
-header w headline =
+header : Int -> Element
+header w =
   flow down [
-    topBar w headline
+    topBar w
   , spacer 1 3
   , divider purple1 w
   , spacer 1 3

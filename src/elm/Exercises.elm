@@ -10,7 +10,7 @@ import PersonalBests
 
 import Layout (toColText, toDefText, green1, blue1, darkGray1
   , niceButton, defaultSpacer, quadDefSpacer, toSizedText, niceButtonSize
-  , centerHorizontally, divider, doubleDefSpacer, displayCoach)
+  , centerHorizontally, divider, doubleDefSpacer, displayCoach, asGrid)
 import Skeleton
 import Editor(safeHead)
 import ExercisesList(..)
@@ -29,13 +29,6 @@ exerciseButton s = niceButtonSize 24 s ("?page=game&exercise=" ++ s)
 main : Signal Element
 main = Signal.map3 scene Window.width Window.height personalBests
 
-asGrid : Int -> List Element -> Element
-asGrid colCnt =
-  splitEvery colCnt
-  >> List.map (List.intersperse quadDefSpacer >> flow right)
-  >> List.intersperse quadDefSpacer
-  >> flow down
-
 exerciseButtonWithStars : PersonalBests.PBs -> String -> Element
 exerciseButtonWithStars pbs name =
   let starsElem = starsElemFromPBs False 4 pbs name
@@ -52,7 +45,7 @@ showSubject w pbs subject exercises =
       exercisesElem =
         exercises
         |> List.map (exerciseButtonWithStars pbs)
-        |> asGrid 6
+        |> asGrid 6 quadDefSpacer
         |> centerHorizontally w
   in flow down [ subjectElem, doubleDefSpacer, exercisesElem ]
 

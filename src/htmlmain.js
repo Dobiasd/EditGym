@@ -128,7 +128,24 @@ function DeletePersonalBests(strJSON) {
   }
 }
 
+function SetAdsXPos(x) {
+  var ads = document.getElementById('ads');
+  if (!ads)
+    return;
+  ads.style.left = x.toString() + "px";
+}
+
+function CenterAds() {
+  var win = $(this); //this = window
+  var logoWidth = 308;
+  x = Math.max((logoWidth + 8), ((win.width() - 728) / 2));
+  SetAdsXPos(x);
+}
+
 function Init() {
+  CenterAds();
+  $(window).on('resize', CenterAds);
+
   if (lsTest === false) {
     console.log("HTML5 web storage not available. Personal bests will not be saved.")
   }
@@ -155,8 +172,6 @@ function Init() {
     elmContent = Elm.embed(Elm.CreateExercise, mainDiv, {});
   else if (page == "game")
   {
-    var ads_top = document.getElementById("ads-top");
-    ads_top.style.visibility='visible';
     exercise = getURLParameterDef("exercise", "");
     loadingTextStart = "loading ...";
     loadingTextGoal = "... loading";

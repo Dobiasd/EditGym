@@ -4,13 +4,6 @@ import List ((::))
 import List
 import Editor(safeHead)
 
-{-| splitEvery [1,2,3,4,5,6,7,8] === [[1,2,3],[4,5,6],[7,8]] -}
-splitEvery : Int -> List a -> List (List a)
-splitEvery n xs =
-  if List.length xs > n
-    then (List.take n xs) :: (List.drop n xs |> splitEvery n)
-    else [xs]
-
 subjects : List (String, List String)
 subjects =
   [ ( "Warm up"

@@ -310,16 +310,16 @@ makeHeader {exercise, personalBests} =
         Nothing -> starsElemFromPBs False 3 personalBests name
       headLine = showHeadline header
       w = max (widthOf pbsAndStarElem) (widthOf headLine)
-  in  flow down [ defaultSpacer
-                , headLine |> centerHorizontally w
-                , spacer 1 8
+  in  flow down [ headLine |> centerHorizontally w
                 , pbsAndStarElem |> centerHorizontally w ]
 
 scene : Int -> Int -> State -> Element
 scene w h
   ({editor, keyHistory, editor, goal, timeInMs, coach, exercise} as state) =
   let headline = makeHeader state
-  in  scenePlay w h state |> Skeleton.showPageWithHeadline w h headline
+  in  flow down [ headline |> centerHorizontally w
+                , scenePlay w h state |> centerHorizontally w ]
+      |> Skeleton.showPage w h
 
 showPressedKeys : Set.Set Keyboard.KeyCode -> Element
 showPressedKeys =
@@ -453,11 +453,9 @@ scenePlay winW winH
       verticalScalerH = max 0 (230 - heightOf middleElem)
       coachElems = if finished then coachResult state
                                else [displayCoach coach]
-      adsSpacer = spacer 1 100
   in  if String.isEmpty state.redirectTo then
         flow down [
-            adsSpacer
-          , flow outward [
+            flow outward [
                 KeyHistory.display 560 keyHistory
               , scoreElem |> centerHorizontally w
               , showRightBottom w pressedKeysElem

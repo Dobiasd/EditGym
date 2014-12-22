@@ -17,12 +17,12 @@ showTextPart w content =
       img = fittedImage w h "imgs/keyboard_bg.jpg"
   in  flow outward [ img, content' |> centerHorizontally w ]
 
-showPageWithHeadline : Int -> Int -> Element -> Element -> Element
-showPageWithHeadline wFull h headline content =
+showPage : Int -> Int -> Element -> Element
+showPage wFull h content =
   let
     w = wFull - 4 -- prevent scrollbars from flickering when zoomed in browser
     content' = content |> container w (heightOf content) midTop
-    headerElem = header w headline
+    headerElem = header w
     footerElem = footer w
     pageH = List.map heightOf [ headerElem, content', footerElem ] |> List.sum
     h' = max h pageH - 4
@@ -34,6 +34,3 @@ showPageWithHeadline wFull h headline content =
     , footerSpacer
     , footerElem
     ] |> container w (max h h') topLeft
-
-showPage : Int -> Int -> Element -> Element
-showPage wFull h content = showPageWithHeadline wFull h empty content

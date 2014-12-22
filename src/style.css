@@ -39,15 +39,13 @@ a:link {
     min-height: 100%
 }
 
-div#ads-top
+div#ads
 {
-  /* http://stackoverflow.com/questions/5967758 */
   position:     absolute;
-  top:          135px;
-  left:         50%;    /* Move the left edge to the center. */
-  margin-left: -364px;  /* And move it a bit to the left again. */
-  z-index:      9999;   /* Try to get it on top. */
+  top:          3px;
+  left:         320px;
+  z-index:      9999;
   width:        728px;
   height:       90px;
-  visibility:   hidden;
+  display:      block;
 }
