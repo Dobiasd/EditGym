@@ -9,21 +9,16 @@ import Char(fromCode)
 import String(cons)
 import Graphics.Element (Element, spacer, color, flow, right)
 
-import Layout (toDefText, toColText, white1, lightGray1, darkGray1
+import Layout (toDefText, toColText, white1, lightGray1, darkGray1, gray1
   , toSizedText)
 
-type KeyAction = Up Int Keyboard.KeyCode
-               | Down Int Keyboard.KeyCode
+type alias KeyAction = (Int, Keyboard.KeyCode)
 
 keyActionTime : KeyAction -> Int
-keyActionTime ka = case ka of
-  Up time _ -> time
-  Down time _ -> time
+keyActionTime = fst
 
 showKeyAction : KeyAction -> Element
-showKeyAction action = case action of
-  Up _ key   -> showKey key |> toColText lightGray1
-  Down _ key -> showKey key |> toColText white1
+showKeyAction (_, key) = showKey key |> toColText white1
 
 type alias State = { history : List KeyAction }
 
@@ -64,8 +59,7 @@ showKey key = case Dict.get key keyStrings of
 step : State -> Set.Set Keyboard.KeyCode -> List Keyboard.KeyCode
              -> List Keyboard.KeyCode -> Int -> State
 step ({history} as state) keysDown keysDownNew keysUpNew time =
-  let history' = history ++ (keysDownNew |> List.map (Down time))
-                         ++ (keysUpNew   |> List.map (Up time))
+  let history' = history ++ (keysDownNew |> List.map (\x -> (time, x)))
   in  { state | history <- history' }
 
 last : List a -> a
@@ -84,18 +78,10 @@ getEndTime {history} = history |> last |> keyActionTime
 display : Int -> State -> Element
 display w {history} =
   let visibleHistory = List.drop (List.length history - 8) history
-      sep = spacer 2 8 |> color darkGray1
+      sep = flow right [ spacer 2 1, spacer 2 18 |> color gray1, spacer 2 1 ]
   in  List.map showKeyAction visibleHistory
       |> List.intersperse sep
       |> flow right
 
-isDown : KeyAction -> Bool
-isDown ka = case ka of
-  Up _ _ -> False
-  Down _ _ -> True
-
 getKeyCount : State -> Int
-getKeyCount {history} =
-  history
-  |> List.filter isDown
-  |> List.length
+getKeyCount {history} = history |> List.length
