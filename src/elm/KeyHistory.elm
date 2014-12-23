@@ -67,10 +67,11 @@ last xs = List.drop (List.length xs - 1) xs |> List.head
 
 getTimeSpan : State -> Int
 getTimeSpan {history} =
-  if List.length history < 2
-    then 0
-    else (history |> last |> keyActionTime) -
-         (history |> List.head |> keyActionTime)
+  let times = List.map keyActionTime history
+      valid = List.map2 (<=) times (List.tail times) |> List.all identity
+      start = history |> List.head |> keyActionTime
+      end = history |> last |> keyActionTime
+  in  if valid then end - start else 9999999
 
 getEndTime : State -> Int
 getEndTime {history} = history |> last |> keyActionTime
