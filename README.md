@@ -13,6 +13,8 @@ EditGym helps you to acquire this set of skills by letting you practice with sta
 ---
 
 todo:
+copy, paste etc. for Mac (http://www.reddit.com/r/webdev/comments/2q3vdq/editgymcom_a_website_for_practicing_to_rearrange/cn3dl69)
+
 vertical spacers size in game der windows height anpassen?
 make restart "button" clickable?
 custom exercises: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
@@ -29,5 +31,4 @@ optimize performance
 quatsch:
 instant replay
 compete live (with chat)
-zeit verstellen verhindern, timestamps aller keymoves monoton steigend (nicht mehr noetig ohne highscore, oder?)
 replay in help (gif?)
