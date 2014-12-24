@@ -18,6 +18,9 @@ introduction w = Skeleton.showTextPart w <| Markdown.toElement """
 
 # EditGym - FAQ
 
+## Why are the typical Mac shortcuts not supported?
+They are not supported due to the author lacking a Mac PC to test on. ;)
+
 ## Are you planning to support modes for emacs or vi(m)?
 No, this is not planned at the moment.
 
