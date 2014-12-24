@@ -18,7 +18,7 @@ referenceBestsJson = """
         \"name\": \"arrows\",
         \"keys\": 18,
         \"keysdate\": \"2014-12-22\",
-        \"time\": 1038,
+        \"time\": 1122,
         \"timedate\": \"2014-12-22\"
     },
     {
@@ -39,56 +39,56 @@ referenceBestsJson = """
         \"name\": \"indentation\",
         \"keys\": 31,
         \"keysdate\": \"2014-12-22\",
-        \"time\": 2815,
+        \"time\": 3194,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"insert\",
         \"keys\": 22,
         \"keysdate\": \"2014-12-22\",
-        \"time\": 1415,
+        \"time\": 1537,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"introduction\",
         \"keys\": 13,
         \"keysdate\": \"2014-12-22\",
-        \"time\": 1151,
+        \"time\": 1223,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"new_lines\",
         \"keys\": 19,
         \"keysdate\": \"2014-12-22\",
-        \"time\": 3264,
+        \"time\": 3461,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"numbers\",
         \"keys\": 87,
         \"keysdate\": \"2014-12-22\",
-        \"time\": 10837,
+        \"time\": 11223,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"remove_duplicates\",
         \"keys\": 133,
         \"keysdate\": \"2014-12-22\",
-        \"time\": 23024,
+        \"time\": 25337,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"remove_words_1\",
-        \"keys\": 19,
+        \"keys\": 14,
         \"keysdate\": \"2014-12-22\",
-        \"time\": 1752,
+        \"time\": 1997,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"remove_words_2\",
         \"keys\": 37,
         \"keysdate\": \"2014-12-22\",
-        \"time\": 5599,
+        \"time\": 5951,
         \"timedate\": \"2014-12-22\"
     },
     {
