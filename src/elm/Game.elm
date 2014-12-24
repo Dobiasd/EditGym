@@ -238,11 +238,15 @@ stepFinishedWithOldPB oldPB
       newPBs = PersonalBests.insert personalBests newPB
       improvedBestKeys' = newPB.keys < oldPB.keys
       improvedBestTime' = newPB.time < oldPB.time
+      alreadyHad5StarsEverywhere = fiveStarsInEverything personalBests
+      nowHas5StarsEverywhere = fiveStarsInEverything newPBs
   in  { state | personalBests <- newPBs
               , improvedBestKeys <- improvedBestKeys'
               , improvedBestTime <- improvedBestTime'
               , thisTimePseudoPB <- generatePB state
-              , savedPB <- improvedBestKeys' || improvedBestTime' }
+              , savedPB <- improvedBestKeys' || improvedBestTime'
+              , justGot5StarsEverywhere <-
+                  not alreadyHad5StarsEverywhere && nowHas5StarsEverywhere }
 
 stepFinishedWithOutOldPB : State -> State
 stepFinishedWithOutOldPB ({personalBests} as state) =
