@@ -12,7 +12,7 @@ import Regex
 import Graphics.Element (Element, flow, down, right, outward, spacer, empty
   , heightOf, color, widthOf, link)
 
-import Stars (starsElemFromPBs, fiveStarsInEverything)
+import Stars (starsElemFromPBs, fiveStarsInEverything, starsElem)
 import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
   , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize
@@ -43,6 +43,7 @@ type alias State = {
   , improvedBestKeys : Bool
   , improvedBestTime : Bool
   , justGot5StarsEverywhere : Bool
+  , thisTimePseudoPB : PersonalBests.PB
   }
 
 port startIn : Signal String
@@ -97,6 +98,7 @@ initialState = State Editor.initialState
                      False
                      False
                      False
+                     (PersonalBests.PB "" 999999 "" 999999 "")
 
 type Input = Decisecond | Start String
                         | Goal String
@@ -239,6 +241,7 @@ stepFinishedWithOldPB oldPB
   in  { state | personalBests <- newPBs
               , improvedBestKeys <- improvedBestKeys'
               , improvedBestTime <- improvedBestTime'
+              , thisTimePseudoPB <- generatePB state
               , savedPB <- improvedBestKeys' || improvedBestTime' }
 
 stepFinishedWithOutOldPB : State -> State
@@ -249,6 +252,7 @@ stepFinishedWithOutOldPB ({personalBests} as state) =
       nowHas5StarsEverywhere = fiveStarsInEverything newPBs
   in  { state | personalBests <- newPBs
               , savedPB <- True
+              , thisTimePseudoPB <- generatePB state
               , justGot5StarsEverywhere <-
                   not alreadyHad5StarsEverywhere && nowHas5StarsEverywhere }
 
@@ -381,7 +385,8 @@ showButtons w {exercise, prev, next} =
 
 coachResult : State -> List Element
 coachResult {keyHistory, exercise, next, personalBests
-  , improvedBestKeys, improvedBestTime, justGot5StarsEverywhere} =
+  , improvedBestKeys, improvedBestTime, justGot5StarsEverywhere
+  , thisTimePseudoPB} =
   let keyMoves = KeyHistory.getKeyCount keyHistory
       span = KeyHistory.getTimeSpan keyHistory
       name = fst exercise
@@ -409,7 +414,7 @@ coachResult {keyHistory, exercise, next, personalBests
                     else ""
               ]
   in  [ displayCoach text
-      , starsElemFromPBs False 1 personalBests name
+      , starsElem False 1 name thisTimePseudoPB.keys thisTimePseudoPB.time
       ]
 
 scenePlay : Int -> Int -> State -> Element
