@@ -23,7 +23,7 @@ referenceBestsJson = """
     },
     {
         \"name\": \"batman\",
-        \"keys\": 42,
+        \"keys\": 41,
         \"keysdate\": \"2014-12-22\",
         \"time\": 6400,
         \"timedate\": \"2014-12-22\"
@@ -65,28 +65,28 @@ referenceBestsJson = """
     },
     {
         \"name\": \"numbers\",
-        \"keys\": 87,
+        \"keys\": 65,
         \"keysdate\": \"2014-12-22\",
         \"time\": 11223,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"remove_duplicates\",
-        \"keys\": 133,
+        \"keys\": 79,
         \"keysdate\": \"2014-12-22\",
         \"time\": 25337,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"remove_words_1\",
-        \"keys\": 14,
+        \"keys\": 13,
         \"keysdate\": \"2014-12-22\",
         \"time\": 1997,
         \"timedate\": \"2014-12-22\"
     },
     {
         \"name\": \"remove_words_2\",
-        \"keys\": 37,
+        \"keys\": 27,
         \"keysdate\": \"2014-12-22\",
         \"time\": 5951,
         \"timedate\": \"2014-12-22\"
@@ -135,7 +135,7 @@ referenceBestsJson = """
     },
     {
         \"name\": \"you_are_awesome\",
-        \"keys\": 177,
+        \"keys\": 87,
         \"keysdate\": \"2014-12-22\",
         \"time\": 10418,
         \"timedate\": \"2014-12-22\"
