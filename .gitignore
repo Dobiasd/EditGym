@@ -1,6 +1,7 @@
 build
 cache
 deploy.sh
-deploy_test.sh
-EditGym.sublime-project
-EditGym.sublime-workspace
+elm-stuff
+*.sublime-project
+*.sublime-workspace
+stuff
