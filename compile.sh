@@ -10,8 +10,9 @@ elm-make src/elm/Start.elm src/elm/Exercises.elm src/elm/Game.elm src/elm/Contac
 if [ $? -eq 0 ]
 then
 
+  cp ./src/.htaccess ./build
   cp -r ./src/imgs ./build
-  cp -R ./src/exercises ./build
+  cp -r ./src/exercises ./build
 
   uglifyjs build/js/editgym_uncompressed.js > build/js/editgym.js
   rm build/js/editgym_uncompressed.js

@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} !^www\.editgym\.com$
+RewriteRule ^(.*)$ http://www.editgym.com/$1 [R=301,L]
