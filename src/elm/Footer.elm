@@ -15,8 +15,8 @@ txtLink str url =
 
 menuItems : List (String, String)
 menuItems = [
-    ("FAQ", "?page=faq")
-  , ("Newsletter", "?page=newsletter")
+    ("Help", "?page=help")
+  , ("FAQ", "?page=faq")
   , ("Contact", "?page=contact")
   ]
 

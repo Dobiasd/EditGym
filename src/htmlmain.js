@@ -166,8 +166,6 @@ function Init() {
     elmContent = Elm.embed(Elm.PersonalBestList, mainDiv, {loadPBsIn : pbs});
     elmContent.ports.loadPBsIn.send(pbs);
   }
-  else if (page == "newsletter")
-    elmContent = Elm.embed(Elm.Newsletter, mainDiv, {});
   else if (page == "create_exercise")
     elmContent = Elm.embed(Elm.CreateExercise, mainDiv, {});
   else if (page == "game")

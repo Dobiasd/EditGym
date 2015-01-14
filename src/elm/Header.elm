@@ -59,7 +59,6 @@ menuItems = [
   , ("Exercises", "?page=exercises")
   , ("Personal bests", "?page=personal_bests")
   --, ("Create exercise", "?page=create_exercise")
-  , ("Help", "?page=help")
   ]
 
 menu : Element -> List (String, String) -> Element
