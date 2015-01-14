@@ -5,7 +5,7 @@ rm -r build
 mkdir build
 mkdir build/js
 
-elm-make src/elm/Start.elm src/elm/Exercises.elm src/elm/Game.elm src/elm/Contact.elm src/elm/Help.elm src/elm/FAQ.elm src/elm/CreateExercise.elm src/elm/Newsletter.elm src/elm/PersonalBestList.elm --output build/js/editgym_uncompressed.js
+elm-make src/elm/Start.elm src/elm/Exercises.elm src/elm/Game.elm src/elm/Contact.elm src/elm/Help.elm src/elm/FAQ.elm src/elm/CreateExercise.elm src/elm/PersonalBestList.elm --output build/js/editgym_uncompressed.js
 
 if [ $? -eq 0 ]
 then
