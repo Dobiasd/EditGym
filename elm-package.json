@@ -1,8 +1,8 @@
 {
     "version": "1.0.0",
     "summary": "EditGym",
-    "repository": "https://github.com/USER/PROJECT.git",
-    "license": "BSD3",
+    "repository": "https://bitbucket.org/Dobiasd/editgym",
+    "license": "proprietary",
     "source-directories": [
         "src/elm"
     ],
