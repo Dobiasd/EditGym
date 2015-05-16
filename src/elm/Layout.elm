@@ -1,12 +1,11 @@
 module Layout where
 
 import Text
-import List
-import List((::))
-import Color (Color, rgb)
-import Graphics.Element (Element, spacer, container, widthOf, heightOf
-  , middle, flow, outward, bottomRight, topRight, right, down)
-import Graphics.Element
+import List exposing ((::))
+import Color exposing (Color, rgb)
+import Graphics.Element exposing (Element, spacer, container, widthOf
+  , heightOf, middle, flow, outward, bottomRight, topRight, right, down
+  , leftAligned)
 import String
 
 {-| splitEvery [1,2,3,4,5,6,7,8] === [[1,2,3],[4,5,6],[7,8]] -}
@@ -70,7 +69,7 @@ displayCoach str =
         |> Text.fromString
         |> Text.height 20
         |> Text.color blue1
-        |> Text.leftAligned
+        |> leftAligned
   in  flow right [
           toColText blue1 "Coach: "
         , textElem
@@ -81,7 +80,7 @@ niceButtonSize h str url =
   let makeText h c = Text.fromString
                      >> Text.height h
                      >> Text.color c
-                     >> Text.leftAligned
+                     >> leftAligned
       textElem = makeText h green1 str
       border = 0.14 * (heightOf textElem |> toFloat) |> round
       buttonW = widthOf textElem + 6 * border
@@ -124,15 +123,15 @@ toSizedText = toColoredSizedText white1
 
 toColoredSizedText : Color -> Float -> String -> Element
 toColoredSizedText col s = Text.fromString >> Text.height s >> Text.color col
-                           >> Text.leftAligned
+                           >> leftAligned
 
 toSizedTextMod : (Text.Text -> Text.Text) -> Float -> String -> Element
 toSizedTextMod f s =
-  Text.fromString >> f >> Text.height s >> Text.color white1 >> Text.leftAligned
+  Text.fromString >> f >> Text.height s >> Text.color white1 >> leftAligned
 
 toColText : Color -> String -> Element
 toColText c =
-  Text.fromString >> Text.height defTextSize >> Text.color c >> Text.leftAligned
+  Text.fromString >> Text.height defTextSize >> Text.color c >> leftAligned
 
 defTextSize : Float
 defTextSize = 20

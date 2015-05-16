@@ -1,16 +1,17 @@
 module KeyHistory where
 
-import Keyboard
-import Set
-import Time
+import Char exposing (fromCode)
 import Dict
+import Graphics.Element exposing (Element, spacer, color, flow, right)
+import Keyboard
 import List
-import Char(fromCode)
-import String(cons)
-import Graphics.Element (Element, spacer, color, flow, right)
+import Set
+import String exposing (cons)
+import Time
+import Unsafe exposing (..)
 
-import Layout (toDefText, toColText, white1, lightGray1, darkGray1, gray1
-  , toSizedText)
+import Layout exposing (toDefText, toColText, white1, lightGray1, darkGray1
+  , gray1, toSizedText)
 
 type alias KeyAction = (Int, Keyboard.KeyCode)
 
@@ -62,19 +63,16 @@ step ({history} as state) keysDown keysDownNew keysUpNew time =
   let history' = history ++ (keysDownNew |> List.map (\x -> (time, x)))
   in  { state | history <- history' }
 
-last : List a -> a
-last xs = List.drop (List.length xs - 1) xs |> List.head
-
 getTimeSpan : State -> Int
 getTimeSpan {history} =
   let times = List.map keyActionTime history
-      valid = List.map2 (<=) times (List.tail times) |> List.all identity
-      start = history |> List.head |> keyActionTime
-      end = history |> last |> keyActionTime
+      valid = List.map2 (<=) times (unsafeTail times) |> List.all identity
+      start = history |> unsafeHead |> keyActionTime
+      end = history |> unsafeLast |> keyActionTime
   in  if valid then end - start else 9999999
 
 getEndTime : State -> Int
-getEndTime {history} = history |> last |> keyActionTime
+getEndTime {history} = history |> unsafeLast |> keyActionTime
 
 display : Int -> State -> Element
 display w {history} =

@@ -1,8 +1,9 @@
 module ExercisesList where
 
-import List ((::))
+import List exposing ((::))
 import List
-import Editor(safeHead)
+import Editor exposing (safeHead)
+import Unsafe exposing (unsafeHead, unsafeTail)
 
 subjects : List (String, List String)
 subjects =
@@ -49,17 +50,17 @@ subjectsWithCat =
 
 getPrev : String -> String
 getPrev exercise =
-  let pairs = List.map2 (,) (List.tail subjectsWithCat) subjectsWithCat
+  let pairs = List.map2 (,) (unsafeTail subjectsWithCat) subjectsWithCat
       founds = List.filter (\((e, _), _) -> e == exercise) pairs
-  in  if List.isEmpty founds then "" else founds |> List.head |> snd |> fst
+  in  if List.isEmpty founds then "" else founds |> unsafeHead |> snd |> fst
 
 getNext : String -> String
 getNext exercise =
-  let pairs = List.map2 (,) (List.tail subjectsWithCat) subjectsWithCat
+  let pairs = List.map2 (,) (unsafeTail subjectsWithCat) subjectsWithCat
       founds = List.filter (\(_, (e, _)) -> e == exercise) pairs
-  in  if List.isEmpty founds then "" else founds |> List.head |> fst |> fst
+  in  if List.isEmpty founds then "" else founds |> unsafeHead |> fst |> fst
 
 getCategorie : String -> String
 getCategorie exercise =
   let founds = List.filter (\(e, _) -> e == exercise) subjectsWithCat
-  in  if List.isEmpty founds then "" else founds |> List.head |> snd
+  in  if List.isEmpty founds then "" else founds |> unsafeHead |> snd

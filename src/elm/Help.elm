@@ -5,9 +5,9 @@ import Signal
 
 import Markdown
 
-import Graphics.Element (Element, flow, down)
-import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
-  , defaultSpacer)
+import Graphics.Element exposing (Element, flow, down)
+import Layout exposing (darkGray1, green1, white1, centerHorizontally
+  , niceButton, defaultSpacer)
 import Skeleton
 
 exercisesButton : Element

@@ -7,7 +7,7 @@ import List
 import Debug
 import String
 import Json.Decode as Decode
-import Json.Decode((:=))
+import Json.Decode exposing ((:=))
 import Json.Encode as Encode
 
 type alias PBValues = { keys : Int

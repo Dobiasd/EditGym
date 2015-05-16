@@ -6,15 +6,15 @@ import String
 import Dict
 import Regex
 import Maybe
-import List
-import List ((::))
+import List exposing ((::))
 import Text
-import Char (fromCode)
-import Color (Color)
+import Char exposing (fromCode)
+import Color exposing (Color)
 
-import Layout (toDefText, white1, darkGray1)
-import Graphics.Element (Element, spacer, container, flow, down, right, outward
-  , empty, widthOf, heightOf, color)
+import Unsafe exposing (unsafeTail)
+import Layout exposing (toDefText, white1, darkGray1)
+import Graphics.Element exposing (Element, spacer, container, flow, down
+  , right, outward, empty, widthOf, heightOf, color, leftAligned)
 
 type alias Document = String
 type alias Cursor = Int
@@ -360,7 +360,7 @@ safeLast : a -> List a -> a
 safeLast def = List.reverse >> safeHead def
 
 init : List a -> List a
-init = List.reverse >> List.tail >> List.reverse
+init = List.reverse >> unsafeTail >> List.reverse
 
 displayCursor : Document -> Cursor -> Element
 displayCursor document cursor =
@@ -412,7 +412,7 @@ displayTextCol col =
   >> Text.typeface [ "Consolas", "Menlo Regular", "Monospace" ]
   >> Text.height 20
   >> Text.color col
-  >> Text.leftAligned
+  >> leftAligned
 
 displayNewLines : Document -> Element
 displayNewLines =

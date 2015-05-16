@@ -9,9 +9,9 @@ import Markdown
 
 import PersonalBests
 
-import Graphics.Element (Element, flow, down)
-import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
-  , defaultSpacer, showTimeInMs, toDefText)
+import Graphics.Element exposing (Element, flow, down)
+import Layout exposing (darkGray1, green1, white1, centerHorizontally
+  , niceButton, defaultSpacer, showTimeInMs, toDefText)
 import Skeleton
 
 port loadPBsIn : Signal String

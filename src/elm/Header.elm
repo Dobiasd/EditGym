@@ -2,13 +2,14 @@ module Header where
 
 import Window
 import List
-import List ((::))
-import Graphics.Element (Element, container, topRight, color, image, link, flow
-  , down, right, widthOf, heightOf, middle, bottomRight, outward, spacer)
+import List exposing ((::))
+import Graphics.Element exposing (Element, container, topRight, color
+  , image, link, flow, down, right, widthOf, heightOf, middle
+  , bottomRight, outward, spacer, leftAligned)
 import Text
 
-import UrlEncode (genLink)
-import Layout (defaultSpacer, toDefText, toSizedText, octaDefSpacer
+import UrlEncode exposing (genLink)
+import Layout exposing (defaultSpacer, toDefText, toSizedText, octaDefSpacer
   , white1, orange1, blue1, purple1, red1, green1, gray1
   , divider, darkGray1, lightGray1, doubleDefSpacer, centerHorizontally
   , tripleDefSpacer, toColoredSizedText, quadDefSpacer
@@ -50,7 +51,7 @@ menuButton str url =
     let toTxt = Text.fromString
                 >> Text.height 18
                 >> Text.color lightGray1
-                >> Text.leftAligned
+                >> leftAligned
     in  toTxt str |> link url
 
 menuItems : List (String, String)

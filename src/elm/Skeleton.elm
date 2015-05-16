@@ -1,14 +1,14 @@
 module Skeleton where
 
-import Graphics.Element (Element, container, topRight, width, heightOf
-  , fittedImage, middle, color, midTop, flow, down, spacer, outward, topLeft
-  , empty)
+import Graphics.Element exposing (Element, container, topRight, width
+  , heightOf , fittedImage, middle, color, midTop, flow, down, spacer
+  , outward, topLeft, empty)
 import List
-import Layout (defaultSpacer, toDefText, toSizedText
+import Layout exposing (defaultSpacer, toDefText, toSizedText
   , white1, orange1, blue1, purple1, red1, green1, gray1, divider
   , darkGray1, centerHorizontally)
-import Footer (footer)
-import Header (header)
+import Footer exposing (footer)
+import Header exposing (header)
 
 showTextPart : Int -> Element -> Element
 showTextPart w content =

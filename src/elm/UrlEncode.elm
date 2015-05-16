@@ -3,7 +3,7 @@ module UrlEncode where
 import Dict
 import List
 import String
-import Maybe (withDefault)
+import Maybe exposing (withDefault)
 
 -- http://en.wikipedia.org/w/index.php?title=Percent-encoding&oldid=634660400#Types_of_URI_characters
 unreservedCharacters : List Char

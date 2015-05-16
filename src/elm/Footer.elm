@@ -2,13 +2,13 @@ module Footer where
 
 import List
 import Text
-import Graphics.Element (Element, container, heightOf, widthOf, middle
-    , color, link, flow, down, right, midTop, spacer)
+import Graphics.Element exposing (Element, container, heightOf, widthOf
+  , middle, color, link, flow, down, right, midTop, spacer, rightAligned)
 
-import Layout (defaultSpacer, darkGray1, toDefText, divider, purple1
+import Layout exposing (defaultSpacer, darkGray1, toDefText, divider, purple1
     , centerHorizontally, quadDefSpacer, lightGray1)
 
-import Header (menu)
+import Header exposing (menu)
 
 txtLink str url =
   toDefText str |> link url
@@ -28,7 +28,7 @@ footer w =
                   |> Text.fromString
                   |> Text.height 12
                   |> Text.color lightGray1
-                  |> Text.rightAligned
+                  |> rightAligned
     copyRightElem = flow right [copyright, defaultSpacer]
     leftSpacerW = (w - widthOf buttons) // 2
     rightSpacerW = leftSpacerW - widthOf copyright

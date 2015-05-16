@@ -1,21 +1,21 @@
 module Exercises where
 
-import Graphics.Element (Element, flow, down, right, spacer, color, empty
-  , widthOf)
+import Graphics.Element exposing (Element, flow, down, right, spacer, color
+  , empty, widthOf)
 import Window
 import Signal
-import List ((::))
+import List exposing ((::))
 import List
 import PersonalBests
 
-import Layout (toColText, toDefText, green1, blue1, darkGray1
+import Layout exposing (toColText, toDefText, green1, blue1, darkGray1
   , niceButton, defaultSpacer, quadDefSpacer, toSizedText, niceButtonSize
   , centerHorizontally, divider, doubleDefSpacer, displayCoach, asGrid)
 import Skeleton
-import Editor(safeHead)
-import ExercisesList(..)
-import Stars(starsElemFromPBs, fiveStarsInEverything, getStarsWithString
-  , arrangeStarElems)
+import Editor exposing (safeHead)
+import ExercisesList exposing (..)
+import Stars exposing (starsElemFromPBs, fiveStarsInEverything
+  , getStarsWithString, arrangeStarElems)
 
 port loadPBsIn : Signal String
 

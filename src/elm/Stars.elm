@@ -1,15 +1,15 @@
 module Stars where
 
-import Graphics.Element (Element, flow, outward, sizeOf, container, middle
-    , right, spacer, down, heightOf, empty)
-import List(repeat, append, map, map2, all, length)
+import Graphics.Element exposing (Element, flow, outward, sizeOf, container
+  , middle, right, spacer, down, heightOf, empty, leftAligned)
+import List exposing (repeat, append, map, map2, all, length)
 import String
-import String(fromChar, slice, padRight)
+import String exposing (fromChar, slice, padRight)
 import Text
 import Maybe
 import ExercisesList
 import PersonalBests
-import Layout(yellow1, gray1, darkGray1, toColoredSizedText)
+import Layout exposing (yellow1, gray1, darkGray1, toColoredSizedText)
 
 referenceBestsJson : String
 referenceBestsJson = """
@@ -154,7 +154,7 @@ toOnStarText sizeDiv =
          >> Text.bold
          >> Text.height (12 / sizeDiv)
          >> Text.color gray1
-         >> Text.leftAligned
+         >> leftAligned
 
 starWithChar : Float -> Bool -> Char -> Element
 starWithChar sizeDiv filled c =

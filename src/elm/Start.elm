@@ -5,10 +5,10 @@ import Signal
 
 import Markdown
 
-import Graphics.Element (Element, flow, down, right, spacer)
+import Graphics.Element exposing (Element, flow, down, right, spacer)
 import Skeleton
-import Layout(darkGray1, green1, white1, centerHorizontally, niceButton
-  , defaultSpacer)
+import Layout exposing (darkGray1, green1, white1
+  , centerHorizontally, niceButton, defaultSpacer)
 
 startButton : Element
 startButton = niceButton "Start" "?page=game&exercise=introduction"

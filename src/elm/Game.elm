@@ -9,11 +9,12 @@ import Signal
 import List
 import String
 import Regex
-import Graphics.Element (Element, flow, down, right, outward, spacer, empty
-  , heightOf, color, widthOf, link)
+import Graphics.Element exposing (Element, flow, down, right, outward
+  , spacer, empty, heightOf, color, widthOf, link, rightAligned
+  , leftAligned, centered)
 
-import Stars (starsElemFromPBs, fiveStarsInEverything, starsElem)
-import Layout (toDefText, toSizedText, lightGray1, blue1, toColText
+import Stars exposing (starsElemFromPBs, fiveStarsInEverything, starsElem)
+import Layout exposing (toDefText, toSizedText, lightGray1, blue1, toColText
   , quadDefSpacer, toColoredSizedText, orange1, centerHorizontally, gray1
   , showRightBottom, defaultSpacer, green1, octaDefSpacer, defTextSize
   , displayCoach, showTimeInDs, showTimeInMs)
@@ -22,7 +23,7 @@ import Editor
 import KeyHistory
 import ExercisesList
 import PersonalBests
-import DateTime(timeToString)
+import DateTime exposing (timeToString)
 
 type alias State = {
     editor : Editor.State
@@ -55,7 +56,7 @@ port loadPBsIn : Signal String
 port savePBsOut : Signal String
 port savePBsOut =
   state
-  |> Signal.keepIf .savedPB initialState
+  |> Signal.filter .savedPB initialState
   |> Signal.map .personalBests
   |> Signal.dropRepeats
   |> Signal.map PersonalBests.showBests
@@ -125,7 +126,7 @@ exerciseInput = Signal.map Exercise exerciseIn
 keyInput : Signal Input
 keyInput =
   Keyboard.keysDown
-  |> Signal.map (Set.fromList << List.filter validKey)
+  |> Signal.map (Set.filter validKey)
   |> Time.timestamp
   |> Signal.map ((\(t, k) -> (floor t, k)) >> uncurry Keys)
 
@@ -357,7 +358,7 @@ showPrev : (String, String) -> Element
 showPrev (name, cat) =
   if String.isEmpty name then empty else
     flow right [
-        showExercise (name, cat) Text.rightAligned
+        showExercise (name, cat) rightAligned
       , toColoredSizedText green1 82 " <-- "
       , toColText green1 "\n(space+p)"
     ] |> toExerciseLink name
@@ -368,7 +369,7 @@ showNext (name, cat) =
     flow right [
         toColText green1 "\n(space+n)"
       , toColoredSizedText green1 82 " --> "
-      , showExercise (name, cat) Text.leftAligned
+      , showExercise (name, cat) leftAligned
     ] |> toExerciseLink name
 
 showRestart : Element
@@ -377,7 +378,7 @@ showRestart =
   |> Text.fromString
      >> Text.height defTextSize
      >> Text.color green1
-     >> Text.centered
+     >> centered
 
 showButtons : Int -> State -> Element
 showButtons w {exercise, prev, next} =
