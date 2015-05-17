@@ -1,8 +1,8 @@
 {
     "version": "1.0.0",
-    "summary": "EditGym",
-    "repository": "https://github.com/USER/PROJECT.git",
-    "license": "proprietary",
+    "summary": "Text editing training",
+    "repository": "https://github.com/Dobiasd/EditGym.git",
+    "license": "MIT",
     "source-directories": [
         "src/elm"
     ],
