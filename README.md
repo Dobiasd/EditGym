@@ -12,23 +12,5 @@ EditGym helps you to acquire this set of skills by letting you practice with sta
 
 ---
 
-todo:
-copy, paste etc. for Mac (http://www.reddit.com/r/webdev/comments/2q3vdq/editgymcom_a_website_for_practicing_to_rearrange/cn3dl69)
-
-vertical spacers size in game der windows height anpassen?
-make restart "button" clickable?
-custom exercises: as url or in online raw text (e.g. codepad). url only up to 2000 total. (http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
-FB-page einrichten, like button oben als link dahin
-
-when done, post here:
-http://acrobolix.com/keyboarding-changed-my-life/ "Hey Juji, I made a website for practicing to rearrange text with keyboard shortcuts. www.editgym.com
-Dobi"
-http://www.reddit.com/r/productivity/ "Become lightning fast at rearraning text with EditGym.com"
-http://www.reddit.com/r/webdev EditGym.com - A website for practicing to rearrange text with keyboard shortcuts (hobby project)
-
-optimize performance
-
-quatsch:
-instant replay
-compete live (with chat)
-replay in help (gif?)
+Issues:
+ * [problems with shortcuts on a Mac](http://www.reddit.com/r/webdev/comments/2q3vdq/editgymcom_a_website_for_practicing_to_rearrange/cn3dl69)
