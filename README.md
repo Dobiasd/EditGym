@@ -2,7 +2,7 @@
 
 ###Text editing training
 
----
+![logo](src/imgs/logo.png)
 
 A lot of daily tasks require you to edit text. And no matter if you use a word processor like [LibreOffice Writer](https://www.libreoffice.org/discover/writer) or [Word](http://en.wikipedia.org/wiki/Microsoft_Word), an editor like [Notepad(++)](http://notepad-plus-plus.org), an [IDE](http://en.wikipedia.org/wiki/Integrated_development_environment) like [Eclipse](https://eclipse.org) etc. or just write an email or a post on [facebook](http://www.facebook.com) or [reddit](http://www.reddit.com) in your browser, the most basic default keyboard shortcuts are the same. And knowing them can [save you](http://acrobolix.com/keyboarding-changed-my-life/) [precious time](http://lifehacker.com/5970089/back-to-the-basics-learn-to-use-keyboard-shortcuts-like-a-ninja).
 
