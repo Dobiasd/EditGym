@@ -313,6 +313,12 @@ stepType shift key state =
     Just c -> replaceSelection (String.fromList [c]) state
     Nothing -> state
 
+stepSpecialType : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepSpecialType ctrl shift key state =
+  if ctrl && key == 13
+    then replaceSelection "\n" state
+    else state
+
 splitAtCursor : State -> (Document, Document)
 splitAtCursor {document, cursor} =
   (String.slice 0 cursor document
@@ -338,6 +344,7 @@ step ({document, cursor} as state) keysDown keysDownNew =
                 , stepCut ctrl shift
                 , stepSelectAll ctrl shift
                 , stepTab ctrl shift
+                , stepSpecialType ctrl shift
                 ]
   in  List.foldl stepKey state keysDownNew
 
