@@ -98,6 +98,9 @@ In any case, soon you will be able to simply [create your own exercise](?page=cr
 ## How was this page made?
 This page was mostly written in [Elm](http://elm-lang.org), an awesome [FRP](http://en.wikipedia.org/wiki/Functional_reactive_programming)-utilizing [pure functional](http://en.wikipedia.org/wiki/Functional_programming) programming language that compiles to Javascript.
 
+## Can you show me the source code?
+Sure! Here it is: [github/Dobiasd/EditGym](https://github.com/Dobiasd/EditGym)
+
 """
 
 main : Signal Element
