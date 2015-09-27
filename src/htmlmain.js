@@ -10,6 +10,49 @@ function getURLParameterDef(name, def) {
   return def;
 }
 
+function AcceptCookies() {
+  if (lsTest() === true) {
+    try {
+      localStorage.setItem("cookieConsent", "true");
+    } catch(e) {
+    }
+  }
+  CheckCookieConsent();
+}
+
+function HideCookieRemark()
+{
+  document.getElementById('cookieRemark').style.height ='0px';
+  document.getElementById('cookieRemark').style.padding ='0px';
+  document.getElementById('cookieRemark').style.visibility = 'hidden';
+  document.getElementById('ads').style.top = '3px';
+}
+
+function ShowCookieRemark()
+{
+  document.getElementById('cookieRemark').style.height ='18px';
+  document.getElementById('cookieRemark').style.padding ='10px';
+  document.getElementById('cookieRemark').style.visibility = 'visible';
+  document.getElementById('ads').style.top = '41px';
+}
+
+function CheckCookieConsent() {
+  if (lsTest() === true) {
+    try {
+      cookieConsent = localStorage.getItem("cookieConsent");
+      if (cookieConsent == "true"){
+        HideCookieRemark();
+      }
+      else
+      {
+        ShowCookieRemark();
+      }
+    } catch(e) {
+      return "";
+    }
+  }
+}
+
 // Prevent the backspace key from navigating back.
 // http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
 function DisableBackspaceNavigation() {
@@ -143,6 +186,7 @@ function CenterAds() {
 }
 
 function Init() {
+  CheckCookieConsent();
   CenterAds();
   $(window).on('resize', CenterAds);
 
