@@ -140,7 +140,7 @@ function SavePersonalBests(strJSON) {
     try {
       if (!strJSON || strJSON.length == 0)
         return;
-      localStorage.setItem("personalBests", strJSON);
+      localStorage.setItem("textEditingTrainingPersonalBests", strJSON);
       //console.log("Saved personal bests.")
     } catch(e) {
     }
@@ -150,7 +150,7 @@ function SavePersonalBests(strJSON) {
 function LoadPersonalBests(strJSON) {
   if (lsTest() === true) {
     try {
-      strJSON = localStorage.getItem("personalBests");
+      strJSON = localStorage.getItem("textEditingTrainingPersonalBests");
       if (!strJSON)
         strJSON = "";
       //console.log("Loaded personal bests.")
@@ -165,7 +165,7 @@ function LoadPersonalBests(strJSON) {
 function DeletePersonalBests(strJSON) {
   if (lsTest() === true) {
     try {
-      localStorage.removeItem("personalBests");
+      localStorage.removeItem("textEditingTrainingPersonalBests");
     } catch(e) {
     }
   }
