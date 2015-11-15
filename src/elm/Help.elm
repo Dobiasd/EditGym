@@ -46,7 +46,7 @@ Your personal bests will be saved.
 * ctrl+backspace - delete previous word
 * ctrl+delete - delete next word
 * ctrl+shift+backspace - delete current line to cursor
-* ctrl+delete - delete current line from cursor on
+* ctrl+shift+delete - delete current line from cursor on
 
 ## Selecting
 * shift+any cursor movement - select text
