@@ -60,19 +60,19 @@ get : PBs -> String -> Maybe PB
 get bests name =
   let dict = toDict bests
   in  case Dict.get name dict of
-        Maybe.Just res -> Maybe.Just { res | name = name }
+        Maybe.Just res -> Maybe.Just (addNameToPBValues res name)
         Nothing -> Nothing
 
 updateTime : PB -> PB -> PB
 updateTime newBest pb =
-  if newBest.time < pb.time then { pb | time <- newBest.time
-                                      , timedate <- newBest.timedate }
+  if newBest.time < pb.time then { pb | time = newBest.time
+                                      , timedate = newBest.timedate }
                             else pb
 
 updateKeys : PB -> PB -> PB
 updateKeys newBest pb =
-  if newBest.keys < pb.keys then { pb | keys <- newBest.keys
-                                      , keysdate <- newBest.keysdate }
+  if newBest.keys < pb.keys then { pb | keys = newBest.keys
+                                      , keysdate = newBest.keysdate }
                             else pb
 
 updateBest : PB -> PB -> PB
@@ -82,13 +82,23 @@ updateBest best newBest =
   |> updateTime newBest
 
 toPair : PB -> (String, PBValues)
-toPair best = (best.name, { best - name })
+toPair best = (best.name, { keys = best.keys,
+                            keysdate = best.keysdate,
+                            time = best.time,
+                            timedate = best.timedate })
 
 fromPair : (String, PBValues) -> PB
-fromPair (name, vals) = { vals | name = name }
+fromPair (name, vals) = addNameToPBValues vals name
 
 toDict : PBs -> Dict.Dict String PBValues
 toDict = List.map toPair >> Dict.fromList
+
+addNameToPBValues : PBValues -> String -> PB
+addNameToPBValues vals name = { name = name,
+                            keys = vals.keys,
+                            keysdate = vals.keysdate,
+                            time = vals.time,
+                            timedate = vals.timedate }
 
 insert : PBs -> PB -> PBs
 insert bests newBest =
@@ -96,7 +106,7 @@ insert bests newBest =
       name = newBest.name
       newEntry = case Dict.get name dict of
                         Maybe.Just ob ->
-                          updateBest { ob | name = name } newBest
+                          updateBest (addNameToPBValues ob name) newBest
                         Nothing -> newBest
       newDict = uncurry Dict.insert (toPair newEntry) dict
   in  newDict |> Dict.toList |> List.map fromPair

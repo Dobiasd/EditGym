@@ -2,6 +2,7 @@ module Game where
 
 import Window
 import Set
+import Char
 import Keyboard
 import Time
 import Text
@@ -28,7 +29,7 @@ import DateTime exposing (timeToString)
 type alias State = {
     editor : Editor.State
   , keyHistory : KeyHistory.State
-  , keysDown : Set.Set Keyboard.KeyCode
+  , keysDown : Set.Set Char.KeyCode
   , start : String
   , goal : String
   , coach : String
@@ -106,7 +107,7 @@ type Input = Decisecond | Start String
                         | Coach String
                         | Exercise String
                         | PBs String
-                        | Keys Int (Set.Set Keyboard.KeyCode)
+                        | Keys Int (Set.Set Char.KeyCode)
 
 startInput : Signal Input
 startInput = Signal.map (cleanEditorText >> Start) startIn
@@ -164,60 +165,60 @@ stepDecisecond : State -> State
 stepDecisecond ({editor, timeInMs, keyHistory, goal} as state) =
   if editor.document == goal || List.isEmpty keyHistory.history
     then state
-    else { state | timeInMs <- timeInMs + 100 }
+    else { state | timeInMs = timeInMs + 100 }
 
 setStart : String -> State -> State
 setStart start ({editor} as state) =
-  { state | editor <- Editor.setDocument start editor
-          , start <- start}
+  { state | editor = Editor.setDocument start editor
+          , start = start}
 
 setGoal : String -> State -> State
-setGoal goal state = { state | goal <- goal }
+setGoal goal state = { state | goal = goal }
 
 setCoach : String -> State -> State
-setCoach coach state = { state | coach <- coach }
+setCoach coach state = { state | coach = coach }
 
 setPersonalBests : String -> State -> State
 setPersonalBests pbs state =
-  { state | personalBests <- PersonalBests.readBests pbs }
+  { state | personalBests = PersonalBests.readBests pbs }
 
 setExercise : String -> State -> State
 setExercise exercise state =
   let prev = ExercisesList.getPrev exercise
       next = ExercisesList.getNext exercise
-  in  { state | exercise <- (exercise, ExercisesList.getCategorie exercise)
-              , prev <- (prev, ExercisesList.getCategorie prev)
-              , next <- (next, ExercisesList.getCategorie next) }
+  in  { state | exercise = (exercise, ExercisesList.getCategorie exercise)
+              , prev = (prev, ExercisesList.getCategorie prev)
+              , next = (next, ExercisesList.getCategorie next) }
 
-stepSwitchExercise : Set.Set Keyboard.KeyCode -> State -> State
+stepSwitchExercise : Set.Set Char.KeyCode -> State -> State
 stepSwitchExercise keys ({prev, next, start, personalBests} as state) =
   let space = Set.member 32 keys
       p = Set.member 80 keys
       r = Set.member 82 keys
       n = Set.member 78 keys
-  in  if | space && r -> { state | editor <- (Editor.setDocument
+  in  if space && r then { state | editor = (Editor.setDocument
                                                start
                                                Editor.initialState)
-                                , keyHistory <- KeyHistory.initialState
-                                , timeInMs <- 0
-                                , waitForNoKeys <- True
-                                , personalBests <- personalBests
-                                , savedPB <- False
-                                , finished <- False }
-         | space && p -> { state | redirectTo <- exerciseLink (fst prev) }
-         | space && n -> { state | redirectTo <- exerciseLink (fst next) }
-         | otherwise -> state
+                                , keyHistory = KeyHistory.initialState
+                                , timeInMs = 0
+                                , waitForNoKeys = True
+                                , personalBests = personalBests
+                                , savedPB = False
+                                , finished = False }
+         else if space && p then { state | redirectTo = exerciseLink (fst prev) }
+         else if space && n then { state | redirectTo = exerciseLink (fst next) }
+         else state
 
-stepKeysEdit : Set.Set Keyboard.KeyCode -> Int -> State -> State
+stepKeysEdit : Set.Set Char.KeyCode -> Int -> State -> State
 stepKeysEdit inKeysDown time
              ({editor, keyHistory, keysDown, goal} as state) =
   let keysDownNew = Set.diff inKeysDown keysDown |> Set.toList
       keysUpNew = Set.diff keysDown inKeysDown |> Set.toList
-  in  { state | editor <- Editor.step editor keysDown keysDownNew
-              , keyHistory <- KeyHistory.step keyHistory keysDown
+  in  { state | editor = Editor.step editor keysDown keysDownNew
+              , keyHistory = KeyHistory.step keyHistory keysDown
                                               keysDownNew keysUpNew
                                               time
-              , keysDown <- inKeysDown }
+              , keysDown = inKeysDown }
 
 generatePB : State -> PersonalBests.PB
 generatePB {keyHistory, exercise} =
@@ -241,12 +242,12 @@ stepFinishedWithOldPB oldPB
       improvedBestTime' = newPB.time < oldPB.time
       alreadyHad5StarsEverywhere = fiveStarsInEverything personalBests
       nowHas5StarsEverywhere = fiveStarsInEverything newPBs
-  in  { state | personalBests <- newPBs
-              , improvedBestKeys <- improvedBestKeys'
-              , improvedBestTime <- improvedBestTime'
-              , thisTimePseudoPB <- generatePB state
-              , savedPB <- improvedBestKeys' || improvedBestTime'
-              , justGot5StarsEverywhere <-
+  in  { state | personalBests = newPBs
+              , improvedBestKeys = improvedBestKeys'
+              , improvedBestTime = improvedBestTime'
+              , thisTimePseudoPB = generatePB state
+              , savedPB = improvedBestKeys' || improvedBestTime'
+              , justGot5StarsEverywhere =
                   not alreadyHad5StarsEverywhere && nowHas5StarsEverywhere }
 
 stepFinishedWithOutOldPB : State -> State
@@ -255,10 +256,10 @@ stepFinishedWithOutOldPB ({personalBests} as state) =
                  (generatePB state)
       alreadyHad5StarsEverywhere = fiveStarsInEverything personalBests
       nowHas5StarsEverywhere = fiveStarsInEverything newPBs
-  in  { state | personalBests <- newPBs
-              , savedPB <- True
-              , thisTimePseudoPB <- generatePB state
-              , justGot5StarsEverywhere <-
+  in  { state | personalBests = newPBs
+              , savedPB = True
+              , thisTimePseudoPB = generatePB state
+              , justGot5StarsEverywhere =
                   not alreadyHad5StarsEverywhere && nowHas5StarsEverywhere }
 
 stepFinished : State -> State
@@ -274,28 +275,28 @@ stepCheckFinished ({finished, editor, goal} as state) =
     else
       let finished' = editor.document == goal
       in  if finished'
-            then { state | finished <- finished' } |> stepFinished
+            then { state | finished = finished' } |> stepFinished
             else state
 
-stepKeys : Set.Set Keyboard.KeyCode -> Int -> State -> State
+stepKeys : Set.Set Char.KeyCode -> Int -> State -> State
 stepKeys inKeysDown time
  ({editor, keyHistory, keysDown, goal, waitForNoKeys
  , personalBests, savedPB, exercise} as oldState) =
   let state = oldState |> stepCheckFinished
       state' =
-        if | state.finished -> state
-           | state.waitForNoKeys && (not <| inKeysDown == Set.empty) -> state
-           | state.waitForNoKeys && inKeysDown == Set.empty ->
-             { state | waitForNoKeys <- False
-                     , keysDown <- Set.empty }
-           | not <| waitForNoKeys -> stepKeysEdit inKeysDown time state
-           | otherwise -> state
+        if state.finished then state
+        else if state.waitForNoKeys && (not <| inKeysDown == Set.empty) then state
+        else if state.waitForNoKeys && inKeysDown == Set.empty then
+             { state | waitForNoKeys = False
+                     , keysDown = Set.empty }
+        else if not <| waitForNoKeys then stepKeysEdit inKeysDown time state
+        else state
   in  state' |> stepSwitchExercise inKeysDown
 
 main : Signal Element
 main = Signal.map3 scene Window.width Window.height state
 
-validKey : Keyboard.KeyCode -> Bool
+validKey : Char.KeyCode -> Bool
 validKey key = KeyHistory.showKey key /= ""
 
 displayGoal : String -> Element
@@ -324,13 +325,13 @@ makeHeader {exercise, personalBests} =
 
 scene : Int -> Int -> State -> Element
 scene w h
-  ({editor, keyHistory, editor, goal, timeInMs, coach, exercise} as state) =
+  ({editor, keyHistory, goal, timeInMs, coach, exercise} as state) =
   let headline = makeHeader state
   in  flow down [ headline |> centerHorizontally w
                 , scenePlay w h state |> centerHorizontally w ]
       |> Skeleton.showPage w h
 
-showPressedKeys : Set.Set Keyboard.KeyCode -> Element
+showPressedKeys : Set.Set Char.KeyCode -> Element
 showPressedKeys =
   Set.toList
   >> List.map KeyHistory.showKey
@@ -359,7 +360,7 @@ showPrev (name, cat) =
   if String.isEmpty name then empty else
     flow right [
         showExercise (name, cat) rightAligned
-      , toColoredSizedText green1 82 " <-- "
+      , toColoredSizedText green1 82 " =- "
       , toColText green1 "\n(space+p)"
     ] |> toExerciseLink name
 
@@ -403,10 +404,10 @@ coachResult {keyHistory, exercise, next, personalBests
                 , span |> showTimeInMs |> String.dropRight 1
                 , " seconds."
                 , let improveIntro = "\nThis means you have improved your personal best regarding "
-                  in  if | improvedBestKeys && improvedBestTime -> String.append improveIntro "key presses and time!"
-                         | improvedBestKeys -> String.append improveIntro "key presses!"
-                         | improvedBestTime -> String.append improveIntro "time!"
-                         | otherwise -> ""
+                  in  if improvedBestKeys && improvedBestTime then String.append improveIntro "key presses and time!"
+                      else if improvedBestKeys then String.append improveIntro "key presses!"
+                      else if improvedBestTime then String.append improveIntro "time!"
+                      else ""
                 , if String.isEmpty (fst next)
                      then ""
                      else String.concat [

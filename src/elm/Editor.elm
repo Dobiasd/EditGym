@@ -30,14 +30,14 @@ type alias State = {
   }
 
 setDocument : String -> State -> State
-setDocument newDoc state = { state | document <- newDoc }
+setDocument newDoc state = { state | document = newDoc }
 
 boolToInt : Bool -> Int
 boolToInt b = case b of
   False -> 0
   True -> 1
 
-keyStrings : Dict.Dict (Int, Keyboard.KeyCode) Char
+keyStrings : Dict.Dict (Int, Char.KeyCode) Char
 keyStrings =
   let toDefStrPair shift key c = ((shift, key), c |> fromCode)
   in  [
@@ -57,7 +57,7 @@ keyStrings =
 tabStr : String
 tabStr = "    "
 
-showKey : Bool -> Keyboard.KeyCode -> Maybe Char
+showKey : Bool -> Char.KeyCode -> Maybe Char
 showKey shift key = Dict.get (boolToInt shift, key) keyStrings
 
 initialState : State
@@ -71,7 +71,7 @@ setBoth x = (x, x)
 
 stepSelection : Bool -> State -> State
 stepSelection shift ({cursor, selection} as state) =
-  { state | selection <- if shift then setSnd cursor selection
+  { state | selection = if shift then setSnd cursor selection
                                   else setBoth cursor }
 
 -- for ctrl+right
@@ -159,7 +159,7 @@ stepCursorLeft ctrl shift ({document, cursor, selection} as state) =
                              then uncurry min selection - cursor
                              else -1
       cursor' = max 0 (cursor + dist)
-  in { state | cursor <- cursor' } |> stepSelection shift
+  in { state | cursor = cursor' } |> stepSelection shift
 
 stepCursorRight : Bool -> Bool -> State -> State
 stepCursorRight ctrl shift ({document, cursor, selection} as state) =
@@ -168,7 +168,7 @@ stepCursorRight ctrl shift ({document, cursor, selection} as state) =
                              then uncurry max selection - cursor
                              else 1
       cursor' = min (String.length document) (cursor + dist)
-  in { state | cursor <- cursor' } |> stepSelection shift
+  in { state | cursor = cursor' } |> stepSelection shift
 
 stepCursorUp : Bool -> Bool -> State -> State
 stepCursorUp ctrl shift ({document, cursor, selection} as state) =
@@ -182,7 +182,7 @@ stepCursorUp ctrl shift ({document, cursor, selection} as state) =
       cursor' = min (aboveStart + x) aboveEnd
   in case (ctrl, shift) of
        (True, _) -> state
-       otherwise -> { state | cursor <- cursor' } |> stepSelection shift
+       otherwise -> { state | cursor = cursor' } |> stepSelection shift
 
 stepCursorDown : Bool -> Bool -> State -> State
 stepCursorDown ctrl shift ({document, cursor, selection} as state) =
@@ -195,22 +195,22 @@ stepCursorDown ctrl shift ({document, cursor, selection} as state) =
       cursor' = min (belowStart + x) aboveEnd
   in case (ctrl, shift) of
        (True, _) -> state
-       otherwise -> { state | cursor <- cursor' } |> stepSelection shift
+       otherwise -> { state | cursor = cursor' } |> stepSelection shift
 
 stepCursorPos1 : Bool -> Bool -> State -> State
 stepCursorPos1 ctrl shift ({document, cursor, selection} as state) =
   let dist = if ctrl then -cursor else lineLeftOffset document cursor
       cursor' = max 0 (cursor + dist)
-  in { state | cursor <- cursor' } |> stepSelection shift
+  in { state | cursor = cursor' } |> stepSelection shift
 
 stepCursorEnd : Bool -> Bool -> State -> State
 stepCursorEnd ctrl shift ({document, cursor, selection} as state) =
   let dist = if ctrl then (String.length document - cursor)
                      else lineRightOffset document cursor
       cursor' = min (String.length document) (cursor + dist)
-  in { state | cursor <- cursor' } |> stepSelection shift
+  in { state | cursor = cursor' } |> stepSelection shift
 
-stepCursor : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepCursor : Bool -> Bool -> Char.KeyCode -> State -> State
 stepCursor ctrl shift key ({document, cursor} as state) =
   (case key of
      35 -> stepCursorEnd
@@ -233,16 +233,16 @@ deleteSelection ({document, selection, cursor} as state) =
   let (start, end) = sortPair selection
       part1 = String.slice 0 start document
       part2 = String.slice end (String.length document) document
-  in  { state | document <- String.append part1 part2
-              , selection <- setBoth start
-              , cursor <- start }
+  in  { state | document = String.append part1 part2
+              , selection = setBoth start
+              , cursor = start }
 
 setCursorAndSelection : Cursor -> State -> State
 setCursorAndSelection pos state =
-  { state | cursor <- pos
-          , selection <- setBoth pos }
+  { state | cursor = pos
+          , selection = setBoth pos }
 
-stepBackspace : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepBackspace : Bool -> Bool -> Char.KeyCode -> State -> State
 stepBackspace ctrl shift key ({selection, cursor} as state) =
   let stepF = if isSelected selection then identity
                  else case (ctrl, shift) of
@@ -254,7 +254,7 @@ stepBackspace ctrl shift key ({selection, cursor} as state) =
       8 -> stepF state |> deleteSelection
       otherwise -> state
 
-stepDelete : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepDelete : Bool -> Bool -> Char.KeyCode -> State -> State
 stepDelete ctrl shift key ({selection} as state) =
   let stepF = if isSelected selection then identity
                  else case (ctrl, shift) of
@@ -266,54 +266,54 @@ stepDelete ctrl shift key ({selection} as state) =
       46 -> stepF state |> deleteSelection
       otherwise -> state
 
-stepCopy : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepCopy : Bool -> Bool -> Char.KeyCode -> State -> State
 stepCopy ctrl shift key ({document, selection, clipboard} as state) =
   if (ctrl && key == 67) || (ctrl && key == 45)
     then if isSelected selection
-           then { state | clipboard <- uncurry String.slice
+           then { state | clipboard = uncurry String.slice
                                         (sortPair selection) document }
            else state
     else state
 
-stepPaste : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepPaste : Bool -> Bool -> Char.KeyCode -> State -> State
 stepPaste ctrl shift key ({document, selection, clipboard} as state) =
   if (ctrl && key == 86) || (shift && key == 45)
     then replaceSelection clipboard state
     else state
 
-stepCut : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepCut : Bool -> Bool -> Char.KeyCode -> State -> State
 stepCut ctrl shift key ({document, selection, clipboard} as state) =
   if (ctrl && key == 88) || (shift && key == 46)
     then state |> stepCopy True False 67 |> deleteSelection
     else state
 
-stepTab : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepTab : Bool -> Bool -> Char.KeyCode -> State -> State
 stepTab ctrl shift key ({document, selection, clipboard} as state) =
   if (not ctrl && key == 9)
     then replaceSelection tabStr state
     else state
 
-stepSelectAll : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepSelectAll : Bool -> Bool -> Char.KeyCode -> State -> State
 stepSelectAll ctrl shift key ({document, selection} as state) =
   if (ctrl && key == 65)
-    then { state | selection <- (0, String.length document) }
+    then { state | selection = (0, String.length document) }
     else state
 
 replaceSelection : String -> State -> State
 replaceSelection str ({document, selection} as state) =
   let state' = deleteSelection state
       (part1, part2) = splitAtCursor state'
-  in  { state' | document <- String.concat [ part1 , str , part2 ]
-               , cursor <- (String.length <| (String.concat [ part1 , str ]))
+  in  { state' | document = String.concat [ part1 , str , part2 ]
+               , cursor = (String.length <| (String.concat [ part1 , str ]))
       } |> stepSelection False
 
-stepType : Bool -> Keyboard.KeyCode -> State -> State
+stepType : Bool -> Char.KeyCode -> State -> State
 stepType shift key state =
   case showKey shift key of
     Just c -> replaceSelection (String.fromList [c]) state
     Nothing -> state
 
-stepSpecialType : Bool -> Bool -> Keyboard.KeyCode -> State -> State
+stepSpecialType : Bool -> Bool -> Char.KeyCode -> State -> State
 stepSpecialType ctrl shift key state =
   if ctrl && key == 13
     then replaceSelection "\n" state
@@ -329,7 +329,7 @@ applyWith fs x =
   let halfAppliedFs = List.map (\f -> f x) fs
   in  List.foldl (>>) identity halfAppliedFs
 
-step : State -> Set.Set Keyboard.KeyCode -> List Keyboard.KeyCode -> State
+step : State -> Set.Set Char.KeyCode -> List Char.KeyCode -> State
 step ({document, cursor} as state) keysDown keysDownNew =
   let keysDownAll = Set.union keysDown (Set.fromList keysDownNew)
       shift = Set.member 16 keysDownAll
@@ -354,8 +354,8 @@ replace token replacement =
 
 replaceAllButNewlines : Char -> String -> String
 replaceAllButNewlines replacement str =
-  let transF c = if | c == '\n' -> '\n'
-                    | otherwise -> replacement
+  let transF c = if c == '\n' then '\n'
+                    else replacement
   in  str |> String.toList |> List.map transF |> String.fromList
 
 safeHead : a -> List a -> a

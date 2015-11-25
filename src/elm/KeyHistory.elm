@@ -13,7 +13,7 @@ import Unsafe exposing (..)
 import Layout exposing (toDefText, toColText, white1, lightGray1, darkGray1
   , gray1, toSizedText)
 
-type alias KeyAction = (Int, Keyboard.KeyCode)
+type alias KeyAction = (Int, Char.KeyCode)
 
 keyActionTime : KeyAction -> Int
 keyActionTime = fst
@@ -26,7 +26,7 @@ type alias State = { history : List KeyAction }
 initialState : State
 initialState = State []
 
-keyStrings : Dict.Dict Keyboard.KeyCode String
+keyStrings : Dict.Dict Char.KeyCode String
 keyStrings =
   let strFromCode = fromCode >> (flip cons) ""
   in  [
@@ -52,16 +52,16 @@ keyStrings =
       ++ (List.map2 (,) [65..90] (List.map strFromCode [97..122])) -- a to z
       |> Dict.fromList
 
-showKey : Keyboard.KeyCode -> String
+showKey : Char.KeyCode -> String
 showKey key = case Dict.get key keyStrings of
   Just result -> result
   Nothing -> ""
 
-step : State -> Set.Set Keyboard.KeyCode -> List Keyboard.KeyCode
-             -> List Keyboard.KeyCode -> Int -> State
+step : State -> Set.Set Char.KeyCode -> List Char.KeyCode
+             -> List Char.KeyCode -> Int -> State
 step ({history} as state) keysDown keysDownNew keysUpNew time =
   let history' = history ++ (keysDownNew |> List.map (\x -> (time, x)))
-  in  { state | history <- history' }
+  in  { state | history = history' }
 
 getTimeSpan : State -> Int
 getTimeSpan {history} =
