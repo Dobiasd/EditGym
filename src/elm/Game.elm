@@ -360,7 +360,7 @@ showPrev (name, cat) =
   if String.isEmpty name then empty else
     flow right [
         showExercise (name, cat) rightAligned
-      , toColoredSizedText green1 82 " =- "
+      , toColoredSizedText green1 82 " <-- "
       , toColText green1 "\n(space+p)"
     ] |> toExerciseLink name
 
