@@ -1,75 +1,103 @@
-module Exercises where
+module Exercises (..) where
 
-import Graphics.Element exposing (Element, flow, down, right, spacer, color
-  , empty, widthOf)
+import Graphics.Element exposing (Element, flow, down, right, spacer, color, empty, widthOf)
 import Window
 import Signal
 import List exposing ((::))
 import List
 import PersonalBests
-
-import Layout exposing (toColText, toDefText, green1, blue1, darkGray1
-  , niceButton, defaultSpacer, quadDefSpacer, toSizedText, niceButtonSize
-  , centerHorizontally, divider, doubleDefSpacer, displayCoach, asGrid)
+import Layout exposing (toColText, toDefText, green1, blue1, darkGray1, niceButton, defaultSpacer, quadDefSpacer, toSizedText, niceButtonSize, centerHorizontally, divider, doubleDefSpacer, displayCoach, asGrid)
 import Skeleton
 import Editor exposing (safeHead)
 import ExercisesList exposing (..)
-import Stars exposing (starsElemFromPBs, fiveStarsInEverything
-  , getStarsWithString, arrangeStarElems)
+import Stars exposing (starsElemFromPBs, fiveStarsInEverything, getStarsWithString, arrangeStarElems)
+
 
 port loadPBsIn : Signal String
-
 personalBests : Signal PersonalBests.PBs
-personalBests = Signal.map PersonalBests.readBests
-  (Signal.dropRepeats loadPBsIn)
+personalBests =
+    Signal.map
+        PersonalBests.readBests
+        (Signal.dropRepeats loadPBsIn)
+
 
 exerciseButton : String -> Element
-exerciseButton s = niceButtonSize 24 s ("?page=game&exercise=" ++ s)
+exerciseButton s =
+    niceButtonSize 24 s ("?page=game&exercise=" ++ s)
+
 
 main : Signal Element
-main = Signal.map3 scene Window.width Window.height personalBests
+main =
+    Signal.map3 scene Window.width Window.height personalBests
+
 
 exerciseButtonWithStars : PersonalBests.PBs -> String -> Element
 exerciseButtonWithStars pbs name =
-  let starsElem = starsElemFromPBs False 4 pbs name
-      btn = exerciseButton name
-      w = max (widthOf starsElem) (widthOf btn)
-  in  flow down [
-          starsElem |> centerHorizontally w
-        , btn |> centerHorizontally w
-      ]
+    let
+        starsElem = starsElemFromPBs False 4 pbs name
+
+        btn = exerciseButton name
+
+        w = max (widthOf starsElem) (widthOf btn)
+    in
+        flow
+            down
+            [ starsElem |> centerHorizontally w
+            , btn |> centerHorizontally w
+            ]
+
 
 showSubject : Int -> PersonalBests.PBs -> String -> List String -> Element
 showSubject w pbs subject exercises =
-  let subjectElem = toSizedText 36 subject |> centerHorizontally w
-      exercisesElem =
-        exercises
-        |> List.map (exerciseButtonWithStars pbs)
-        |> asGrid 6 quadDefSpacer
-        |> centerHorizontally w
-  in flow down [ subjectElem, doubleDefSpacer, exercisesElem ]
+    let
+        subjectElem = toSizedText 36 subject |> centerHorizontally w
+
+        exercisesElem =
+            exercises
+                |> List.map (exerciseButtonWithStars pbs)
+                |> asGrid 6 quadDefSpacer
+                |> centerHorizontally w
+    in
+        flow down [ subjectElem, doubleDefSpacer, exercisesElem ]
+
 
 fiveStarsInEverythingElem : Int -> Element
 fiveStarsInEverythingElem w =
-  flow down [
-      arrangeStarElems False 1.5 (getStarsWithString 0.5 "Keys" 5)
-                                 (getStarsWithString 0.5 "Time" 5)
-      |> centerHorizontally w
-    , displayCoach "You rock!"
-      |> centerHorizontally w
-  ]
+    flow
+        down
+        [ arrangeStarElems
+            False
+            1.5
+            (getStarsWithString 0.5 "Keys" 5)
+            (getStarsWithString 0.5 "Time" 5)
+            |> centerHorizontally w
+        , displayCoach "You rock!"
+            |> centerHorizontally w
+        ]
+
 
 scene : Int -> Int -> PersonalBests.PBs -> Element
 scene w h pbs =
-  let paddedDivider = flow down [
-                          doubleDefSpacer
-                        , divider blue1 w
-                        , doubleDefSpacer
-                      ]
-      allDone = fiveStarsInEverything pbs
-  in  subjects
-        |> List.map (showSubject w pbs |> uncurry)
-        |> \x -> x ++ (if allDone then [fiveStarsInEverythingElem w] else [])
-        |> List.intersperse paddedDivider
-        |> flow down
-        |> Skeleton.showPage w h
+    let
+        paddedDivider =
+            flow
+                down
+                [ doubleDefSpacer
+                , divider blue1 w
+                , doubleDefSpacer
+                ]
+
+        allDone = fiveStarsInEverything pbs
+    in
+        subjects
+            |> List.map (showSubject w pbs |> uncurry)
+            |> \x ->
+                x
+                    ++ (if allDone then
+                            [ fiveStarsInEverythingElem w ]
+                        else
+                            []
+                       )
+                    |> List.intersperse paddedDivider
+                    |> flow down
+                    |> Skeleton.showPage w h

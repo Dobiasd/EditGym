@@ -1,20 +1,21 @@
-module Help where
+module Help (..) where
 
 import Window
 import Signal
-
 import Markdown
-
 import Graphics.Element exposing (Element, flow, down)
-import Layout exposing (darkGray1, green1, white1, centerHorizontally
-  , niceButton, defaultSpacer)
+import Layout exposing (darkGray1, green1, white1, centerHorizontally, niceButton, defaultSpacer)
 import Skeleton
 
+
 exercisesButton : Element
-exercisesButton = niceButton "Work out" "?page=exercises"
+exercisesButton =
+    niceButton "Work out" "?page=exercises"
+
 
 introduction : Int -> Element
-introduction w = Skeleton.showTextPart w <| Markdown.toElement """
+introduction w =
+    Skeleton.showTextPart w <| Markdown.toElement """
 
 # Introduction
 After choosing a [exercise](?page=exercises) your goal is to get the content of the editor window to match the content of the goal window by editing the text without using your mouse.
@@ -69,13 +70,18 @@ Now go and [work out your skills](?page=exercises). :)
 
 """
 
+
 main : Signal Element
-main = Signal.map2 scene Window.width Window.height
+main =
+    Signal.map2 scene Window.width Window.height
+
 
 scene : Int -> Int -> Element
 scene w h =
-  flow down [
-    introduction w
-  , defaultSpacer
-  , centerHorizontally w exercisesButton ]
-  |> Skeleton.showPage w h
+    flow
+        down
+        [ introduction w
+        , defaultSpacer
+        , centerHorizontally w exercisesButton
+        ]
+        |> Skeleton.showPage w h

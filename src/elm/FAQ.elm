@@ -1,20 +1,21 @@
-module FAQ where
+module FAQ (..) where
 
 import Window
 import Signal
-
 import Markdown
-
 import Graphics.Element exposing (Element, flow, down)
-import Layout exposing (darkGray1, green1, white1, centerHorizontally
-  , niceButton, defaultSpacer)
+import Layout exposing (darkGray1, green1, white1, centerHorizontally, niceButton, defaultSpacer)
 import Skeleton
 
+
 exercisesButton : Element
-exercisesButton = niceButton "Work out" "?page=exercises"
+exercisesButton =
+    niceButton "Work out" "?page=exercises"
+
 
 introduction : Int -> Element
-introduction w = Skeleton.showTextPart w <| Markdown.toElement """
+introduction w =
+    Skeleton.showTextPart w <| Markdown.toElement """
 
 # EditGym - FAQ
 
@@ -103,13 +104,18 @@ Sure! Here it is: [github/Dobiasd/EditGym](https://github.com/Dobiasd/EditGym)
 
 """
 
+
 main : Signal Element
-main = Signal.map2 scene Window.width Window.height
+main =
+    Signal.map2 scene Window.width Window.height
+
 
 scene : Int -> Int -> Element
 scene w h =
-  flow down [
-    introduction w
-  , defaultSpacer
-  , centerHorizontally w exercisesButton ]
-  |> Skeleton.showPage w h
+    flow
+        down
+        [ introduction w
+        , defaultSpacer
+        , centerHorizontally w exercisesButton
+        ]
+        |> Skeleton.showPage w h
