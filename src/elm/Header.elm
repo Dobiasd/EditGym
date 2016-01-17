@@ -36,7 +36,7 @@ shareIcons =
             , ( image iconSize iconSize "imgs/pinterest.png", genLink "https://pinterest.com/pin/create/button/" [ ( "url", "" ), ( "media", "http://www.editgym.com/text-editing-training/" ), ( "description", "Text editing training" ) ] )
             , ( image iconSize iconSize "imgs/digg.png", genLink "http://digg.com/submit" [ ( "phase", "2" ), ( "url", "http://www.editgym.com/text-editing-training/" ), ( "title", "Text editing training" ) ] )
             , ( image iconSize iconSize "imgs/stumbleupon.png", genLink "http://www.stumbleupon.com/submit" [ ( "url", "http://www.editgym.com/text-editing-training/" ), ( "title", "Text editing training" ) ] )
-            , ( image iconSize iconSize "imgs/tumblr.png", genLink "http://www.tumblr.com/share/link" [ ( "url", "editgym.com" ) ] )
+            , ( image iconSize iconSize "imgs/tumblr.png", genLink "http://www.tumblr.com/share/link" [ ( "url", "http://www.editgym.com/reddit-time-machine/" ) ] )
             , ( image iconSize iconSize "imgs/bufferapp.png", genLink "https://bufferapp.com/add" [ ( "url", "http://www.editgym.com/text-editing-training/" ), ( "text", "Text editing training" ) ] )
             , ( image iconSize iconSize "imgs/email.png", genLink "mailto: " [ ( "subject", "EditGym" ), ( "body", "Text editing training at http://www.editgym.com/text-editing-training/" ) ] )
             ]
