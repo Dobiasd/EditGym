@@ -7,3 +7,5 @@ A lot of daily tasks require you to edit text. And no matter if you use a word p
 But real efficiency is not reached by [just memorizing all shortcuts](https://www.shortcutfoo.com). It is also important (and fun!) to be able to effortlessly choose the tactics with the smallest amount of shortcuts to reach the desired goal.
 
 EditGym helps you to acquire this set of skills by letting you practice with standardized text snippets.
+
+Remark: This code is based on Elm 0.16 and will probably not be updated to newer versions of the language.
