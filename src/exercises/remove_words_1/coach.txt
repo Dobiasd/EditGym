@@ -1,3 +1,5 @@
 In case you did not notice yet; I will not only time your performance today,
 but also count how many key presses you used to solve an exercise.
-Additionally I will record the results for you, so you can always see and try to improve your personal best. If one exists, it is shown at the top.
+Additionally I will record the results for you,
+so you can always see and try to improve your personal best.
+If one exists, it is shown at the top.

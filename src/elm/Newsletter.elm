@@ -17,12 +17,12 @@ main =
 
 subscribeLink : String
 subscribeLink =
-    genLink "mailto:info@editgym.com" [ ( "subject", "subscribe" ), ( "body", "Hi Coach,\nplease keep me informed about updates regarding EditGym." ) ]
+    genLink "mailto:info@daiw.de" [ ( "subject", "subscribe" ), ( "body", "Hi Coach,\nplease keep me informed about updates regarding EditGym." ) ]
 
 
 unsubscribeLink : String
 unsubscribeLink =
-    genLink "mailto:info@editgym.com" [ ( "subject", "unsubscribe" ), ( "body", "Hi coach,\nplease do not inform me about updates regarding EditGym any more." ) ]
+    genLink "mailto:info@daiw.de" [ ( "subject", "unsubscribe" ), ( "body", "Hi coach,\nplease do not inform me about updates regarding EditGym any more." ) ]
 
 
 scene : Int -> Int -> Element

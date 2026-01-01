@@ -17,7 +17,7 @@ introduction : Int -> Element
 introduction w =
     Skeleton.showTextPart w <| Markdown.toElement """
 
-Whatever it is, just send me (Tobias Hermann) an email to [info@editgym.com](mailto:info@editgym.com). I am happy to hear from you.
+Whatever it is, just send me (Tobias Hermann) an email to [info@daiw.de](mailto:info@daiw.de). I am happy to hear from you.
 
 """
 

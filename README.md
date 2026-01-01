@@ -1,4 +1,4 @@
-# [EditGym](http://www.editgym.com/text-editing-training/)
+# [EditGym](http://www.daiw.de/text-editing-training/)
 
 ![logo](src/imgs/logo.png)
 
